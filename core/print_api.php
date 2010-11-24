@@ -259,8 +259,9 @@ function print_captcha_input( $p_field_name ) {
  * @param integer       $p_access     An access level.
  * @return void
  */
-function print_user_option_list( $p_user_id, $p_project_id = null, $p_access = ANYBODY ) {
+function print_user_option_list( $p_user_id, $p_project_id = null, $p_access = ANYBODY, array $p_users_exclude = array() ) {
 	$t_current_user = auth_get_current_user_id();
+	$t_users = array();
 
 	if( null === $p_project_id ) {
 		$p_project_id = helper_get_current_project();
@@ -310,6 +311,12 @@ function print_user_option_list( $p_user_id, $p_project_id = null, $p_access = A
 	$t_sort = array();
 
 	foreach( $t_users as $t_key => $t_user ) {
+		# Process exclusion list
+		if( in_array( $t_user['id'], $p_users_exclude ) ) {
+			unset( $t_users[$t_key] );
+			continue;
+		}
+
 		$t_display[] = user_get_expanded_name_from_row( $t_user );
 		$t_sort[] = user_get_name_for_sorting_from_row( $t_user );
 	}

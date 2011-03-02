@@ -57,6 +57,22 @@ function xmlhttprequest_filter_by_prefix( array $p_set, $p_prefix ) {
 }
 
 /**
+ * Filter a set of strings by finding strings that match a case-insensitive substring.
+ * @param array $p_set An array of strings to search through.
+ * @param string $p_substr The substring to filter by.
+ * @return array An array of strings which match the supplied substring.
+ */
+function xmlhttprequest_filter_match( $p_set, $p_substr ) {
+	$t_matches = array();
+	foreach ( $p_set as $p_item ) {
+		if( utf8_strpos( utf8_strtolower( $p_item ), utf8_strtolower( $p_substr ) ) !== false ) {
+			$t_matches[] = $p_item;
+		}
+	}
+	return $t_matches;
+}
+
+/**
  * Outputs a serialized list of platforms starting with the prefix specified in the $_POST
  * @return void
  * @access public
@@ -94,6 +110,24 @@ function xmlhttprequest_os_build_get_with_prefix() {
 
 	$t_unique_entries = profile_get_field_all_for_user( 'os_build' );
 	$t_matching_entries = xmlhttprequest_filter_by_prefix( $t_unique_entries, $f_os_build );
+
+	echo json_encode( $t_matching_entries );
+}
+
+/**
+ * Echos a serialized list of Users starting with the prefix specified in the $_POST
+ * @return null
+ * @access public
+ */
+function xmlhttprequest_username_get_with_prefix() {
+	$f_username = gpc_get_string( 'username' );
+
+	$t_users = user_cache_all();
+	foreach( $t_users AS $t_user ) {
+		$t_unique_entries[] = $t_user['username'];
+	}
+
+	$t_matching_entries = xmlhttprequest_filter_match( $t_unique_entries, $f_username );
 
 	echo json_encode( $t_matching_entries );
 }

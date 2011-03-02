@@ -129,6 +129,22 @@ function user_cache_array_rows( array $p_user_id_array ) {
 }
 
 /**
+ *
+ */
+function user_cache_all() {
+	global $g_cache_user;
+
+	$t_user_table = db_get_table( 'user' );
+	$t_query = "SELECT * FROM $t_user_table";
+	$t_result = db_query_bound( $t_query );
+
+	while( $t_row = db_fetch_array( $t_result ) ) {
+		$g_cache_user[(int) $t_row['id']] = $t_row;
+	}
+	return $g_cache_user;
+}
+
+/**
  * Cache an object as a bug.
  * @param array $p_user_database_result A user row to cache.
  * @return array|null
@@ -812,6 +828,14 @@ function user_get_field( $p_user_id, $p_field_name ) {
 		trigger_error( ERROR_DB_FIELD_NOT_FOUND, WARNING );
 		return '';
 	}
+}
+
+/**
+ * return all users
+ * @return array
+ */
+function user_get_all() {
+	return user_cache_all();
 }
 
 /**

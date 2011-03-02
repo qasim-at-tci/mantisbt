@@ -348,9 +348,12 @@ $t_user_count = count( $t_users );
 <div id="manage-user-edit-div">
 	<form id="manage-user-edit-form" method="get" action="manage_user_edit_page.php"<?php # CSRF protection not required here - form does not result in modifications ?>>
 		<fieldset>
-			<label for="username"><?php echo lang_get( 'search' ) ?></label>
-			<input id="username" type="text" name="username" value="" />
-			<input type="submit" class="button" value="<?php echo lang_get( 'manage_user' ) ?>" />
+			<div class="field-container">
+				<label for="username"><span><?php echo lang_get( 'search' ) ?></span></label>
+				<span class="input"><input id="username" type="text" name="username" value="" class="autocomplete" /></span>
+				<span class="label-style"></span>
+			</div>
+			<span class="submit-button"><input type="submit" class="button" value="<?php echo lang_get( 'manage_user' ) ?>" /></span>
 		</fieldset>
 	</form>
 </div>

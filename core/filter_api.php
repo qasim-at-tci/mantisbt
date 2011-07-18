@@ -954,7 +954,16 @@ function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clause
 
 			# standard column
 			} else {
-				$p_query_clauses['order'][] = "$t_bug_table.$c_sort $c_dir";
+				# Special handling for sort by Category, as we want to sort by
+				# category name, not by category_id
+				if ( 'category_id' == $c_sort ) {
+					$t_cat_table =  db_get_table( 'mantis_category_table' );
+					$p_query_clauses['join'][] = "LEFT JOIN $t_cat_table ON $t_cat_table.id = $t_bug_table.$c_sort";					
+					$p_query_clauses['order'][] = "$t_cat_table.name $c_dir";
+				}
+				else {
+					$p_query_clauses['order'][] = "$t_bug_table.$c_sort $c_dir";
+				}
 			}
 		}
 	}

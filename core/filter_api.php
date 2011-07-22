@@ -911,6 +911,15 @@ function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clause
 		$p_query_clauses['order'][] = "$t_bug_table.sticky DESC";
 	}
 
+	# Define a foreign key map to handle sorting (we don't want to sort by id)
+	$t_username = config_get( 'show_realname' ) ? 'realname' : 'username';
+	$t_fk_map = array(
+		'category_id' => array('table' => db_get_table( 'mantis_category_table' ), 'sort_field' => 'name' ),
+		'project_id'  => array('table' => db_get_table( 'mantis_project_table' ), 'sort_field' => 'name' ),
+		'handler_id'  => array('table' => db_get_table( 'mantis_user_table' ), 'sort_field' => $t_username . " ASC, mantis_user_table_handler_id.username" ),
+		'reporter_id' => array('table' => db_get_table( 'mantis_user_table' ), 'sort_field' => $t_username . ", username" ),
+	);
+
 	$t_count = count( $t_sort_fields );
 	for( $i = 0;$i < $t_count;$i++ ) {
 		$c_sort = $t_sort_fields[$i];
@@ -954,12 +963,13 @@ function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clause
 
 			# standard column
 			} else {
-				# Special handling for sort by Category, as we want to sort by
-				# category name, not by category_id
-				if ( 'category_id' == $c_sort ) {
-					$t_cat_table =  db_get_table( 'mantis_category_table' );
-					$p_query_clauses['join'][] = "LEFT JOIN $t_cat_table ON $t_cat_table.id = $t_bug_table.$c_sort";					
-					$p_query_clauses['order'][] = "$t_cat_table.name $c_dir";
+				# Special handling for sort by foreign key column
+				if ( array_key_exists( $c_sort, $t_fk_map ) ) {
+					$t_fk_table_alias = $t_fk_map[$c_sort]['table'] . '_' . $c_sort;
+					$p_query_clauses['join'][] =
+						"LEFT JOIN " . $t_fk_map[$c_sort]['table'] . " " . $t_fk_table_alias .
+						" ON $t_fk_table_alias.id = $t_bug_table.$c_sort";
+					$p_query_clauses['order'][] = "$t_fk_table_alias." . $t_fk_map[$c_sort]['sort_field'] . " $c_dir";
 				}
 				else {
 					$p_query_clauses['order'][] = "$t_bug_table.$c_sort $c_dir";

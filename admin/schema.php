@@ -228,7 +228,9 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_table'),"
   file_path 		C(250) NOTNULL DEFAULT \" '' \",
   description 		XL NOTNULL
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
-$upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id'));
+# Index autocreated when oci used
+if( $GLOBALS['g_db_type'] != 'oci8' )
+	$upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id'));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_project_name',db_get_table('mantis_project_table'),'name',Array('UNIQUE')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_project_view',db_get_table('mantis_project_table'),'view_state'));
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_user_list_table'),"
@@ -334,10 +336,17 @@ $upgrade[] = Array('CreateIndexSQL',Array('idx_user_username',db_get_table('mant
 $upgrade[] = Array('CreateIndexSQL',Array('idx_enable',db_get_table('mantis_user_table'),'enabled'));
 /* 50 */
 $upgrade[] = Array('CreateIndexSQL',Array('idx_access',db_get_table('mantis_user_table'),'access_level'));
-$upgrade[] = Array('InsertData', Array( db_get_table('mantis_user_table'),
-    "(username, realname, email, password, date_created, last_visit, enabled, protected, access_level, login_count, lost_password_request_count, failed_login_count, cookie_string) VALUES
-        ('administrator', '', 'root@localhost', '63a9f0ea7bb98050796b649e85481845', '" . installer_db_now() . "', '" . installer_db_now() . "', '1', '0', 90, 3, 0, 0, '" .
-             md5( mt_rand( 0, mt_getrandmax() ) + mt_rand( 0, mt_getrandmax() ) ) . md5( time() ) . "')" ) );
+# Oci uses other date literal syntax 
+if( $GLOBALS['g_db_type'] != 'oci8' )
+	$upgrade[] = Array('InsertData', Array( db_get_table('mantis_user_table'),
+		"(username, realname, email, password, date_created, last_visit, enabled, protected, access_level, login_count, lost_password_request_count, failed_login_count, cookie_string) VALUES
+		('administrator', '', 'root@localhost', '63a9f0ea7bb98050796b649e85481845', '" . installer_db_now() . "', '" . installer_db_now() . "', '1', '0', 90, 3, 0, 0, '" .
+		md5( mt_rand( 0, mt_getrandmax() ) + mt_rand( 0, mt_getrandmax() ) ) . md5( time() ) . "')" ) );
+else
+	$upgrade[] = Array('InsertData', Array( db_get_table('mantis_user_table'),
+		"(username, realname, email, password, date_created, last_visit, enabled, protected, access_level, login_count, lost_password_request_count, failed_login_count, cookie_string) VALUES
+		('administrator', '', 'root@localhost', '63a9f0ea7bb98050796b649e85481845', timestamp" . installer_db_now() . ", timestamp" . installer_db_now() . ", '1', '0', 90, 3, 0, 0, '" .
+		md5( mt_rand( 0, mt_getrandmax() ) + mt_rand( 0, mt_getrandmax() ) ) . md5( time() ) . "')" ) );
 $upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_history_table' ), "old_value C(255) NOTNULL" ) );
 $upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_history_table' ), "new_value C(255) NOTNULL" ) );
 
@@ -349,7 +358,9 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_email_table'),"
   metadata 		XL NOTNULL,
   body 			XL NOTNULL
   ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
-$upgrade[] = Array('CreateIndexSQL',Array('idx_email_id',db_get_table('mantis_email_table'),'email_id'));
+# Index autocreated when oci used
+if( $GLOBALS['g_db_type'] != 'oci8' )
+	$upgrade[] = Array('CreateIndexSQL',Array('idx_email_id',db_get_table('mantis_email_table'),'email_id'));
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bug_table'), "target_version C(64) NOTNULL DEFAULT \" '' \""));
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bugnote_table'), "time_tracking I UNSIGNED NOTNULL DEFAULT \" 0 \""));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_diskfile',db_get_table('mantis_bug_file_table'),'diskfile'));
@@ -382,8 +393,12 @@ $upgrade[] = Array('CreateTableSQL', Array( db_get_table( 'mantis_plugin_table' 
 	basename		C(40)	NOTNULL PRIMARY,
 	enabled			L		NOTNULL DEFAULT \" '0' \"
 	", Array( 'mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS' ) ) );
+# Field cannot be null with oci because of empty string equals NULL 
+if( $GLOBALS['g_db_type'] != 'oci8' )
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "redirect_delay 	I NOTNULL DEFAULT 0" ) );
+else
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "redirect_delay 	I DEFAULT 0" ) );
 
-$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "redirect_delay 	I NOTNULL DEFAULT 0" ) );
 
 /* apparently mysql now has a STRICT mode, where setting a DEFAULT value on a blob/text is now an error, instead of being silently ignored */
 if ( isset( $f_db_type ) && ( $f_db_type == 'mysql' || $f_db_type == 'mysqli' ) ) {
@@ -601,10 +616,30 @@ $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_tabl
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_table'), "advanced_view" ) );
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_table'), "advanced_update" ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_project_hierarchy_child_id', db_get_table( 'mantis_project_hierarchy_table' ), 'child_id' ) );
-$upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_project_hierarchy_parent_id', db_get_table( 'mantis_project_hierarchy_table' ), 'parent_id' ) );
+# Decrease index name length for oci8(30 chars max)
+if( $GLOBALS['g_db_type'] != 'oci8' )
+	$upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_project_hierarchy_parent_id', db_get_table( 'mantis_project_hierarchy_table' ), 'parent_id' ) );
+else
+	$upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_prj_hier_parent_id', db_get_table( 'mantis_project_hierarchy_table' ), 'parent_id' ) );
 
 /* 180 */
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_tag_name', db_get_table( 'mantis_tag_table' ), 'name' ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_bug_tag_tag_id', db_get_table( 'mantis_bug_tag_table' ), 'tag_id' ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_email_id', db_get_table( 'mantis_email_table' ), 'email_id', array( 'DROP' ) ), Array( 'db_index_exists', Array( db_get_table( 'mantis_email_table' ), 'idx_email_id') ) );
 $upgrade[] = Array( 'UpdateFunction', 'correct_multiselect_custom_fields_db_format' );
+
+# Field cannot be null with oci because of empty string equals NULL 
+if( $GLOBALS['g_db_type'] == 'oci8' )	{
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "sticky NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_history_table' ), "new_value NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_history_table' ), "old_value NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_history_table' ), "field_name NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_text_table' ), "additional_information  NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_text_table' ), "steps_to_reproduce NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_project_table' ), "description NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_project_version_table' ), "description NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_tag_table' ), "description NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "email_on_priority NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "email_on_status NULL" ) );
+	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_profile_table' ), "description NULL" ) );
+}

@@ -115,7 +115,7 @@
 		$t_path = str_replace( basename( $_SERVER['PHP_SELF'] ), '', $_SERVER['PHP_SELF'] );
 		$t_path = basename( $t_path ) == "admin" ? dirname( $t_path ) . '/' : $t_path;
 		$t_path = basename( $t_path ) == "soap" ? dirname( dirname( $t_path ) ) . '/' : $t_path;
-		
+
 
 		$t_url	= $t_protocol . '://' . $t_host . $t_path;
 
@@ -2872,15 +2872,27 @@
 
 	/**
 	 * table prefix
+	 * To avoid the 30-char limit on identifiers in Oracle, the prefix
+	 * should be set to blank or kept as short as possible (e.g. 'm')
 	 * @global string $g_db_table_prefix
 	 */
-	$g_db_table_prefix		= 'mantis';
+	$g_db_table_prefix			= 'mantis';
+
+	/**
+	 * plugin table prefix
+	 * To avoid the 30-char limit on identifiers in Oracle, the prefix
+	 * should be kept as short as possible (e.g. 'plg')
+	 * @global string $g_db_table_prefix
+	 */
+	$g_db_table_plugin_prefix	= 'plugin';
 
 	/**
 	 * table suffix
+	 * To avoid the 30-char limit on identifiers in Oracle, the suffix
+	 * should be set to blank or kept as short as possible
 	 * @global string $g_db_table_suffix
 	 */
-	$g_db_table_suffix		= '_table';
+	$g_db_table_suffix			= '_table';
 
 	/**
 	 * table names
@@ -2910,8 +2922,8 @@
 	$g_db_table['mantis_user_pref_table']				= '%db_table_prefix%_user_pref%db_table_suffix%';
 	$g_db_table['mantis_user_print_pref_table']			= '%db_table_prefix%_user_print_pref%db_table_suffix%';
 	$g_db_table['mantis_custom_field_project_table']	= '%db_table_prefix%_custom_field_project%db_table_suffix%';
-	$g_db_table['mantis_custom_field_table']      	    = '%db_table_prefix%_custom_field%db_table_suffix%';
-	$g_db_table['mantis_custom_field_string_table']    = '%db_table_prefix%_custom_field_string%db_table_suffix%';
+	$g_db_table['mantis_custom_field_table']			= '%db_table_prefix%_custom_field%db_table_suffix%';
+	$g_db_table['mantis_custom_field_string_table']		= '%db_table_prefix%_custom_field_string%db_table_suffix%';
 	$g_db_table['mantis_upgrade_table']					= '%db_table_prefix%_upgrade%db_table_suffix%';
 	$g_db_table['mantis_filters_table']					= '%db_table_prefix%_filters%db_table_suffix%';
 	$g_db_table['mantis_sponsorship_table']				= '%db_table_prefix%_sponsorship%db_table_suffix%';
@@ -3666,11 +3678,11 @@
 	 * @global int $g_manage_plugin_threshold
 	 */
 	$g_manage_plugin_threshold = ADMINISTRATOR;
-	
-	
+
+
 	/**
 	 * A mapping of file extensions to mime types, used when serving resources from plugins
-	 * 
+	 *
 	 * @global array $g_plugin_mime_types
 	 */
 	$g_plugin_mime_types = array(
@@ -3718,7 +3730,7 @@
 	 * Sub-projects should inherit versions from parent projects.
 	 */
 	$g_subprojects_inherit_versions = ON;
-	
+
 	/**********************************
 	 * Debugging / Developer Settings *
 	 **********************************/
@@ -3836,7 +3848,7 @@
 	 * @global string $g_log_destination
 	 */
 	$g_log_destination = '';
-	
+
 	/**
 	 * if OFF, will include original javascript files
 	 * if ON, will include javascript files that have been compressed by yuicompressor if available

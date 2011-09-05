@@ -650,6 +650,13 @@ if( 3 == $t_install_state ) {
 		# fake out database access routines used by config_get
 		$GLOBALS['g_db_type'] = $f_db_type;
 
+		# Initialize short table prefixes and suffix for Oracle
+		if ( $f_db_type == 'oci8' ) {
+			$GLOBALS['g_db_table_prefix']        = $t_db_table_prefix        = 'm';
+			$GLOBALS['g_db_table_plugin_prefix'] = $t_db_table_plugin_prefix = 'plg';
+			$GLOBALS['g_db_table_suffix']        = $t_db_table_suffix        = '_t';
+		}
+
 		# database_api references this
 		require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'schema.php' );
 		$g_db = ADONewConnection( $f_db_type );
@@ -820,8 +827,17 @@ if( 5 == $t_install_state ) {
 	$t_config .= "\t\$g_db_username = '$f_db_username';\r\n";
 	$t_config .= "\t\$g_db_password = '$f_db_password';\r\n";
 
-	if( $f_db_type == 'db2' ) {
-		$t_config .= "\t\$g_db_schema = '$f_db_schema';\r\n";
+	switch ( $f_db_type ) {
+		case 'db2':
+			$t_config .= "\t\$g_db_schema = '$f_db_schema';\r\n";
+			break;
+		case 'oci8':
+			$t_config .= "\t\$g_db_table_prefix = '$t_db_table_prefix';\r\n";
+			$t_config .= "\t\$g_db_table_plugin_prefix = '$t_db_table_plugin_prefix';\r\n";
+			$t_config .= "\t\$g_db_table_suffix = '$t_db_table_suffix';\r\n";
+			break;
+		default:
+			break;
 	}
 
 	$t_config .= '?>' . "\r\n";

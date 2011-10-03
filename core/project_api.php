@@ -433,6 +433,30 @@ function project_copy_custom_fields( $p_destination_id, $p_source_id ) {
 	}
 }
 
+/**
+ * Sets the default category for the project
+ * return true if the bugnote exists, false otherwise
+ * @param int $p_bugnote_id bugnote id
+ * @param int $p_project_id Project to update
+ * @param int $p_category_id New default category
+ * @return bool
+ */
+function project_set_default_category( $p_project_id, $p_category_id ) {
+
+	$p_project_id = (int) $p_project_id;
+	$t_project_table = db_get_table( 'mantis_project_table' );
+
+	$query = "UPDATE $t_project_table
+				SET category_id=" . db_param() . "
+				WHERE id=" . db_param();
+	db_query_bound( $query, Array( (int) $p_category_id, $p_project_id ) );
+
+	project_clear_cache( $p_project_id );
+
+	# db_query errors on failure so:
+	return true;
+}
+
 # ===================================
 # Data Access
 # ===================================
@@ -472,6 +496,51 @@ function project_get_field( $p_project_id, $p_field_name, $p_trigger_errors = tr
 	}
 
 	return '';
+}
+
+/**
+ * Return the project's default category, 0 if not defined
+ * @param int p_project_id The project, defaults to current project
+ * @return int
+ */
+function project_get_default_category( $p_project_id = null ) {
+	if( is_null($p_project_id) ) {
+		$p_project_id = helper_get_current_project();
+	}
+
+	# Get the default category
+	if( ALL_PROJECTS == $p_project_id ) {
+		$t_category_id = config_get( 'default_category_for_moves', null, ALL_USERS, ALL_PROJECTS );
+	}
+	else {
+		$t_category_id = project_get_field( $p_project_id, 'category_id', false );
+	}
+
+	# Default category not set
+	if( empty( $t_category_id ) ) {
+		return 0;
+	}
+
+	$t_categories = category_get_all_rows( $p_project_id );
+
+	# If there's only one category for the project, it's de facto the default
+	if( count( $t_categories ) == 1 ) {
+		return $t_categories[0]['id'];
+	}
+
+	# Verify that the default category is valid
+	$t_found = false;
+	foreach( $t_categories as $t_row ) {
+		if( $t_row['id'] == $t_category_id ) {
+			$t_found = true;
+			break;
+		}
+	}
+	if( !$t_found ) {
+		return 0;
+	}
+
+	return $t_category_id;
 }
 
 # Return the name of the project

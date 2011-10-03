@@ -300,6 +300,7 @@ function project_create( $p_name, $p_description, $p_status, $p_view_state = VS_
 	}
 
 	project_ensure_name_unique( $p_name );
+	$t_default_cat = project_get_default_category( ALL_PROJECTS );
 
 	# Project does not exist yet, so we get global config
 	if( DATABASE !== config_get( 'file_upload_method', null, null, ALL_PROJECTS ) ) {
@@ -309,11 +310,11 @@ function project_create( $p_name, $p_description, $p_status, $p_view_state = VS_
 	$t_project_table = db_get_table( 'mantis_project_table' );
 
 	$query = "INSERT INTO $t_project_table
-					( name, status, enabled, view_state, file_path, description, inherit_global )
+					( name, status, enabled, view_state, file_path, description, inherit_global, category_id )
 				  VALUES
-					( " . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ')';
+					( " . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ')';
 
-	db_query_bound( $query, Array( $p_name, (int) $p_status, $c_enabled, (int) $p_view_state, $p_file_path, $p_description, $c_inherit_global ) );
+	db_query_bound( $query, Array( $p_name, (int) $p_status, $c_enabled, (int) $p_view_state, $p_file_path, $p_description, $c_inherit_global, $t_default_cat ) );
 
 	# return the id of the new project
 	return db_insert_id( $t_project_table );

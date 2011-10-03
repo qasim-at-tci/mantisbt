@@ -166,6 +166,7 @@
 </tr>
 <?php
 	$t_categories = category_get_all_rows( ALL_PROJECTS );
+	$t_default_cat = project_get_default_category( ALL_PROJECTS );
 	$t_can_update_global_cat = access_has_global_level( config_get( 'manage_site_threshold' ) );
 
 	if ( count( $t_categories ) > 0 ) {
@@ -203,6 +204,14 @@
 					$t_id = urlencode( $t_id );
 					$t_project_id = urlencode( ALL_PROJECTS );
 
+					# Set default category button
+					if( $t_default_cat != $t_category['id'] ) {
+						echo form_security_field( 'manage_proj_cat_default' );
+						print_button( "manage_proj_cat_default.php?id=$t_id&project_id=$t_project_id&default=1", lang_get( 'make_default' ) );
+						echo '&#160;';
+					}
+
+					# Other action buttons
 					print_button( "manage_proj_cat_edit_page.php?id=$t_id&project_id=$t_project_id", lang_get( 'edit_link' ) );
 					echo '&#160;';
 					print_button( "manage_proj_cat_delete.php?id=$t_id&project_id=$t_project_id", lang_get( 'delete_link' ) );

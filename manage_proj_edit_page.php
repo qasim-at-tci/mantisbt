@@ -327,6 +327,7 @@ if ( access_has_global_level ( config_get( 'delete_project_threshold' ) ) ) { ?>
 </tr>
 <?php
 	$t_categories = category_get_all_rows( $f_project_id );
+	$t_default_cat = project_get_default_category( $f_project_id );
 
 	if ( count( $t_categories ) > 0 ) {
 ?>
@@ -358,14 +359,23 @@ if ( access_has_global_level ( config_get( 'delete_project_threshold' ) ) ) { ?>
 				<?php echo prepare_user_name( $t_category['user_id'] ) ?>
 			</td>
 			<td class="center">
-				<?php if ( !$t_inherited ) {
+				<?php
 					$t_id = urlencode( $t_id );
 					$t_project_id = urlencode( $f_project_id );
 
-					print_button( 'manage_proj_cat_edit_page.php?id=' . $t_id . '&project_id=' . $t_project_id, lang_get( 'edit_link' ) );
-					echo '&#160;';
-					print_button( 'manage_proj_cat_delete.php?id=' . $t_id . '&project_id=' . $t_project_id, lang_get( 'delete_link' ) );
-				} ?>
+					# Set default category button
+					if( $t_default_cat != $t_category['id'] ) {
+						print_button( "manage_proj_cat_default.php?id=$t_id&project_id=$t_project_id&default=1", lang_get( 'make_default' ) );
+						echo '&#160;';
+					}
+
+					# Other action buttons
+					if( !$t_inherited ) {
+						print_button( "manage_proj_cat_edit_page.php?id=$t_id&project_id=$t_project_id", lang_get( 'edit_link' ) );
+						echo '&#160;';
+						print_button( "manage_proj_cat_delete.php?id=$t_id&project_id=$t_project_id", lang_get( 'delete_link' ) );
+					}
+				?>
 			</td>
 		</tr>
 <?php

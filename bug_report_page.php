@@ -115,8 +115,7 @@
 		$f_target_version		= gpc_get_string( 'target_version', '' );
 		$f_profile_id			= gpc_get_int( 'profile_id', 0 );
 		$f_handler_id			= gpc_get_int( 'handler_id', 0 );
-
-		$f_category_id			= gpc_get_int( 'category_id', 0 );
+		$f_category_id			= gpc_get_int( 'category_id', project_get_default_category( $t_project_id ) );
 		$f_reproducibility		= gpc_get_int( 'reproducibility', config_get( 'default_bug_reproducibility' ) );
 		$f_eta					= gpc_get_int( 'eta', config_get( 'default_bug_eta' ) );
 		$f_severity				= gpc_get_int( 'severity', config_get( 'default_bug_severity' ) );
@@ -126,7 +125,7 @@
 		$f_steps_to_reproduce	= gpc_get_string( 'steps_to_reproduce', config_get( 'default_bug_steps_to_reproduce' ) );
 		$f_additional_info		= gpc_get_string( 'additional_info', config_get ( 'default_bug_additional_info' ) );
 		$f_view_state			= gpc_get_int( 'view_state', config_get( 'default_bug_view_status' ) );
-		$f_due_date				= gpc_get_string( 'due_date', '');
+		$f_due_date				= gpc_get_string( 'due_date', '' );
 
 		if ( $f_due_date == '' ) {
 			$f_due_date = date_get_null();
@@ -423,9 +422,9 @@
 		</td>
 		<td>
 			<select <?php echo helper_get_tab_index() ?> name="status">
-			<?php 
-			$resolution_options = get_status_option_list(access_get_project_level( $t_project_id), 
-					config_get('bug_submit_status'), true, 
+			<?php
+			$resolution_options = get_status_option_list(access_get_project_level( $t_project_id),
+					config_get('bug_submit_status'), true,
 					ON == config_get( 'allow_reporter_close' ), $t_project_id );
 			foreach ( $resolution_options as $key => $value ) {
 			?>
@@ -445,7 +444,7 @@
 		</td>
 		<td>
 			<select <?php echo helper_get_tab_index() ?> name="resolution">
-				<?php 
+				<?php
 				print_enum_string_option_list('resolution', config_get('default_bug_resolution'));
 				?>
 			</select>

@@ -39,7 +39,9 @@
 		if ( config_get( 'show_roadmap_dates' ) ) {
 			$t_version_timestamp = $p_version_row['date_order'];
 
-			$t_scheduled_release_date = ' (' . lang_get( 'scheduled_release' ) . ' ' . string_display_line( date( config_get( 'short_date_format' ), $t_version_timestamp ) ) . ')';
+			$t_scheduled_release_date = ' (' . lang_get( 'scheduled_release' ) .
+			' <a href="manage_proj_ver_edit_page.php?version_id=' . $t_version_id . '">' .
+			' ' . string_display_line( date( config_get( 'short_date_format' ), $t_version_timestamp ) ) . '</a>)';
 		} else {
 			$t_scheduled_release_date = '';
 		}
@@ -48,12 +50,14 @@
 		echo '<br />', $t_release_title, $t_scheduled_release_date, lang_get( 'word_separator' ), print_bracket_link( 'view_all_set.php?type=1&temporary=y&' . FILTER_PROPERTY_PROJECT_ID . '=' . $t_project_id . '&' . filter_encode_field_and_value( FILTER_PROPERTY_TARGET_VERSION, $t_version_name ), lang_get( 'view_bugs_link' ) ), '<br />';
 
 		$t_release_title_without_hyperlinks = $t_project_name . ' - ' . $t_version_name . $t_scheduled_release_date;
-		echo utf8_str_pad( '', utf8_strlen( $t_release_title_without_hyperlinks ), '=' ), '<br />';
+		echo utf8_str_pad( '', utf8_strlen( $t_release_title_without_hyperlinks )-60, '=' ), '<br />';
 	}
 
 	# print project header
-	function print_project_header_roadmap( $p_project_name ) {
-		echo '<br /><span class="pagetitle">', string_display( $p_project_name ), ' - ', lang_get( 'roadmap' ), '</span><br />';
+	function print_project_header_roadmap( $p_project_name, $p_project_id ) {
+		echo '<br /><span class="pagetitle">', string_display( $p_project_name ), ' - ', lang_get( 'roadmap' ), '</span>', ' - ',
+		print_link( 'manage_proj_edit_page.php?project_id=' . $p_project_id . '#versions' , '<img border="0" width="12" height="12" src="images/update.png" />' /** lang_get( 'edit_project_title' ) . ' - ' . lang_get( 'versions' ) */ ),
+		'<br />';
 	}
 
 	$t_user_id = auth_get_current_user_id();
@@ -230,7 +234,7 @@
 				$t_progress = (integer) ( $t_issues_resolved * 100 / $t_issues_planned );
 
  				if ( !$t_project_header_printed ) {
-					print_project_header_roadmap( $t_project_name );
+					print_project_header_roadmap( $t_project_name, $t_project_id );
 					$t_project_header_printed = true;
 				}
 

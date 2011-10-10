@@ -39,18 +39,21 @@
 		if ( config_get( 'show_roadmap_dates' ) ) {
 			$t_version_timestamp = $p_version_row['date_order'];
 
-			$t_scheduled_release_date = ' (' . lang_get( 'scheduled_release' ) .
-			' <a href="manage_proj_ver_edit_page.php?version_id=' . $t_version_id . '">' .
-			' ' . string_display_line( date( config_get( 'short_date_format' ), $t_version_timestamp ) ) . '</a>)';
+			$t_scheduled_release_date = ' (' . lang_get( 'scheduled_release' ) . ' ' . string_display_line( date( config_get( 'short_date_format' ), $t_version_timestamp ) ) . ')';
 		} else {
 			$t_scheduled_release_date = '';
 		}
 
 		echo '<tt>';
-		echo '<br />', $t_release_title, $t_scheduled_release_date, lang_get( 'word_separator' ), print_bracket_link( 'view_all_set.php?type=1&temporary=y&' . FILTER_PROPERTY_PROJECT_ID . '=' . $t_project_id . '&' . filter_encode_field_and_value( FILTER_PROPERTY_TARGET_VERSION, $t_version_name ), lang_get( 'view_bugs_link' ) ), '<br />';
+		echo '<br />', $t_release_title, $t_scheduled_release_date, lang_get( 'word_separator' );
+		if( access_has_project_level( config_get( 'manage_project_threshold' ), $t_project_id ) ) {
+			print_bracket_link( "manage_proj_ver_edit_page.php?version_id=$t_version_id", "Edit" );
+		}
+		echo print_bracket_link( 'view_all_set.php?type=1&temporary=y&' . FILTER_PROPERTY_PROJECT_ID . '=' . $t_project_id . '&' . filter_encode_field_and_value( FILTER_PROPERTY_TARGET_VERSION, $t_version_name ), lang_get( 'view_bugs_link' ) ), '<br />';
+
 
 		$t_release_title_without_hyperlinks = $t_project_name . ' - ' . $t_version_name . $t_scheduled_release_date;
-		echo utf8_str_pad( '', utf8_strlen( $t_release_title_without_hyperlinks )-60, '=' ), '<br />';
+		echo utf8_str_pad( '', utf8_strlen( $t_release_title_without_hyperlinks ), '=' ), '<br />';
 	}
 
 	# print project header

@@ -243,9 +243,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_table'),"
   description 		XL $t_notnull
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
-# Index autocreated when oci used
+// Index autocreated when oci used
 if( 'oci8' != $GLOBALS['g_db_type'] ) {
 	$upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id'));
+} else {
+	// No-op - required to ensure schema version consistency
+	$upgrade[] = NULL;
 }
 
 $upgrade[] = Array('CreateIndexSQL',Array('idx_project_name',db_get_table('mantis_project_table'),'name',Array('UNIQUE')));
@@ -371,10 +374,14 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_email_table'),"
   body 			XL NOTNULL
   ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
-# Index autocreated when oci used
+// Index autocreated when oci used
 if( 'oci8' != $GLOBALS['g_db_type'] ) {
 	$upgrade[] = Array('CreateIndexSQL',Array('idx_email_id',db_get_table('mantis_email_table'),'email_id'));
+} else {
+	// No-op - required to ensure schema version consistency
+	$upgrade[] = NULL;
 }
+
 
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bug_table'), "target_version C(64) NOTNULL DEFAULT \" '' \""));
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bugnote_table'), "time_tracking I UNSIGNED NOTNULL DEFAULT \" 0 \""));
@@ -626,7 +633,7 @@ $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_tabl
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_table'), "advanced_update" ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_project_hierarchy_child_id', db_get_table( 'mantis_project_hierarchy_table' ), 'child_id' ) );
 
-# Decrease index name length for oci8 (30 chars max)
+// Decrease index name length for oci8 (30 chars max)
 if( 'oci8' != $GLOBALS['g_db_type'] ) {
 	$t_index_name = 'idx_project_hierarchy_parent_id';
 } else {

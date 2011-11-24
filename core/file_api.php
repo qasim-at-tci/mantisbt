@@ -606,19 +606,26 @@ function file_is_name_unique( $p_name, $p_bug_id ) {
  *
  * @param integer $p_bug_id the bug id
  * @param array $p_file the uploaded file info, as retrieved from gpc_get_file()
+ * @return mixed true if upload successful, or (int) error code
  */
 function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc = '', $p_user_id = null ) {
 
-	file_ensure_uploaded( $p_file );
+	$t_uploaded = file_ensure_uploaded( $p_file );
+	if( $t_uploaded !== true ){
+		return $t_uploaded;
+	}
+
 	$t_file_name = $p_file['name'];
 	$t_tmp_file = $p_file['tmp_name'];
 
 	if( !file_type_check( $t_file_name ) ) {
 		trigger_error( ERROR_FILE_NOT_ALLOWED, ERROR );
+		return ERROR_FILE_NOT_ALLOWED;
 	}
 
 	if( !file_is_name_unique( $t_file_name, $p_bug_id ) ) {
 		trigger_error( ERROR_FILE_DUPLICATE, ERROR );
+		return ERROR_FILE_DUPLICATE;
 	}
 
 	if( 'bug' == $p_table ) {
@@ -662,10 +669,12 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 	$t_file_size = filesize( $t_tmp_file );
 	if( 0 == $t_file_size ) {
 		trigger_error( ERROR_FILE_NO_UPLOAD_FAILURE, ERROR );
+		return ERROR_FILE_NO_UPLOAD_FAILURE;
 	}
 	$t_max_file_size = (int) min( ini_get_number( 'upload_max_filesize' ), ini_get_number( 'post_max_size' ), config_get( 'max_file_size' ) );
 	if( $t_file_size > $t_max_file_size ) {
 		trigger_error( ERROR_FILE_TOO_BIG, ERROR );
+		return ERROR_FILE_TOO_BIG;
 	}
 	$c_file_size = db_prepare_int( $t_file_size );
 
@@ -685,6 +694,7 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 
 				if( !move_uploaded_file( $t_tmp_file, $t_disk_file_name ) ) {
 					trigger_error( ERROR_FILE_MOVE_FAILED, ERROR );
+					return ERROR_FILE_MOVE_FAILED;
 				}
 
 				chmod( $t_disk_file_name, config_get( 'attachments_file_permissions' ) );
@@ -692,6 +702,7 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 				$c_content = "''";
 			} else {
 				trigger_error( ERROR_FILE_DUPLICATE, ERROR );
+				return ERROR_FILE_DUPLICATE;
 			}
 			break;
 		case DATABASE:
@@ -699,6 +710,7 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 			break;
 		default:
 			trigger_error( ERROR_GENERIC, ERROR );
+			return ERROR_GENERIC;
 	}
 
 	$t_file_table = db_get_table( 'mantis_' . $p_table . '_file_table' );
@@ -718,6 +730,39 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 		# log new bug
 		history_log_event_special( $p_bug_id, FILE_ADDED, $t_file_name );
 	}
+	return true;
+}
+
+/**
+ * Add multiple file attachments in one go
+ *
+ * @param integer $p_bug_id the bug id
+ * @param array $p_files an array of files to upload as retrieved from gpc_get_file()
+ * @return array errors encountered during upload (empty array = success)
+ */
+function file_add_multiple( $p_bug_id, $p_files ) {
+	$t_upload_errors = array();
+
+	// transpose the array
+	// k1(f1,f2,...),k2(f1,f2,...),... ==> f1(k1,k2,...),f2(k1,k2,...),...
+	$t_files = array();
+	foreach( $p_files as $key => $subarr ) {
+		foreach( $subarr as $subkey => $subvalue ) {
+			$t_files[$subkey][$key] = $subvalue;
+		}
+	}
+
+	// Upload the files
+	foreach( $t_files as $t_file ) {
+		// Empty file name means not file was specified
+		if( !empty( $t_file['name'] ) ) {
+			$t_error = @file_add( $f_bug_id, $t_file );
+			if( $t_error !== true ) {
+				$t_upload_errors[$t_file['name']] = $t_error;
+			}
+		}
+	}
+	return $t_upload_errors;
 }
 
 /**
@@ -830,27 +875,31 @@ function file_ensure_valid_upload_path( $p_upload_path ) {
  * was successful
  *
  * @param array $p_file the uploaded file info, as retrieved from gpc_get_file()
+ * @return mixed true if upload successful, or (int) error code
  */
 function file_ensure_uploaded( $p_file ) {
 	switch( $p_file['error'] ) {
 		case UPLOAD_ERR_INI_SIZE:
 		case UPLOAD_ERR_FORM_SIZE:
 			trigger_error( ERROR_FILE_TOO_BIG, ERROR );
-			break;
+			return ERROR_FILE_TOO_BIG;
 		case UPLOAD_ERR_PARTIAL:
 		case UPLOAD_ERR_NO_FILE:
 			trigger_error( ERROR_FILE_NO_UPLOAD_FAILURE, ERROR );
-			break;
+			return ERROR_FILE_NO_UPLOAD_FAILURE;
 		default:
 			break;
 	}
 
 	if(( '' == $p_file['tmp_name'] ) || ( '' == $p_file['name'] ) ) {
 		trigger_error( ERROR_FILE_NO_UPLOAD_FAILURE, ERROR );
+		return ERROR_FILE_NO_UPLOAD_FAILURE;
 	}
 	if( !is_readable( $p_file['tmp_name'] ) ) {
 		trigger_error( ERROR_UPLOAD_FAILURE, ERROR );
+		return ERROR_UPLOAD_FAILURE;
 	}
+	return true;
 }
 
 # Get extension given the filename or its full path.

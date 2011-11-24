@@ -141,6 +141,32 @@
 	# Mark the added issue as visited so that it appears on the last visited list.
 	last_visited_issue( $t_bug_id );
 
+$t_upload_error = array();
+
+// Custom handler for file upload errors
+function multi_upload_error_handler( $p_type, $p_error, $p_file, $p_line, $p_context ) {
+	global $t_upload_error;
+
+	switch( $p_error ) {
+		case ERROR_UPLOAD_FAILURE:
+		case ERROR_FILE_TOO_BIG:
+		case ERROR_FILE_NOT_ALLOWED:
+		case ERROR_FILE_DUPLICATE:
+		case ERROR_FILE_NO_UPLOAD_FAILURE:
+		case ERROR_FILE_MOVE_FAILED:
+			$t_filename = $p_context['p_file']['name'];
+			// Only log the first error that occured for a given file name
+			if( !array_key_exists( $t_filename, $t_upload_error ) ) {
+				$t_upload_error[$t_filename] = $p_error;
+			}
+			return true;
+
+		default:
+			return false;
+
+	}
+}
+	set_error_handler( 'multi_upload_error_handler', E_USER_ERROR );
 	# Handle the file upload
 	for( $i = 0; $i < count( $f_files ); $i++ ) {
 		if( !empty( $f_files['name'][$i] ) ) {
@@ -153,6 +179,7 @@
 			file_add( $t_bug_id, $t_file, 'bug' );
 		}
 	}
+	restore_error_handler();
 
 	# Handle custom field submission
 	foreach( $t_related_custom_field_ids as $t_id ) {
@@ -229,7 +256,7 @@
 	html_page_top1();
 
 	if ( !$f_report_stay ) {
-		html_meta_redirect( 'view_all_bug_page.php' );
+//		html_meta_redirect( 'view_all_bug_page.php' );
 	}
 
 	html_page_top2();
@@ -237,7 +264,27 @@
 <br />
 <div align="center">
 <?php
-	echo lang_get( 'operation_successful' ) . '<br />';
+	if( empty( $t_upload_error ) ) {
+		echo lang_get( 'operation_successful' ) . '<br />';
+	}
+	else {
+		echo "Issue was created, but errors occured while uploading files<p />";
+?>
+		<table>
+			<tr>
+				<td>Filename</td>
+				<td>Error number</td>
+				<td>Error description</td>
+			</tr>
+<?php
+		foreach( $t_upload_error as $key => $t_error ) {
+			echo "<tr><td>$key</td><td>$t_error</td><td>" . error_string( $t_error ) . "</td></tr>";
+		}
+?>
+		</table>
+		<br />
+<?php
+	}
 	print_bracket_link( string_get_bug_view_url( $t_bug_id ), sprintf( lang_get( 'view_submitted_bug_link' ), $t_bug_id ) );
 	print_bracket_link( 'view_all_bug_page.php', lang_get( 'view_bugs_link' ) );
 

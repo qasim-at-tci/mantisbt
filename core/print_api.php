@@ -698,12 +698,17 @@ function print_category_option_list( $p_category_id = 0, $p_project_id = null ) 
 	}
 
 	if( config_get( 'allow_no_category' ) ) {
-		echo "<option value=\"0\"", check_selected( $p_category_id, 0 ), '>';
-		echo category_full_name( 0, /* show project */ false ), '</option>';
+		// Empty category allowed, print it and select it if not using default category
+		echo '<option value="0"';
+		check_selected( $p_category_id, ( config_get( 'use_default_category' ) ? $p_category_id : 0 ) );
+		echo '>', category_full_name( 0, /* show project */ false ), '</option>';
 	} else {
-		if( 0 == $p_category_id ) {
-			echo "<option value=\"0\"", check_selected( $p_category_id, 0 ), '>';
-			echo string_attribute( lang_get( 'select_option' ) ), '</option>';
+		// Empty category not allowed, add "Select" option and select it
+		// if not using default categories
+		if( !config_get( 'use_default_category' ) ) {
+			echo '<option value="0"';
+			check_selected( $p_category_id, 0 );
+			echo '>', string_attribute( lang_get( 'select_option' ) ), '</option>';
 		}
 	}
 
@@ -711,7 +716,7 @@ function print_category_option_list( $p_category_id = 0, $p_project_id = null ) 
 
 	foreach( $cat_arr as $t_category_row ) {
 		$t_category_id = $t_category_row['id'];
-		echo "<option value=\"$t_category_id\"";
+		echo '<option value="' . $t_category_id . '"';
 		check_selected( $p_category_id, $t_category_id );
 		echo '>' . string_attribute( category_full_name( $t_category_id, $t_category_row['project_id'] != $t_project_id ) ) . '</option>';
 	}

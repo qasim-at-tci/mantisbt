@@ -115,7 +115,13 @@
 		$f_target_version		= gpc_get_string( 'target_version', '' );
 		$f_profile_id			= gpc_get_int( 'profile_id', 0 );
 		$f_handler_id			= gpc_get_int( 'handler_id', 0 );
-		$f_category_id			= gpc_get_int( 'category_id', project_get_default_category( $t_project_id ) );
+
+		if( config_get( 'use_default_category' ) ) {
+			$t_default_category = project_get_default_category( $t_project_id );
+		} else {
+			$t_default_category = 0;
+		}
+		$f_category_id			= gpc_get_int( 'category_id', $t_default_category );
 		$f_reproducibility		= gpc_get_int( 'reproducibility', config_get( 'default_bug_reproducibility' ) );
 		$f_eta					= gpc_get_int( 'eta', config_get( 'default_bug_eta' ) );
 		$f_severity				= gpc_get_int( 'severity', config_get( 'default_bug_severity' ) );
@@ -190,7 +196,12 @@
 ?>
 	<tr <?php echo helper_alternate_class() ?>>
 		<td class="category" width="30%">
-			<?php echo config_get( 'allow_no_category' ) ? '' : '<span class="required">*</span>'; print_documentation_link( 'category' ) ?>
+<?php
+			if( !config_get( 'allow_no_category' ) && !config_get( 'use_default_category' ) ) {
+				echo '<span class="required">*</span>';
+			}
+			print_documentation_link( 'category' )
+?>
 		</td>
 		<td width="70%">
 			<?php if ( $t_changed_project ) {

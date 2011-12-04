@@ -2372,6 +2372,50 @@
                 </listitem>
             </varlistentry>
             <varlistentry>
+                <term>$g_allow_no_category</term>
+                <listitem>
+                    <para>Allow a bug to have no category. Default is OFF.
+                    </para>
+                    <para>Refer to $g_use_default_category below for details
+                        on usage of the two variables in combination.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>$g_use_default_category</term>
+                <listitem>
+                    <para>Use project-specific default Category. Default is OFF.
+                    </para>
+                    <para>When combined with $g_allow_no_category, the two
+                       parameters provide the administrator 4 distinct ways
+                       of handling the Category field when creating new issues:
+                        <itemizedlist>
+                            <listitem>
+                                <para>$g_allow_no_category = OFF, $g_use_default_category = OFF -
+        Category is mandatory, and the user must manually select it from the
+        list. This is the MantisBT default.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>$g_allow_no_category = OFF, $g_use_default_category = ON -
+        Category is preset to project default, and can't be empty
+        In this mode, the category is not mandatory.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>$g_allow_no_category = ON, $g_use_default_category = OFF -
+        Category is preset to "(No Category)", project defaults are not used
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>$g_allow_no_category = ON, $g_use_default_category = ON -
+       Category is preset to project default, but user can change it to "(No Category)"
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
                 <term>$g_cvs_web</term>
                 <listitem>
                     <para>This allows for quick linking to CVS files via CVSweb or

@@ -2530,9 +2530,21 @@
 
 	/**
 	 * Allow a bug to have no category
+	 * When OFF and $g_use_default_category = OFF, Category becomes a
+	 * mandatory field (that's the MantisBT default)
 	 * @global int $g_allow_no_category
 	 */
 	$g_allow_no_category = OFF;
+
+	/**
+	 * Use project-specific default Category
+	 * If OFF, the user will be able create bugs without a category
+	 * When ON, and $g_allow_no_category = ON, the category will be
+	 * preset to the default, but the user has the option to select
+	 * (No Category) from the list.
+	 * @global int $g_use_default_category
+	 */
+	$g_use_default_category = OFF;
 
 	/**
 	 * login method

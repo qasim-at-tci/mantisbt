@@ -653,7 +653,7 @@ function version_should_show_product_version( $p_project_id ) {
  */
 function version_get_project_where_clause( $p_project_id, $p_inherit ) {
 	if ( $p_project_id == ALL_PROJECTS ) {
-		$t_inherit = false;
+		return helper_project_specific_where( ALL_PROJECTS );
 	} else {
 		if ( $p_inherit === null ) {
 			$t_inherit = ( ON == config_get( 'subprojects_inherit_versions' ) );

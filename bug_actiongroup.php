@@ -110,10 +110,26 @@
 
 		case 'COPY':
 			$f_project_id = gpc_get_int( 'project_id' );
+			$f_rel_type = gpc_get_int( 'rel_type' );
 
 			if ( access_has_project_level( config_get( 'report_bug_threshold' ), $f_project_id ) ) {
 				# Copy everything except history
-				bug_copy( $t_bug_id, $f_project_id, true, true, false, true, true, true );
+				$t_new_bug_id = bug_copy( $t_bug_id, $f_project_id, true, true, false, true, true, true );
+
+				if ( $f_rel_type >= 0 ) {
+					# Add the relationship
+					relationship_add( $t_new_bug_id, $t_bug_id, $f_rel_type );
+
+					# Add log line to the history (both issues)
+					history_log_event_special( $t_bug_id, BUG_ADD_RELATIONSHIP, relationship_get_complementary_type( $f_rel_type ), $t_new_bug_id );
+					history_log_event_special( $t_new_bug_id, BUG_ADD_RELATIONSHIP, $f_rel_type, $t_bug_id );
+
+					# update relationship target bug last updated
+					bug_update_date( $t_new_bug_id );
+
+					# Send the email notification
+					email_relationship_added( $t_bug_id, $t_new_bug_id, relationship_get_complementary_type( $f_rel_type ) );
+				}
 			} else {
 				$t_failed_ids[$t_bug_id] = lang_get( 'bug_actiongroup_access' );
 			}

@@ -129,6 +129,8 @@
 			$t_question_title 		= lang_get( 'copy_bugs_conf_msg' );
 			$t_button_title 		= lang_get( 'copy_group_bugs_button' );
 			$t_form					= 'project_id';
+			$t_question_title2		= lang_get( 'relationship_with_parent' );
+			$t_form2				= 'rel_type';
 			break;
 
 		case 'ASSIGN' :
@@ -273,12 +275,24 @@ if ( !$t_finished ) {
 
 			echo '</select>';
 		}
-		?>
+	?>
 	</td>
 </tr>
 	<?php
 	if ( isset( $t_question_title2 ) ) {
 		switch ( $f_action ) {
+			case 'COPY':
+	?>
+		<tr class="row-2">
+			<td class="category">
+				<?php echo $t_question_title2 ?>
+			</td>
+			<td>
+				<?php relationship_list_box( BUG_REL_NONE, $t_form2, false, true );?>
+			</td>
+		</tr>
+	<?php
+				break;
 			case 'RESOLVE':
 				$t_show_product_version = ( ON == config_get( 'show_product_version' ) )
 					|| ( ( AUTO == config_get( 'show_product_version' ) )

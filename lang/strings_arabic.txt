@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ $s_actiongroup_menu_move = 'انقل';
 $s_actiongroup_menu_copy = 'نسخ';
 $s_actiongroup_menu_assign = 'توكيل';
 $s_actiongroup_menu_close = 'أغلق';
-$s_actiongroup_menu_delete = 'حذف';
+$s_actiongroup_menu_delete = 'احذف';
 $s_actiongroup_menu_resolve = 'حل';
 $s_actiongroup_menu_update_priority = 'تحديث الأولوية';
 $s_actiongroup_menu_update_status = 'تحديث الحالة';
@@ -549,7 +549,7 @@ $s_error_database_version_out_of_date_2 = '<strong>تحذير:</strong> هيكل
 $s_error_code_version_out_of_date = '<strong>تحذير:</strong> هيكل قاعدة البيانات أكثر حداثة من الكود المنصب.  من فضلك قم بترقية الكود.';
 $s_login_page_info = 'مرحبا إلى متتبع القضايا.';
 $s_login_title = 'تسجيل الدخول';
-$s_save_login = 'تذكر تسجيل دخولي على هذا الحاسوب';
+$s_save_login = 'تذكر تسجيل دخولي على هذا المتصفح';
 $s_secure_session = 'جلسة آمنة';
 $s_choose_project = 'اختر المشروع';
 $s_login_button = 'تسجيل الدخول';
@@ -723,7 +723,7 @@ $s_edit_link = 'عدل';
 $s_actions = 'أفعال';
 $s_version = 'نسخة';
 $s_timestamp = 'طابع زمني';
-$s_update = 'تحديث';
+$s_update = 'حدّث';
 $s_subprojects = 'مشاريع فرعية';
 $s_add_subproject = 'أضف كمشروع فرعي';
 $s_create_new_subproject_link = 'إنشاء مشروع فرعي جديد';
@@ -995,7 +995,7 @@ $s_custom_field_type_enum_string = '0:سلسلة,1:رقمي,2:طائف,3:ترق�
 $s_confirm_used_custom_field_deletion = 'هذا الحقل موصول من مشروع واحد على الأقل.  لو استمريت فكل القيم لهذا الحقل سيتم حذفها بشكل دائم.  هذا الفعل لا يمكن استرجاعه.  لو أنك لا تريد حذف هذا الحقل، اضغط زر رجوع في متصفحك. للمتابعة، اضغط الزر بالأسفل';
 $s_confirm_custom_field_deletion = 'هل أنت متأكد أنك تريد حذف الحقل المخصص هذا وكل القيم المصاحبة؟';
 $s_field_delete_button = 'حذف الحقل';
-$s_confirm_custom_field_unlinking = 'هل أنت متأكد من أنك تريد إزالة (وصلات) الحقل المخصص هذا من المشروع وحذف كل القيم المرتبطة؟';
+$s_confirm_custom_field_unlinking = 'هل أنت متأكد من أنك تريد إزالة ارتباط الحقل المخصص هذا من المشروع؟ القيم لن يتم حذفها طالما أن الحقل المخصص نفسه لم يتم حذفه.';
 $s_field_remove_button = 'إزالة الحقل';
 $s_hide_status = 'إخفاء الحالة';
 $s_filter_closed = 'مغلق';
@@ -1079,9 +1079,9 @@ $s_delete_attachment_button = 'حذف';
 $s_delete_attachment_sure_msg = 'هل أنت متأكد من أنك تريد حذف هذا الملحق؟';
 $s_upload_issue_attachments = 'رفع ملحقات القضية';
 $s_filters = 'فلاتر';
-$s_save_filters = 'حفظ الفلاتر';
+$s_save_filters = 'احفظ المُرشِّحات';
 $s_save_filters_as_shared = 'حفظ الفلاتر كمشاركة';
-$s_use_saved_filters = 'استخدم الفلاتر المحفوظة';
+$s_use_saved_filters = 'استخدم المُرشِّحات المحفوظة';
 $s_create_project = 'إنشاء مشروع';
 $s_delete_project = 'حذف مشروع';
 $s_manage_project = 'التحكم بالمشروع';
@@ -1151,7 +1151,7 @@ $s_tag_related_issues = 'القضايا المشتركة (%1$s)';
 $s_tag_stats_attached = 'القضايا الملحقة: %1$s';
 $s_tag_create = 'إنشاء الوسم';
 $s_show_all_tags = 'الكل';
-$s_time_tracking_billing_link = 'بيلنج';
+$s_time_tracking_billing_link = 'تتبع الوقت';
 $s_time_tracking = 'تتبع الزمن';
 $s_time_tracking_get_info_button = 'الحصول على معلومات تتبع الوقت';
 $s_time_tracking_cost_per_hour = 'التكلفة / ساعة';

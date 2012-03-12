@@ -28,7 +28,7 @@
 	 *
 	 * @package MantisBT
 	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+	 * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
 	 * @link http://www.mantisbt.org
 	 */
 
@@ -634,6 +634,7 @@
 		'romanian',
 		'russian',
 		'serbian',
+		'serbian_latin',
 		'slovak',
 		'slovene',
 		'spanish',
@@ -693,6 +694,7 @@
 		'ro-mo, ro' => 'romanian',
 		'ru-mo, ru-ru, ru-ua, ru' => 'russian',
 		'sr' => 'serbian',
+		'sr-el' => 'serbian_latin',
 		'sk' => 'slovak',
 		'sl' => 'slovene',
 		'es-mx, es-co, es-ar, es-cl, es-pr, es' => 'spanish',
@@ -742,7 +744,7 @@
 	 * Logo
 	 * @global string $g_logo_image
 	 */
-	$g_logo_image			= 'images/mantis_logo.gif';
+	$g_logo_image			= 'images/mantis_logo_232x80.png';
 
 	/**
 	 * Logo URL link
@@ -823,14 +825,16 @@
 	 * To include custom field 'xyz', include the column name as 'custom_xyz'.
 	 *
 	 * Standard Column Names (i.e. names to choose from):
-	 * selection, edit, id, project_id, reporter_id, handler_id, priority, reproducibility, projection, eta,
-	 * resolution, fixed_in_version, view_state, os, os_build, build (for product build), platform, version, date_submitted, attachment,
-	 * category, sponsorship_total, severity, status, last_updated, summary, bugnotes_count, description,
-	 * steps_to_reproduce, additional_information
+	 * id, project_id, reporter_id, handler_id, duplicate_id, priority, severity,
+	 * reproducibility, status, resolution, category_id, date_submitted, last_updated,
+	 * os, os_build, platform, version, fixed_in_version, target_version, view_state,
+	 * summary, sponsorship_total, due_date, description, steps_to_reproduce,
+	 * additional_info, attachment_count, bugnotes_count, selection, edit,
+	 * overdue
 	 *
 	 * @global array $g_view_issues_page_columns
 	 */
-	$g_view_issues_page_columns = array ( 'selection', 'edit', 'priority', 'id', 'sponsorship_total', 'bugnotes_count', 'attachment', 'category_id', 'severity', 'status', 'last_updated', 'summary' );
+	$g_view_issues_page_columns = array ( 'selection', 'edit', 'priority', 'id', 'sponsorship_total', 'bugnotes_count', 'attachment_count', 'category_id', 'severity', 'status', 'last_updated', 'summary' );
 
 	/**
 	 * The default columns to be included in the Print Issues Page.
@@ -838,7 +842,7 @@
 	 * Also each user can configure their own columns using My Account -> Manage Columns
 	 * @global array $g_print_issues_page_columns
 	 */
-	$g_print_issues_page_columns = array ( 'selection', 'priority', 'id', 'sponsorship_total', 'bugnotes_count', 'attachment', 'category_id', 'severity', 'status', 'last_updated', 'summary' );
+	$g_print_issues_page_columns = array ( 'selection', 'priority', 'id', 'sponsorship_total', 'bugnotes_count', 'attachment_count', 'category_id', 'severity', 'status', 'last_updated', 'summary' );
 
 	/**
 	 * The default columns to be included in the CSV export.
@@ -943,12 +947,6 @@
 	 * @global int $g_show_avatar_threshold
 	 */
 	$g_show_avatar_threshold = DEVELOPER;
-
-	/**
-	 * Default avatar for users without a gravatar account
-	 * @global string $g_default_avatar
-	 */
-	$g_default_avatar = "%path%images/no_avatar.png";
 
 	/**
 	 * Show release dates on changelog
@@ -1157,6 +1155,18 @@
 	 * @global int $g_default_bug_eta
 	 */
 	$g_default_bug_eta = ETA_NONE;
+
+	/**
+	 * Default for new bug relationships
+	 * @global int $g_default_bug_relationship
+	 */
+	$g_default_bug_relationship = BUG_RELATED;
+
+	/**
+	 * Default relationship between a new bug and its parent when cloning it
+	 * @global int $g_default_bug_relationship_clone
+	 */
+	$g_default_bug_relationship_clone = BUG_REL_NONE;
 
 	/**
 	 * Default global category to be used when an issue is moved from a project to another
@@ -1694,7 +1704,7 @@
 
 	/**
 	 * The LDAP field for real name (i.e. common name).
-	 * @global string $g_ldap_uid_field
+	 * @global string $g_ldap_realname_field
 	 */
 	$g_ldap_realname_field  = 'cn';
 
@@ -1904,18 +1914,6 @@
 	 * @global int $g_preview_max_height
 	 */
 	$g_preview_max_height = 250;
-
-	/**
-	 * Show an attachment indicator on bug list
-	 * Show a clickable attachment indicator on the bug
-	 * list page if the bug has one or more files attached.
-	 * Note: This option is disabled by default since it adds
-	 * 1 database query per bug listed and thus might slow
-	 * down the page display.
-	 *
-	 * @global int $g_show_attachment_indicator
-	 */
-	$g_show_attachment_indicator = OFF;
 
 	/**
 	 * access level needed to view bugs attachments.  View means to see the file names
@@ -2216,7 +2214,7 @@
 	 * Access level needed to delete other users from the list of users
 	 * monitoring a bug.
 	 * Look in the constant_inc.php file if you want to set a different value.
-	 * @global int $g_monitor_add_others_bug_threshold
+	 * @global int $g_monitor_delete_others_bug_threshold
 	 */
 	$g_monitor_delete_others_bug_threshold = DEVELOPER;
 
@@ -2696,6 +2694,13 @@
 	 * @global string $g_csv_separator
 	 */
 	$g_csv_separator = ',';
+
+	/**
+	  * CSV Export
+	  * Add Byte Order Mark (BOM) at the begining of the file as it helps Excel display the file in UTF-8
+	  * @global string $g_csv_add_bom
+	  */
+	$g_csv_add_bom = OFF;
 
 	/**
 	 * threshold for users to view the system configurations
@@ -3265,6 +3270,22 @@
 		'?'		=> 'generic.gif' );
 
 	/**
+	 *
+	 * Content types which will be overriden when downloading files
+	 *
+	 * @global array $g_file_download_content_type_overrides
+	 */
+	$g_file_download_content_type_overrides = array (
+		'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+		'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+		'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+		'ppsx' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+		'potx' => 'application/vnd.openxmlformats-officedocument.presentationml.template',
+		'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template'
+	);
+
+	/**
 	 * Icon associative arrays
 	 * Status to icon mapping
 	 * @global array $g_status_icon_arr
@@ -3684,7 +3705,6 @@
 	 */
 	$g_manage_plugin_threshold = ADMINISTRATOR;
 
-
 	/**
 	 * A mapping of file extensions to mime types, used when serving resources from plugins
 	 *
@@ -3867,13 +3887,36 @@
 
 	/**
 	 * The following list of variables should never be in the database.
-	 * These patterns will be concatenated and used as a regular expression
-	 * to bypass the database lookup and look here for appropriate global settings.
+	 * It is used to bypass the database lookup and look here for appropriate global settings.
 	 * @global array $g_global_settings
 	 */
 	$g_global_settings = array(
-		'_table$', 'cookie', '^db_', 'hostname', 'allow_signup', 'database_name', 'show_queries_', 'admin_checks', 'version_suffix', 'global_settings',
-		'_path$', 'use_iis', 'language', 'use_javascript', 'minimal_jscss', 'display_errors', 'show_detailed_errors', 'stop_on_errors', 'login_method', '_file$',
-		'anonymous', 'content_expire', 'html_valid_tags', 'custom_headers', 'rss_key_seed', 'plugins_enabled', 'session_', 'form_security_',
-		'compress_html', '_page$', '_url$',
+		'path', 'icon_path', 'short_path', 'absolute_path', 'core_path', 'class_path', 'absolute_path_default_upload_folder',
+		'ldap_simulation_file_path', 'cookie_path', 'plugin_path', 'db_table_prefix', 'db_table_suffix', 'db_table',
+		'cookie_time_length', 'cookie_domain', 'cookie_version', 'cookie_prefix', 'string_cookie', 'project_cookie',
+		'view_all_cookie', 'manage_cookie', 'logout_cookie', 'bug_list_cookie', 'db_username', 'db_password', 'db_schema', 'db_type',
+		'hostname', 'allow_signup', 'database_name', 'show_queries_count', 'show_queries_threshold', 'show_queries_list',
+		'admin_checks', 'version_suffix', 'global_settings', 'use_iis', 'default_language', 'language_choices_arr',
+		'language_auto_map', 'fallback_language', 'use_javascript', 'minimal_jscss', 'display_errors', 'show_detailed_errors',
+		'stop_on_errors', 'login_method', 'fileinfo_magic_db_file', 'css_include_file', 'css_rtl_include_file', 'meta_include_file',
+		'allow_anonymous_login', 'anonymous_account', 'content_expire', 'html_valid_tags', 'html_valid_tags_single_line',
+		'custom_headers', 'rss_key_seed', 'plugins_enabled', 'session_handler', 'session_key', 'session_save_path',
+		'session_validation', 'form_security_validation', 'compress_html', 'bottom_include_page', 'top_include_page',
+		'default_home_page', 'logout_redirect_page', 'manual_url', 'logo_url', 'create_short_url', 'wiki_engine_url',
 	);
+
+	/***************
+	 * MantisTouch *
+	 ***************/
+
+	/**
+	 * The MantisTouch URL to direct to.  The %s will be replaced by the contents of $g_path.
+	 * A blank value will disable redirection.  The %s is not required when redirecting to
+	 * MantisTouch instances that point to a single MantisBT instance and hence have a hard-coded URL.
+	 *
+	 * Following are three examples:
+	 * - 'http://mantisbt.mobi?url=%s'
+	 * - 'http://MyOwnMantisTouch.com/'
+	 * - ''
+	 */
+	$g_mantistouch_url = '';

@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,10 +27,12 @@
  *
  * @author Attila Vági, avagi@v-comp.hu
  * @author CSÉCSY László, boobaa@nospam.frugalware.org (complete retranslation)
+ * @author Dj
  * @author Gergő Bácskai, gergo@bacskai.hu
  * @author Glanthor Reviol
  * @author Istvan Back, back@webmuves.hu
  * @author Leiric
+ * @author Sucy
  */
 
 $s_actiongroup_menu_move = 'Mozgatás';
@@ -128,6 +130,8 @@ $s_select_option = '(válasszon)';
 $s_bug_actiongroup_access = 'Nem rendelkezik a szükséges jogosultságokkal a művelet végrehajtásához.';
 $s_bug_actiongroup_status = 'Ezt az ügyet nem lehet a kért státuszúra állítani';
 $s_bug_actiongroup_category = 'Ezt az ügyet nem lehet a kért kategóriájúra változtatni';
+$s_bug_actiongroup_handler = 'A kért felhasználó nem kezelheti ezt az ügyet';
+$s_bug_actiongroup_version = 'A kért verzió nem létezik a probléma projektjében';
 $s_close_bugs_conf_msg = 'Valóban le akarja zárni ezeket az ügyeket?';
 $s_delete_bugs_conf_msg = 'Valóban törölni akarja ezeket az ügyeket?';
 $s_move_bugs_conf_msg = 'Ügyek mozgatása ide:';
@@ -764,6 +768,7 @@ $s_accounts_pruned_msg = 'Minden felhasználó törölve, aki sosem lépett be �
 $s_prune_accounts_button = 'Eltávolítás';
 $s_confirm_account_pruning = 'Valóban törölni szeretné a sosem belépett régi felhasználókat?';
 $s_edit_user_title = 'Felhasználó szerkesztése';
+$s_account_unlock_button = 'Fiók zárolásának feloldása';
 $s_reset_password_button = 'Jelszó visszaállítása';
 $s_delete_user_button = 'Felhasználó törlése';
 $s_reset_password_msg = 'A jelszó visszaállításakor emailben elküldjük a jóváhagyás URL-jét.';
@@ -774,6 +779,7 @@ $s_users_new = 'Új';
 $s_account_reset_protected_msg = 'Védett felhasználó. A jelszó nem állítható vissza.';
 $s_account_reset_msg = 'Egy jóváhagyási kérést küldtünk a kiválasztott felhasználó email-címére, melynek használatával megváltoztathatja a jelszavát.';
 $s_account_reset_msg2 = 'A felhasználó jelszavát üresre állítottuk...';
+$s_account_unlock_msg = 'A fiók zárolása feloldva.';
 $s_manage_user_protected_msg = 'Védett felhasználó. A hozzáférési szint és az engedélyezés nem módosítható. Egyébként a felhasználó frissítve...';
 $s_manage_user_updated_msg = 'Felhasználó sikeresen frissítve...';
 $s_email_user_updated_subject = 'Felhasználói fiók frissítve';
@@ -833,6 +839,7 @@ $s_project_document_updated = 'Projekt sikeresen frissítve';
 $s_project_user_added_msg = 'Felhasználó sikeresen hozzáadva a projekthez';
 $s_project_removed_user_msg = 'Felhasználó sikeresen törölve a projektből';
 $s_remove_user_sure_msg = 'Valóban törölni akarja ezt a felhasználót?';
+$s_remove_user_from_project_button = 'Felhasználó eltávolítása a(z) %s projektből';
 $s_remove_all_users_sure_msg = 'Valóban törölni akarja ezen projekt összes felhasználóját?';
 $s_remove_all_users_button = 'Minden felhasználó törlése';
 $s_add_user_title = 'Felhasználó hozzáadása projekthez';
@@ -1005,7 +1012,7 @@ $s_custom_field_type_enum_string = '0:Sztring,1:Numerikus,2:Lebegőpontos,3:Fels
 $s_confirm_used_custom_field_deletion = 'Ez a mező jelenleg legalább egy projekthez csatlakozik. Ha folytatja, a hozzá tartozó összes érték menthetetlenül elveszik. Ez a művelet nem visszavonható. Ha mégsem akarja törölni ezt a mezőt, nyomja meg a böngészője Vissza gombját. A törléshez nyomja meg az alábbi gombot';
 $s_confirm_custom_field_deletion = 'Valóban törölni szeretné ezt az egyedi mezőt és az összes társított értéket?';
 $s_field_delete_button = 'Mező törlése';
-$s_confirm_custom_field_unlinking = 'Valóban törölni (lecsatlakoztatni) szeretné ezt az egyedi mezőt a projektből, és törölni az összes társított értéket?';
+$s_confirm_custom_field_unlinking = 'Valóban törölni (lecsatlakoztatni) szeretné ezt az egyedi mezőt a projektből? Az értékek nem kerülnek törlésre, amíg maga az egyedi mező nem kerül eltörlésre.';
 $s_field_remove_button = 'Mező törlése a projektből';
 $s_hide_status = 'Státusz elrejtése';
 $s_filter_closed = 'Lezárva';
@@ -1053,6 +1060,9 @@ $s_relationship_warning_blocking_bugs_not_resolved_2 = '<b>FIGYELEM</b>. Ezen ü
 $s_create_child_bug_button = 'Klónozás';
 $s_bug_cloned_to = 'Ügy klónozva';
 $s_bug_created_from = 'Ügy generálva a következőből:';
+$s_copy_from_parent = 'Kiterjesztett adatok másolása a szülő ügyből';
+$s_copy_notes_from_parent = 'Ügy megjegyzés másolása';
+$s_copy_attachments_from_parent = 'Mellékletek másolása';
 $s_viewing_bug_relationship_graph_title = 'Kapcsolati háló';
 $s_viewing_bug_dependency_graph_title = 'Függőségi háló';
 $s_relation_graph = 'Kapcsolati grafikon';
@@ -1164,8 +1174,9 @@ $s_tag_related_issues = 'Osztozó ügyek (%1$s)';
 $s_tag_stats_attached = '%1$s ügyhöz csatolva';
 $s_tag_create = 'Címke létrehozása';
 $s_show_all_tags = 'Mind';
-$s_time_tracking_billing_link = 'Számlázás';
+$s_time_tracking_billing_link = 'Időkövetés';
 $s_time_tracking = 'Időkövetés';
+$s_time_tracking_time_spent = 'Eltöltött idő:';
 $s_time_tracking_get_info_button = 'Időkövetési információk megtekintése';
 $s_time_tracking_cost_per_hour = 'Óradíj';
 $s_time_tracking_cost = 'Költség';

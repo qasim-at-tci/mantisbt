@@ -17,7 +17,7 @@
 /**
  * Bug API
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  * @package CoreAPI
  * @subpackage BugAPI
@@ -186,11 +186,11 @@ class BugData {
 			$this->fetch_extended_info();
 		return $this->{$name};
 	}
-	
+
 	/**
 	 * @private
 	 */
-	public function __isset($name) {	
+	public function __isset($name) {
 		return isset( $this->{$name} );
 	}
 
@@ -206,13 +206,13 @@ class BugData {
 		}
 		$this->loading = false;
 	}
-	
+
 	/**
 	 * Retrieves extended information for bug (e.g. bug description)
 	 * @return null
 	 */
 	private function fetch_extended_info() {
-		if ( $this->description == '' ) {				
+		if ( $this->description == '' ) {
 			$t_text = bug_text_cache_row($this->id);
 
 			$this->description = $t_text['description'];
@@ -892,6 +892,10 @@ function bug_check_workflow( $p_bug_status, $p_wanted_status ) {
  * @param int p_target_project_id
  * @param bool p_copy_custom_fields
  * @param bool p_copy_relationships
+ * @param bool p_copy_history
+ * @param bool p_copy_attachments
+ * @param bool p_copy_bugnotes
+ * @param bool p_copy_monitoring_users
  * @return int representing the new bugid
  * @access public
  */
@@ -1018,6 +1022,8 @@ function bug_copy( $p_bug_id, $p_target_project_id = null, $p_copy_custom_fields
 	# COPY HISTORY
 	history_delete( $t_new_bug_id );	# should history only be deleted inside the if statement below?
 	if( $p_copy_history ) {
+		# @todo problem with this code: the generated history trail is incorrect because the note IDs are those of the original bug, not the copied ones
+		# @todo actually, does it even make sense to copy the history ?
 		$query = "SELECT *
 					  FROM $t_mantis_bug_history_table
 					  WHERE bug_id = " . db_param();
@@ -1037,7 +1043,15 @@ function bug_copy( $p_bug_id, $p_target_project_id = null, $p_copy_custom_fields
 						  		   " . db_param() . " );";
 			db_query_bound( $query, Array( $t_bug_history['user_id'], $t_new_bug_id, $t_bug_history['date_modified'], $t_bug_history['field_name'], $t_bug_history['old_value'], $t_bug_history['new_value'], $t_bug_history['type'] ) );
 		}
+	} else {
+		# Create a "New Issue" history entry
+		history_log_event_special( $t_new_bug_id, NEW_BUG );
 	}
+
+
+	# Create history entries to reflect the copy operation
+	history_log_event_special( $t_new_bug_id, BUG_CREATED_FROM, '', $t_bug_id );
+	history_log_event_special( $t_bug_id, BUG_CLONED_TO, '', $t_new_bug_id );
 
 	return $t_new_bug_id;
 }
@@ -1054,21 +1068,32 @@ function bug_move( $p_bug_id, $p_target_project_id ) {
 	// Move the issue to the new project.
 	bug_set_field( $p_bug_id, 'project_id', $p_target_project_id );
 
-	// Check if the category for the issue is global or not.
+	// Update the category if needed
 	$t_category_id = bug_get_field( $p_bug_id, 'category_id' );
-	$t_category_project_id = category_get_field( $t_category_id, 'project_id' );
 
-	// If not global, then attempt mapping it to the new project.
-	if ( $t_category_project_id != ALL_PROJECTS && !project_hierarchy_inherit_parent( $p_target_project_id, $t_category_project_id ) ) {
-		// Map by name
-		$t_category_name = category_get_field( $t_category_id, 'name' );
-		$t_target_project_category_id = category_get_id_by_name( $t_category_name, $p_target_project_id, /* triggerErrors */ false );
-		if ( $t_target_project_category_id === false ) {
-			// Use default category after moves, since there is no match by name.
-			$t_target_project_category_id = config_get( 'default_category_for_moves' );
+	// Bug has no category
+	if( $t_category_id == 0 ) {
+		// Category is required in target project, set it to default
+		if( ON != config_get( 'allow_no_category', null, null, $p_target_project_id ) ) {
+			bug_set_field( $p_bug_id, 'category_id', config_get( 'default_category_for_moves' ) );
 		}
+	}
+	// Check if the category is global, and if not attempt mapping it to the new project
+	else {
+		$t_category_project_id = category_get_field( $t_category_id, 'project_id' );
 
-		bug_set_field( $p_bug_id, 'category_id', $t_target_project_category_id );
+		if ( $t_category_project_id != ALL_PROJECTS
+		  && !project_hierarchy_inherit_parent( $p_target_project_id, $t_category_project_id )
+		) {
+			// Map by name
+			$t_category_name = category_get_field( $t_category_id, 'name' );
+			$t_target_project_category_id = category_get_id_by_name( $t_category_name, $p_target_project_id, /* triggerErrors */ false );
+			if ( $t_target_project_category_id === false ) {
+				// Use default category after moves, since there is no match by name.
+				$t_target_project_category_id = config_get( 'default_category_for_moves' );
+			}
+			bug_set_field( $p_bug_id, 'category_id', $t_target_project_category_id );
+		}
 	}
 }
 
@@ -1107,7 +1132,7 @@ function bug_delete( $p_bug_id ) {
 	bugnote_delete_all( $p_bug_id );
 
 	# Delete all sponsorships
-	sponsorship_delete( sponsorship_get_all_ids( $p_bug_id ) );
+	sponsorship_delete_all( $p_bug_id );
 
 	# MASC RELATIONSHIP
 	# we delete relationships even if the feature is currently off.
@@ -1735,16 +1760,16 @@ function bug_monitor( $p_bug_id, $p_user_id ) {
 
 /**
  * Returns the list of users monitoring the specified bug
- * 
+ *
  * @param int $p_bug_id
  */
 function bug_get_monitors( $p_bug_id ) {
-    
+
     if ( ! access_has_bug_level( config_get( 'show_monitor_list_threshold' ), $p_bug_id ) ) {
         return Array();
     }
-    
-    
+
+
 	$c_bug_id = db_prepare_int( $p_bug_id );
 	$t_bug_monitor_table = db_get_table( 'mantis_bug_monitor_table' );
 	$t_user_table = db_get_table( 'mantis_user_table' );
@@ -1762,9 +1787,9 @@ function bug_get_monitors( $p_bug_id ) {
 		$row = db_fetch_array( $result );
 		$t_users[$i] = $row['user_id'];
 	}
-	
+
 	user_cache_array_rows( $t_users );
-	
+
 	return $t_users;
 }
 

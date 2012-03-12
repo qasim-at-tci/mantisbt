@@ -20,7 +20,7 @@
  *
  * @package MantisBT
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -111,7 +111,7 @@ $num_notes = count( $t_bugnotes );
 ?>
 <tr class="bugnote" id="c<?php echo $t_bugnote->id ?>">
         <td class="<?php echo $t_bugnote_css ?>">
-		<?php if ( ON  == config_get("show_avatar") ) print_avatar( $t_bugnote->reporter_id ); ?>
+		<?php print_avatar( $t_bugnote->reporter_id ); ?>
 		<span class="small">(<a href="<?php echo string_get_bugnote_view_url($t_bugnote->bug_id, $t_bugnote->id) ?>" title="<?php echo lang_get( 'bugnote_link_title' ) ?>"><?php echo $t_bugnote_id_formatted ?>)</a></span><br />
 		<?php
 			echo print_user( $t_bugnote->reporter_id );
@@ -119,7 +119,10 @@ $num_notes = count( $t_bugnotes );
 		<span class="small"><?php
 			if ( user_exists( $t_bugnote->reporter_id ) ) {
 				$t_access_level = access_get_project_level( null, (int)$t_bugnote->reporter_id );
-				echo '(', get_enum_element( 'access_levels', $t_access_level ), ')';
+				// Only display access level when higher than 0 (ANYBODY)
+				if( $t_access_level > ANYBODY ) {
+					echo '(', get_enum_element( 'access_levels', $t_access_level ), ')';
+				}
 			}
 		?></span>
 		<?php if ( VS_PRIVATE == $t_bugnote->view_state ) { ?>

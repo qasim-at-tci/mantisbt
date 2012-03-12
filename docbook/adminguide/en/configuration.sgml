@@ -745,15 +745,15 @@
                 <term>$g_view_issues_page_columns</term>
                 <listitem>
                     <para>This configuration option is used to select the columns to be included in the View Issues page and in which order.  If one of the column is not accessible to the logged in user, or corresponds to a disabled feature, then it will be automatically removed from the list at runtime.  Hence, the same column list may show a different set of columns based on the logged in user, the currently selected project and enabled features (e.g. sponsorship_total is only shown if the sponsorship feature is enabled).</para>
-                    <para>The supported columns are: selection, edit, id, project_id, reporter_id, handler_id, priority, reproducibility, projection, eta, resolution, fixed_in_version, view_state, os, os_build, build (for product build), platform, version, date_submitted, attachment, category, sponsorship_total, severity, status, last_updated, summary, bugnotes_count, description, steps_to_reproduce, additional_information.  As for custom fields they can be referenced by adding a 'custom_' to their name (e.g. xyz would be custom_xyz).</para>
-                    <para>By default the following columns are selected: selection, edit, priority, id, sponsorship_total, bugnotes_count, attachment, category_id, severity, status, last_updated, summary.</para>
+                    <para>The supported columns are: selection, edit, id, project_id, reporter_id, handler_id, priority, reproducibility, projection, eta, resolution, fixed_in_version, view_state, os, os_build, build (for product build), platform, version, date_submitted, attachment_count, category, sponsorship_total, severity, status, last_updated, summary, bugnotes_count, description, steps_to_reproduce, additional_info.  As for custom fields they can be referenced by adding a 'custom_' to their name (e.g. xyz would be custom_xyz).</para>
+                    <para>By default the following columns are selected: selection, edit, priority, id, sponsorship_total, bugnotes_count, attachment_count, category_id, severity, status, last_updated, summary.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
                 <term>$g_print_issues_page_columns</term>
                 <listitem>
                     <para>This configuration option is used to select the columns to be included in the Print Issues page and in which order.  See $g_view_issues_page_columns for more details about the supported fields.</para>
-                    <para>By default the following columns are selected: selection, priority, id, sponsorship_total, bugnotes_count, attachment, category_id, severity, status, last_updated, summary</para>
+                    <para>By default the following columns are selected: selection, priority, id, sponsorship_total, bugnotes_count, attachment_count, category_id, severity, status, last_updated, summary</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -784,16 +784,6 @@
                     <para>Specifies the position of the status colour legend, can be:
                         STATUS_LEGEND_POSITION_TOP or STATUS_LEGEND_POSITION_BOTTOM.
                         Default is STATUS_LEGEND_POSITION_BOTTOM.
-                    </para>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>$g_show_attachments_indicator</term>
-                <listitem>
-                    <para>In view all bug page, show a clip icon next to bugs that has
-                        one or more attachments. The default value is OFF.
-                        The reason why this is defaulted to OFF is that it adds an extra
-                        query for every bug dispayed in the list.
                     </para>
                 </listitem>
             </varlistentry>
@@ -842,12 +832,6 @@
                 <term>$g_show_avatar_threshold</term>
                 <listitem>
                     <para>The threshold of users for which MantisBT should attempt to show the avatar (default DEVELOPER).  Note that the threshold is related to the user for whom the avatar is being shown, rather than the user who is currently logged in.</para>
-                </listitem>
-            </varlistentry>
-            <varlistentry>
-                <term>$g_default_avatar</term>
-                <listitem>
-                    <para>The full URL to the image to be used when a user doesn't have an avatar account.</para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -2251,8 +2235,31 @@
                 <term>$g_bug_link_tag</term>
                 <listitem>
                     <para>If a number follows this tag it will create a link to a
-                        bug. eg. for # a link would be #45 eg. for bug: a
-                        link would be bug:98
+                        bug. Default is '#'.
+                        <itemizedlist>
+                            <listitem>
+                                <para>'#': a link would be #45</para>
+                            </listitem>
+                            <listitem>
+                                <para>'bug:' a link would be bug:98</para>
+                            </listitem>
+                        </itemizedlist>
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>$g_bugnote_link_tag</term>
+                <listitem>
+                    <para>If a number follows this tag it will create a link to a
+                        bug note. Default is '~'.
+                        <itemizedlist>
+                            <listitem>
+                                <para>'~': a link would be ~45</para>
+                            </listitem>
+                            <listitem>
+                                <para>'bugnote:' a link would be bugnote:98</para>
+                            </listitem>
+                        </itemizedlist>
                     </para>
                 </listitem>
             </varlistentry>
@@ -2343,6 +2350,14 @@
                         WARNING: Users who have access to set configuration via the interface MUST be trusted.  This is due
                         to the fact that such users can set configurations to PHP code and hence there can be a security
                         risk if such users are not trusted. The default value is ADMINISTRATOR.
+                    </para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>$g_csv_add_bom</term>
+                <listitem>
+                    <para>Add Byte Order Mark (BOM) at the begining of the file as it helps Excel display the file in UTF-8.
+                    The default value is OFF;
                     </para>
                 </listitem>
             </varlistentry>
@@ -3032,6 +3047,18 @@
 
                         <variablelist>
                             <varlistentry>
+                                <term>LOG_AJAX</term>
+                                <listitem>
+                                    <para></para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>LOG_DATABASE</term>
+                                <listitem>
+                                    <para></para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
                                 <term>LOG_EMAIL</term>
                                 <listitem>
                                     <para>logs issue id, message type and recipients for all emails
@@ -3048,8 +3075,23 @@
                                     </para>
                                 </listitem>
                             </varlistentry>
+                            <varlistentry>
+                                <term>LOG_FILTERING</term>
+                                <listitem>
+                                    <para></para>
+                                </listitem>
+                            </varlistentry>
+                            <varlistentry>
+                                <term>LOG_LDAP</term>
+                                <listitem>
+                                    <para>logs the details of LDAP operations</para>
+                                </listitem>
+                            </varlistentry>
                         </variablelist>
                     </para>
+
+                    <para>Multiple logging levels can be combined by using an inclusive or operator, e.g.
+                    	<literal>LOG_EMAIL | LOG_EMAIL_RECIPIENT</literal></para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -3137,4 +3179,24 @@
 			</variablelist>
     </section>
 
+    <section id="admin.config.mantistouch">
+        <title>MantisTouch</title>
+        <para>
+			These options are used to integrate with MantisTouch (http://www.mantisbt.org/mantistouch.php) to provide experience targeted to mobile devices.
+        </para>
+
+        <variablelist>
+            <varlistentry>
+                <term>$g_mantistouch_url</term>
+                <listitem>
+                    <para>
+						The MantisTouch URL to direct to.  The %s will be replaced by the contents of $g_path configuration option.
+						A blank value will disable redirection.  The %s is not required when redirecting to
+						MantisTouch instances that point to a single MantisBT instance and hence have a hard-coded URL.
+						Examples include: '' (default), 'http://mantisbt.mobi?url=%s', and 'http://MyOwnMantisTouch.com/'.
+                    </para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </section>
 </chapter>

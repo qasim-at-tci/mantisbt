@@ -1,6 +1,6 @@
 <?php
 # MantisConnect - A webservice interface to Mantis Bug Tracker
-# Copyright (C) 2004-2011  Victor Boctor - vboctor@users.sourceforge.net
+# Copyright (C) 2004-2012  Victor Boctor - vboctor@users.sourceforge.net
 # This program is distributed under dual licensing.  These include
 # GPL and a commercial licenses.  Victor Boctor reserves the right to
 # change the license of future releases.
@@ -288,7 +288,9 @@ $l_oServer->wsdl->addComplexType(
 		'notes'						=>	array( 'name' => 'notes',					'type' => 'tns:IssueNoteDataArray', 	'minOccurs' => '0' ),
 		'custom_fields'				=>  array( 'name' => 'custom_fields',			'type' => 'tns:CustomFieldValueForIssueDataArray', 	'minOccurs' => '0' ),
 		'due_date'					=>  array( 'name' => 'due_date',				'type' => 'xsd:dateTime', 	'minOccurs' => '0' ),
-	    'monitors'					=>  array( 'name' => 'monitors',                'type' => 'tns:AccountDataArray', 'minOccurs' => '0')
+	    'monitors'					=>  array( 'name' => 'monitors',                'type' => 'tns:AccountDataArray', 'minOccurs' => '0'),
+	    'sticky'    				=>  array( 'name' => 'sticky',                  'type' => 'xsd:boolean', 'minOccurs' => '0'),
+	    'tags'						=>  array( 'name' => 'tags',                	'type' => 'tns:ObjectRefArray', 'minOccurs' => '0')
 	)
 );
 
@@ -553,6 +555,98 @@ $l_oServer->wsdl->addComplexType(
 	'tns:CustomFieldValueForIssueData'
 );
 
+### TagData
+$l_oServer->wsdl->addComplexType(
+	'TagData',
+	'complexType',
+	'struct',
+	'all',
+	'',
+	array(
+			'id'			=>	array( 'name' => 'id',				'type' => 'xsd:integer', 	'minOccurs' => '0' ),
+			'user_id'		=>	array( 'name' => 'user_id',			'type' => 'tns:AccountData', 	'minOccurs' => '0' ),
+			'name'			=>	array( 'name' => 'name',			'type' => 'xsd:string', 	'minOccurs' => '0' ),
+			'description'	=>	array( 'name' => 'description',		'type' => 'xsd:string', 	'minOccurs' => '0' ),
+			'date_created'	=>	array( 'name' => 'date_created',	'type' => 'xsd:dateTime', 	'minOccurs' => '0' ),
+		    'date_updated'  =>  array( 'name' => 'date_updated',	'type' => 'xsd:dateTime', 	'minOccurs' => '0' )
+	)
+);
+
+### TagDataArray
+$l_oServer->wsdl->addComplexType(
+	'TagDataArray',
+	'complexType',
+	'array',
+	'',
+	'SOAP-ENC:Array',
+	array(),
+	array(array(
+			'ref'				=> 'SOAP-ENC:arrayType',
+			'wsdl:arrayType'	=> 'tns:TagData[]'
+		)
+	),
+	'tns:TagData'
+);
+
+### TagDataSearchResult
+$l_oServer->wsdl->addComplexType(
+	'TagDataSearchResult',
+	'complexType',
+	'struct',
+	'all',
+	'',
+	array(
+				'results'		=>	array( 'name' => 'results',			'type' => 'tns:TagDataArray', 	'minOccurs' => '0' ),
+			    'total_results' =>  array( 'name' => 'total_results',	'type' => 'xsd:integer', 		'minOccurs' => '0' )
+	)
+);
+
+### ProfileData
+$l_oServer->wsdl->addComplexType(
+	'ProfileData',
+	'complexType',
+	'struct',
+	'all',
+	'',
+	array(
+				'id'			=>	array( 'name' => 'id',				'type' => 'xsd:integer', 	'minOccurs' => '0' ),
+				'user_id'		=>	array( 'name' => 'user_id',			'type' => 'tns:AccountData', 	'minOccurs' => '0' ),
+				'platform'		=>	array( 'name' => 'platform',		'type' => 'xsd:string', 	'minOccurs' => '0' ),
+				'os'			=>	array( 'name' => 'os',				'type' => 'xsd:string', 	'minOccurs' => '0' ),
+				'os_build'		=>	array( 'name' => 'os_build',		'type' => 'xsd:string', 	'minOccurs' => '0' ),
+			    'description'  	=>  array( 'name' => 'description',		'type' => 'xsd:string', 	'minOccurs' => '0' )
+	)
+);
+
+### ProfileDataArray
+$l_oServer->wsdl->addComplexType(
+	'ProfileDataArray',
+	'complexType',
+	'array',
+	'',
+	'SOAP-ENC:Array',
+	array(),
+	array(array(
+				'ref'				=> 'SOAP-ENC:arrayType',
+				'wsdl:arrayType'	=> 'tns:ProfileData[]'
+	)
+	),
+	'tns:ProfileData'
+);
+
+
+### ProfileDataSearchResult
+$l_oServer->wsdl->addComplexType(
+	'ProfileDataSearchResult',
+	'complexType',
+	'struct',
+	'all',
+	'',
+	array(
+					'results'		=>	array( 'name' => 'results',			'type' => 'tns:ProfileDataArray', 	'minOccurs' => '0' ),
+				    'total_results' =>  array( 'name' => 'total_results',	'type' => 'xsd:integer', 			'minOccurs' => '0' )
+	)
+);
 ###
 ###  PUBLIC METHODS
 ###
@@ -847,6 +941,22 @@ $l_oServer->register( 'mc_issue_update',
 	false, false, false,
 	'Update Issue method.'
 );
+
+$l_oServer->register( 'mc_issue_set_tags',
+	array(
+				'username'			=>	'xsd:string',
+				'password'			=>	'xsd:string',
+				'issue_id'			=>	'xsd:integer',
+				'tags'				=>  'tns:TagDataArray'
+	),
+	array(
+				'return'	=>	'xsd:boolean'
+	),
+	$t_namespace,
+	false, false, false,
+	'Sets the tags for a specified issue.'
+);
+
 
 ### mc_issue_delete
 $l_oServer->register( 'mc_issue_delete',
@@ -1477,6 +1587,74 @@ $l_oServer->register( 'mc_user_pref_get_pref',
 	$t_namespace,
 	false, false, false,
 	'Get the value for the specified user preference.'
+);
+
+###
+###  PUBLIC METHODS (defined in mc_user_profile_api.php)
+###
+
+
+### mc_user_profiles_get_all
+$l_oServer->register( 'mc_user_profiles_get_all',
+	array(
+		'username'		=>	'xsd:string',
+		'password'		=>	'xsd:string',
+		'page_number'	=>	'xsd:integer',
+		'per_page'		=>	'xsd:integer'
+	),
+	array(
+		'return'	=>	'tns:ProfileDataSearchResult'
+	),
+	$t_namespace,
+	false, false, false,
+	'Get profiles available to the current user.'
+);
+
+###
+###  PUBLIC METHODS (defined in mc_tag_api.php)
+###
+
+$l_oServer->register( 'mc_tag_get_all',
+	array(
+			'username'		=>	'xsd:string',
+			'password'		=>	'xsd:string',
+			'page_number'	=>	'xsd:integer',
+			'per_page'		=>	'xsd:integer'
+	),
+	array(
+			'return'	=>	'tns:TagDataSearchResult'
+	),
+	$t_namespace,
+	false, false, false,
+	'Gets all the tags.'
+);
+
+$l_oServer->register( 'mc_tag_add',
+	array(
+			'username'			=>	'xsd:string',
+			'password'			=>	'xsd:string',
+			'tag'				=>	'tns:TagData'
+	),
+	array(
+			'return'	=>	'xsd:integer'
+	),
+	$t_namespace,
+	false, false, false,
+	'Creates a tag.'
+);
+
+$l_oServer->register( 'mc_tag_delete',
+	array(
+			'username'			=>	'xsd:string',
+			'password'			=>	'xsd:string',
+			'tag_id'			=>	'xsd:integer'
+	),
+	array(
+			'return'	=>	'xsd:boolean'
+	),
+	$t_namespace,
+	false, false, false,
+	'Deletes a tag.'
 );
 
 ###

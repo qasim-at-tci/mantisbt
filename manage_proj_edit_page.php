@@ -17,7 +17,7 @@
 	/**
 	 * @package MantisBT
 	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+	 * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
 	 * @link http://www.mantisbt.org
 	 */
 	 /**
@@ -121,8 +121,15 @@
 	<td class="category">
 		<?php echo lang_get( 'upload_file_path' ) ?>
 	</td>
+<?php
+	$t_file_path = $row['file_path'];
+	# Don't reveal the absolute path to non-administrators for security reasons
+	if ( is_blank( $t_file_path ) && current_user_is_administrator() ) {
+		$t_file_path = config_get( 'absolute_path_default_upload_folder' );
+	}
+?>
 	<td>
-		<input type="text" name="file_path" size="50" maxlength="250" value="<?php echo string_attribute( $row['file_path'] ) ?>" />
+		<input type="text" name="file_path" size="50" maxlength="250" value="<?php echo string_attribute( $t_file_path ) ?>" />
 	</td>
 </tr>
 <?php } ?>
@@ -179,7 +186,7 @@ if ( access_has_global_level ( config_get( 'delete_project_threshold' ) ) ) { ?>
 <!-- Title -->
 <tr>
 	<td class="form-title" colspan="6">
-		<?php 
+		<?php
 			echo lang_get( 'subprojects' );
 
 			# Check the user's global access level before allowing project creation
@@ -337,26 +344,15 @@ if ( access_has_global_level ( config_get( 'delete_project_threshold' ) ) ) { ?>
 	foreach ( $t_categories as $t_category ) {
 		$t_id = $t_category['id'];
 
-		if ( $t_category['project_id'] != $f_project_id ) {
-			$t_inherited = true;
-		} else {
-			$t_inherited = false;
-		}
-
-		$t_name = $t_category['name'];
-		if ( NO_USER != $t_category['user_id'] && user_exists( $t_category['user_id'] )) {
-			$t_user_name = user_get_name( $t_category['user_id'] );
-		} else {
-			$t_user_name = '';
-		}
+		$t_inherited = ( $t_category['project_id'] != $f_project_id );
 ?>
 <!-- Repeated Info Row -->
 		<tr <?php echo helper_alternate_class() ?>>
 			<td>
-				<?php echo string_display( category_full_name( $t_category['id'] , /* showProject */ $t_inherited, $f_project_id ) )  ?>
+				<?php echo string_display( category_full_name( $t_id , /* showProject */ $t_inherited, $f_project_id ) ) ?>
 			</td>
 			<td>
-				<?php echo string_display_line( $t_user_name ) ?>
+				<?php echo prepare_user_name( $t_category['user_id'] ) ?>
 			</td>
 			<td class="center">
 				<?php if ( !$t_inherited ) {
@@ -455,7 +451,7 @@ if ( access_has_global_level ( config_get( 'delete_project_threshold' ) ) ) { ?>
 		$t_released = $t_version['released'];
 		$t_obsolete = $t_version['obsolete'];
 		if( !date_is_null( $t_version['date_order'] ) ) {
-			$t_date_formatted = date( config_get( 'complete_date_format' ), $t_version['date_order'] );		
+			$t_date_formatted = date( config_get( 'complete_date_format' ), $t_version['date_order'] );
 		} else {
 			$t_date_formatted = ' ';
 		}
@@ -630,7 +626,7 @@ if ( access_has_project_level( config_get( 'custom_field_link_threshold' ), $f_p
 <?php
 }
 
-event_signal( 'EVENT_MANAGE_PROJECT_PAGE', array( $f_project_id ) ); 
+event_signal( 'EVENT_MANAGE_PROJECT_PAGE', array( $f_project_id ) );
 ?>
 
 <!-- PROJECT VIEW STATUS -->

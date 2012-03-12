@@ -17,7 +17,7 @@
 	/**
 	 * @package MantisBT
 	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+	 * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
 	 * @link http://www.mantisbt.org
 	 */
 	 /**
@@ -34,11 +34,11 @@
 	$f_category_id = gpc_get_int( 'id' );
 	$f_project_id = gpc_get_int( 'project_id' );
 
-	access_ensure_project_level( config_get( 'manage_project_threshold' ), $f_project_id );
-
 	$t_row = category_get_row( $f_category_id );
 	$t_name = category_full_name( $f_category_id );
 	$t_project_id = $t_row['project_id'];
+
+	access_ensure_project_level( config_get( 'manage_project_threshold' ), $t_project_id );
 
 	# Get a bug count
 	$t_bug_table = db_get_table( 'mantis_bug_table' );

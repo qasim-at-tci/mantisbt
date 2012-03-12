@@ -19,7 +19,7 @@
 	 *
 	 * @package MantisBT
 	 * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
-	 * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+	 * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
 	 * @link http://www.mantisbt.org
 	 */
 
@@ -82,6 +82,7 @@
 
 		$f_category_id			= $t_bug->category_id;
 		$f_reproducibility		= $t_bug->reproducibility;
+		$f_eta					= $t_bug->eta;
 		$f_severity				= $t_bug->severity;
 		$f_priority				= $t_bug->priority;
 		$f_summary				= $t_bug->summary;
@@ -106,6 +107,7 @@
 
 		$f_category_id			= gpc_get_int( 'category_id', 0 );
 		$f_reproducibility		= gpc_get_int( 'reproducibility', config_get( 'default_bug_reproducibility' ) );
+		$f_eta					= gpc_get_int( 'eta', config_get( 'default_bug_eta' ) );
 		$f_severity				= gpc_get_int( 'severity', config_get( 'default_bug_severity' ) );
 		$f_priority				= gpc_get_int( 'priority', config_get( 'default_bug_priority' ) );
 		$f_summary				= gpc_get_string( 'summary', '' );
@@ -133,6 +135,7 @@
 
 	$tpl_show_category = in_array( 'category_id', $t_fields );
 	$tpl_show_reproducibility = in_array( 'reproducibility', $t_fields );
+	$tpl_show_eta = in_array( 'eta', $t_fields );
 	$tpl_show_severity = in_array( 'severity', $t_fields );
 	$tpl_show_priority = in_array( 'priority', $t_fields );
 	$tpl_show_steps_to_reproduce = in_array( 'steps_to_reproduce', $t_fields );
@@ -202,6 +205,22 @@
 		<td>
 			<select <?php echo helper_get_tab_index() ?> name="reproducibility">
 				<?php print_enum_string_option_list( 'reproducibility', $f_reproducibility ) ?>
+			</select>
+		</td>
+	</tr>
+<?php
+	}
+
+	if ( $tpl_show_eta ) {
+?>
+
+	<tr <?php echo helper_alternate_class() ?>>
+		<td class="category">
+			<label for="eta"><?php print_documentation_link( 'eta' ) ?></label>
+		</td>
+		<td>
+			<select <?php echo helper_get_tab_index() ?> id="eta" name="eta">
+				<?php print_enum_string_option_list( 'eta', $f_eta ) ?>
 			</select>
 		</td>
 	</tr>
@@ -394,7 +413,7 @@
 		</td>
 		<td>
 			<select <?php echo helper_get_tab_index() ?> name="target_version">
-				<?php print_version_option_list() ?>
+				<?php print_version_option_list( '', null, VERSION_FUTURE ) ?>
 			</select>
 		</td>
 	</tr>
@@ -498,7 +517,7 @@
 			<?php echo lang_get( 'relationship_with_parent' ) ?>
 		</td>
 		<td>
-			<?php relationship_list_box( /* none */ -2, "rel_type", false, true ) ?>
+			<?php relationship_list_box( config_get( 'default_bug_relationship_clone' ), "rel_type", false, true ) ?>
 			<?php echo '<b>' . lang_get( 'bug' ) . ' ' . bug_format_id( $f_master_bug_id ) . '</b>' ?>
 		</td>
 	</tr>

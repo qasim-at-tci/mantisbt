@@ -19,7 +19,7 @@
  * @package CoreAPI
  * @subpackage PrintAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -144,6 +144,10 @@ function print_successful_redirect( $p_redirect_to ) {
 
 # Print avatar image for the given user ID
 function print_avatar( $p_user_id, $p_size = 80 ) {
+	if ( OFF == config_get( 'show_avatar' ) ) {
+		return;
+	}
+
 	if( !user_exists( $p_user_id ) ) {
 		return;
 	}
@@ -764,6 +768,17 @@ function print_version_option_list( $p_version = '', $p_project_id = null, $p_re
 		null );
 	}
 
+	# Ensure the selected version (if specified) is included in the list
+	# Note: Filter API specifies selected versions as an array
+	if( !is_array( $p_version ) ) {
+		if( !empty( $p_version ) ) {
+			$t_version_id = version_get_id( $p_version, $c_project_id );
+			if( $t_version_id !== false ) {
+				$versions[] = version_cache_row( $t_version_id );
+			}
+		}
+	}
+
 	if( $p_leading_blank ) {
 		echo '<option value=""></option>';
 	}
@@ -1143,13 +1158,13 @@ function print_bug_link( $p_bug_id, $p_detail_info = true ) {
 
 # formats the priority given the status
 # shows the priority in BOLD if the bug is NOT closed and is of significant priority
-function print_formatted_priority_string( $p_status, $p_priority ) {
-	$t_pri_str = get_enum_element( 'priority', $p_priority );
+function print_formatted_priority_string( $p_bug ) {
+	$t_pri_str = get_enum_element( 'priority', $p_bug->priority, auth_get_current_user_id(), $p_bug->project_id );
 	$t_priority_threshold = config_get( 'priority_significant_threshold' );
 
 	if( $t_priority_threshold >= 0 &&
-		$p_priority >= $t_priority_threshold &&
-		$p_status < config_get( 'bug_closed_status_threshold' ) ) {
+		$p_bug->priority >= $t_priority_threshold &&
+		$p_bug->status < config_get( 'bug_closed_status_threshold' ) ) {
 		echo "<span class=\"bold\">$t_pri_str</span>";
 	} else {
 		echo $t_pri_str;
@@ -1158,13 +1173,13 @@ function print_formatted_priority_string( $p_status, $p_priority ) {
 
 # formats the severity given the status
 # shows the severity in BOLD if the bug is NOT closed and is of significant severity
-function print_formatted_severity_string( $p_status, $p_severity ) {
-	$t_sev_str = get_enum_element( 'severity', $p_severity );
+function print_formatted_severity_string( $p_bug ) {
+	$t_sev_str = get_enum_element( 'severity', $p_bug->severity, auth_get_current_user_id(), $p_bug->project_id );
 	$t_severity_threshold = config_get( 'severity_significant_threshold' );
 
 	if( $t_severity_threshold >= 0 &&
-		$p_severity >= $t_severity_threshold &&
-		$p_status < config_get( 'bug_closed_status_threshold' ) ) {
+		$p_bug->severity >= $t_severity_threshold &&
+		$p_bug->status < config_get( 'bug_closed_status_threshold' ) ) {
 		echo "<span class=\"bold\">$t_sev_str</span>";
 	} else {
 		echo $t_sev_str;

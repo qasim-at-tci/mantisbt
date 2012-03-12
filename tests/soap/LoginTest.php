@@ -17,7 +17,7 @@
 /**
  * @package Tests
  * @subpackage UnitTests
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -70,6 +70,33 @@ class LoginTest extends SoapBase {
 	public function testFilterGetIssuesLoginFailed() {
 		try {
 			$this->client->mc_filter_get_issues( $this->dummyUser , $this->dummyPassword, $this->getProjectId(), 1, 0, 15 );
+			$this->fail( "Should have failed." );
+		} catch ( SoapFault $e) {
+			$this->assertIsLoginFailure( $e );
+		}
+	}
+	
+	public function testLoginWithNullPasswordIsRejected() {
+		try {
+			$this->client->mc_enum_status( $this->userName, null);
+			$this->fail( "Should have failed." );
+		} catch ( SoapFault $e) {
+			$this->assertIsLoginFailure( $e );
+		}
+	}
+	
+	public function testLoginWithEmptyPasswordIsRejected() {
+		try {
+			$this->client->mc_enum_status( $this->userName, '');
+			$this->fail( "Should have failed." );
+		} catch ( SoapFault $e) {
+			$this->assertIsLoginFailure( $e );
+		}
+	}
+
+	public function testLoginWithIncorrectPasswordIsRejected() {
+		try {
+			$this->client->mc_enum_status( $this->userName, "This really should be incorrect");
 			$this->fail( "Should have failed." );
 		} catch ( SoapFault $e) {
 			$this->assertIsLoginFailure( $e );

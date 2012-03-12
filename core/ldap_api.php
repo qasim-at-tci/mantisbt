@@ -19,7 +19,7 @@
  * @package CoreAPI
  * @subpackage LDAPAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -241,7 +241,7 @@ function ldap_get_field_from_username( $p_username, $p_field ) {
 	ldap_unbind( $t_ds );
 
 	# If no matches, return null.
-	if ( count( $t_info ) == 0 ) {
+	if ( $t_info['count'] == 0 ) {
 		log_event( LOG_LDAP, "No matches found." );
 		return null;
 	}

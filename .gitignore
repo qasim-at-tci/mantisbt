@@ -32,6 +32,7 @@ plugins/*
 .cache
 .project
 .settings
+*.kdev4
 
 # IIS7 
 web.config

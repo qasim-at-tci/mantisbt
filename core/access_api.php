@@ -18,7 +18,7 @@
  * Access Api
  *
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  * @package CoreAPI
  * @subpackage AccessAPI
@@ -224,7 +224,7 @@ function access_get_global_level( $p_user_id = null ) {
 	# Deal with not logged in silently in this case
 	# @@@ we may be able to remove this and just error
 	#     and once we default to anon login, we can remove it for sure
-	if( !auth_is_user_authenticated() ) {
+	if( empty( $p_user_id ) && !auth_is_user_authenticated() ) {
 		return false;
 	}
 
@@ -278,14 +278,14 @@ function access_ensure_global_level( $p_access_level, $p_user_id = null ) {
  * @access public
  */
 function access_get_project_level( $p_project_id = null, $p_user_id = null ) {
-	# Deal with not logged in silently in this case
-	/** @todo we may be able to remove this and just error and once we default to anon login, we can remove it for sure */
-	if( !auth_is_user_authenticated() ) {
-		return ANYBODY;
-	}
-
 	if( null === $p_user_id ) {
 		$p_user_id = auth_get_current_user_id();
+	}
+
+	# Deal with not logged in silently in this case
+	/** @todo we may be able to remove this and just error and once we default to anon login, we can remove it for sure */
+	if( empty( $p_user_id ) && !auth_is_user_authenticated() ) {
+		return ANYBODY;
 	}
 
 	if( null === $p_project_id ) {
@@ -405,15 +405,15 @@ function access_has_any_project( $p_access_level, $p_user_id = null ) {
  * @access public
  */
 function access_has_bug_level( $p_access_level, $p_bug_id, $p_user_id = null ) {
+	if( $p_user_id === null ) {
+		$p_user_id = auth_get_current_user_id();
+	}
+
 	# Deal with not logged in silently in this case
 	# @@@ we may be able to remove this and just error
 	#     and once we default to anon login, we can remove it for sure
-	if( !auth_is_user_authenticated() ) {
+	if( empty( $p_user_id ) && !auth_is_user_authenticated() ) {
 		return false;
-	}
-
-	if( $p_user_id === null ) {
-		$p_user_id = auth_get_current_user_id();
 	}
 
 	$t_project_id = bug_get_field( $p_bug_id, 'project_id' );
@@ -425,10 +425,12 @@ function access_has_bug_level( $p_access_level, $p_bug_id, $p_user_id = null ) {
 		return false;
 	}
 
-	# If the bug is private and the user is not the reporter, then the
-	#  the user must also have higher access than private_bug_threshold
+	# If the bug is private and the user is not the reporter, then
+	# they must also have higher access than private_bug_threshold
 	if( VS_PRIVATE == bug_get_field( $p_bug_id, 'view_state' ) && !bug_is_user_reporter( $p_bug_id, $p_user_id ) ) {
-		$p_access_level = max( $p_access_level, config_get( 'private_bug_threshold' ) );
+		$t_access_level = access_get_project_level( $t_project_id, $p_user_id );
+		return access_compare_level( $t_access_level, config_get( 'private_bug_threshold' ) )
+		    && access_compare_level( $t_access_level, $p_access_level );
 	}
 
 	return access_has_project_level( $p_access_level, $t_project_id, $p_user_id );

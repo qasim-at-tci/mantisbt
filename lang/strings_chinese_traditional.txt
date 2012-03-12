@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,11 +25,14 @@
  * @ingroup Language
  * @file
  *
+ * @author Anakmalaysia
  * @author Andrew971218
  * @author Cwlin0416
  * @author Firesueprtom
  * @author Jonathan Tsai, tryweb@ichiayi.com
+ * @author Lauhenry
  * @author Mark85296341
+ * @author Oapbtommy
  */
 
 $s_actiongroup_menu_move = '移動';
@@ -69,7 +72,7 @@ $s_view_submitted_bug_link = '檢視已送交的問題 %1$s';
 $s_assigned_projects = '已分配的專案';
 $s_unassigned_projects = '尚未分配的專案';
 $s_print = '列印';
-$s_jump = '跳至';
+$s_jump = '前往';
 $s_copy_users = '複製使用者';
 $s_copy_categories_from = '複製指定專案的類別到本專案';
 $s_copy_categories_to = '複製本專案的類別到指定專案';
@@ -91,7 +94,7 @@ $s_announcement = '公告';
 $s_stays_on_top = '置頂';
 $s_bugnote_link_title = '連結說明';
 $s_delete_bugnote_button = '刪除說明';
-$s_delete_bugnote_sure_msg = '你確定要刪除此說明?';
+$s_delete_bugnote_sure_msg = '你確定要刪除此說明嗎？';
 $s_bug_relationships = '關聯性';
 $s_empty_password_sure_msg = '這使用者的密碼為空白。你確定這樣是正確的嗎？';
 $s_empty_password_button = '使用空白密碼';
@@ -408,7 +411,7 @@ $s_profile_added_msg = '已新增基本資料...';
 $s_profile_deleted_msg = '已刪除基本資料...';
 $s_edit_profile_title = '編輯基本資料';
 $s_platform = '作業平台';
-$s_operating_system = '作業系統';
+$s_operating_system = '操作系統';
 $s_additional_description = '附註說明';
 $s_update_profile_button = '更新基本資料';
 $s_profile_defaulted_msg = '已更新預設基本資料...';
@@ -419,7 +422,7 @@ $s_edit_profile = '編輯基本資料';
 $s_make_default = '設定為預設值';
 $s_delete_profile = '刪除基本資料';
 $s_select_profile = '請選擇基本資料';
-$s_submit_button = '送出';
+$s_submit_button = '提交';
 $s_profile_updated_msg = '已更新基本資料...';
 $s_my_sponsorship = '我的贊助商';
 $s_update_sponsorship_button = '更改付款狀態';
@@ -561,13 +564,13 @@ $s_secure_session = '使用安全 Session 連線';
 $s_secure_session_long = '僅允許來自目前 IP 位置的 Session 連線';
 $s_choose_project = '選擇專案';
 $s_login_button = '登入';
-$s_signup_link = '註冊一個新帳號';
-$s_lost_password_link = '忘記密碼按這裡';
+$s_signup_link = '註冊新帳號';
+$s_lost_password_link = '忘記密碼';
 $s_select_project_button = '選擇專案';
 $s_lost_password_title = '重新設定密碼';
 $s_lost_password_done_title = '重設密碼訊息已經送出';
 $s_lost_password_subject = '重新設定密碼';
-$s_lost_password_info = '當你忘記密碼時，請輸入正確的帳號和 E-Mail 然後點選送出。<br /><br />當你輸入的帳號和 E-Mail 正確無誤，你將可在你的 E-Mail 信箱收到一封通知信，點選信中的網址，你就可以連上本站更新你的密碼。';
+$s_lost_password_info = '您必須填寫您所使用的帳號及 E-mail 以便重新設定您的密碼。<br />若您提供的資訊正確，將會於上表單中所填寫的 E-mail 信箱中收到您的帳號驗証碼，請根據信件中所提供的連結完成您的密碼變更。';
 $s_lost_password_confirm_hash_OK = '你的申請已經被接受。請更新你的密碼。';
 $s_open_and_assigned_to_me = '尚未處理且分配給我的問題';
 $s_open_and_reported_to_me = '尚未處理且由我回報的問題';
@@ -612,7 +615,7 @@ $s_1_week_title = '一週內';
 $s_never_logged_in_title = '未曾登入';
 $s_prune_accounts = '清除帳號';
 $s_hide_inactive = '隱藏未啟用';
-$s_manage_accounts_title = '管理帳號';
+$s_manage_accounts_title = '管理帳戶';
 $s_date_created = '建立日期';
 $s_last_visit = '上次瀏覽';
 $s_edit_user_link = '編輯使用者';
@@ -633,7 +636,7 @@ $s_notify_actions_change_access = '可更改通知設定的使用者:';
 $s_revert_to_system = '刪除全部專案設定值';
 $s_revert_to_all_project = '刪除專案特定設定值';
 $s_non_existent = '不存在的';
-$s_current_status = '目前狀態';
+$s_current_status = '現時狀態';
 $s_next_status = '下個狀態';
 $s_workflow = '工作流程';
 $s_workflow_thresholds = '可影響工作流程門檻';
@@ -763,6 +766,7 @@ $s_accounts_pruned_msg = '所有未登入過以及超過一星期還未通過認
 $s_prune_accounts_button = '清除';
 $s_confirm_account_pruning = '你確定你要刪除尚未登入過的帳號嗎？';
 $s_edit_user_title = '編輯使用者';
+$s_account_unlock_button = '解鎖帳戶';
 $s_reset_password_button = '重設密碼';
 $s_delete_user_button = '刪除使用者';
 $s_reset_password_msg = '重設密碼會以 E-mail 寄送確認 URL。';
@@ -773,6 +777,7 @@ $s_users_new = '新增';
 $s_account_reset_protected_msg = '帳號受保護。不可以重設密碼。';
 $s_account_reset_msg = '確認訊息已經被寄送到你的 E-Mail 信箱...';
 $s_account_reset_msg2 = '這帳號的密碼已經被設為空白...';
+$s_account_unlock_msg = '這個帳戶已經解鎖。';
 $s_manage_user_protected_msg = '帳號受保護。存取權限且保護功能已啟動。否則，帳號將會被更新...';
 $s_manage_user_updated_msg = '帳號成功更新...';
 $s_email_user_updated_subject = '帳號已更新';
@@ -865,8 +870,8 @@ $s_valid_project_msg = '你必須選擇一個正確的專案';
 $s_signup_done_title = '註冊帳號已處理';
 $s_password_emailed_msg = '恭喜！你已經註冊成功。系統正在送出認證信到你的 E-Mail 信箱內。請開啟確認信件點選信中的網址，你將連上系統輸入密碼來啟動你的帳號。';
 $s_no_reponse_msg = '你必須在七天內完成這個確認信的作業程序，如果在七天內你沒成功啟動帳號，這個帳號將會自動刪除。';
-$s_signup_captcha_request = '請輸入右邊圖中的驗證英數字。';
-$s_signup_info = '<ul><li>輸入帳號, E-Mail 以及圖中的驗證英數字後, 點選 [註冊] 按鈕. <li>系統會確認你輸入資料的正確性, 當確認無誤後, 系統會自動寄發一封認證信到你輸入的 E-Mail 內.<li>開啟這個認證信, 點選信中的網址, 你將連上系統輸入密碼來啟動你的帳號. <li>如果在七天內你沒成功啟動帳號, 這個帳號將會自動刪除.<li>所以你必須在 E-Mail 中輸入你真正可以收到信件的 E-Mail.</ul>';
+$s_signup_captcha_request = '請輸入右圖所出現的驗証碼';
+$s_signup_info = '當您填寫表單並輸入驗証碼完成以上註冊手續後，系統將會寄發 E-mail 以驗証您的註冊資訊。<br />您可以透過 E-mail 中的網址啟動您的帳號，若於七日內未正確啟動您的帳號，您的註冊資訊將會被視為無效並且刪除。<br />您必須填寫有效的 E-mail 位置以接收信件。';
 $s_signup_title = '註冊';
 $s_signup_button = '註冊';
 $s_no_password_request = '你的密碼正在被其他系統維護中，請聯絡系統管理員來解決這問題。';
@@ -955,7 +960,7 @@ $s_product_build = '產品 Build';
 $s_system_profile = '系統說明';
 $s_update_bug_button = '編輯';
 $s_bug_assign_to_button = '分配給:';
-$s_bug_status_to_button = '更改狀態為:';
+$s_bug_status_to_button = '更改狀態為：';
 $s_reopen_bug_button = '重新開啟';
 $s_move_bug_button = '移動';
 $s_attached_files = '附加檔案';
@@ -980,7 +985,7 @@ $s_custom_field = '欄位';
 $s_custom_fields_setup = '自訂欄位';
 $s_custom_field_name = '名稱';
 $s_custom_field_project_count = '已使用專案';
-$s_custom_field_type = '資料型態';
+$s_custom_field_type = '類型';
 $s_custom_field_possible_values = '可能值';
 $s_custom_field_default_value = '預設值';
 $s_custom_field_valid_regexp = '正規表示法';
@@ -1052,6 +1057,9 @@ $s_relationship_warning_blocking_bugs_not_resolved_2 = '<b>注意：</b>不是�
 $s_create_child_bug_button = '複製';
 $s_bug_cloned_to = '問題已被複製';
 $s_bug_created_from = '問題建立來源';
+$s_copy_from_parent = '從母問題複製擴充資料';
+$s_copy_notes_from_parent = '複製錯誤說明';
+$s_copy_attachments_from_parent = '複製附件';
 $s_viewing_bug_relationship_graph_title = '相關問題圖';
 $s_viewing_bug_dependency_graph_title = '相依圖';
 $s_relation_graph = '相關問題圖';
@@ -1191,7 +1199,7 @@ $s_copy_columns_from = '複製欄位從';
 $s_copy_columns_to = '複製欄位至';
 $s_due_date = '到期日';
 $s_overdue = '逾期';
-$s_view_account_title = '使用者資訊';
+$s_view_account_title = '用戶資訊';
 $s_manage_user = '管理使用者';
 $s_install_information = 'MantisBT 安裝資訊';
 $s_database_information = 'MantisBT 資料庫';

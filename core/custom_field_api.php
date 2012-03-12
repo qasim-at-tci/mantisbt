@@ -18,7 +18,7 @@
  * @package CoreAPI
  * @subpackage CustomFieldAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -1158,10 +1158,20 @@ function custom_field_validate( $p_field_id, $p_value ) {
 			break;
 		case CUSTOM_FIELD_TYPE_NUMERIC:
 			$t_valid &= ( $t_length == 0 ) || is_numeric( $p_value );
+			
+			# Check the length of the number
+			$t_valid &= ( 0 == $t_length_min ) || ( $t_length >= $t_length_min );
+			$t_valid &= ( 0 == $t_length_max ) || ( $t_length <= $t_length_max );
+			
 			break;
 		case CUSTOM_FIELD_TYPE_FLOAT:
 			# Allow both integer and float numbers
 			$t_valid &= ( $t_length == 0 ) || is_numeric( $p_value ) || is_float( $p_value );
+			
+			# Check the length of the number
+			$t_valid &= ( 0 == $t_length_min ) || ( $t_length >= $t_length_min );
+			$t_valid &= ( 0 == $t_length_max ) || ( $t_length <= $t_length_max );
+			
 			break;
 		case CUSTOM_FIELD_TYPE_DATE:
 			# gpc_get_cf for date returns the value from strftime

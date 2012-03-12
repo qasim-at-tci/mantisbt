@@ -17,7 +17,7 @@
 /**
  * @package Tests
  * @subpackage UnitTests
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -96,6 +96,7 @@ class IssueAddTest extends SoapBase {
 		$this->assertEquals( 'none', $issue->eta->name );
 		$this->assertEquals( 10, $issue->resolution->id );
 		$this->assertEquals( 'open', $issue->resolution->name );
+		$this->assertEquals( false, $issue->sticky );
 
 	}
 
@@ -145,6 +146,7 @@ class IssueAddTest extends SoapBase {
 		$issueToAdd['status'] = array( 'id' => 40 );        // confirmed
 		$issueToAdd['fixed_in_version'] = 'fixed version';
 		$issueToAdd['target_version'] = 'target version';
+		$issueToAdd['sticky'] = true;
 
 		$issueId = $this->client->mc_issue_add(
 			$this->userName,
@@ -165,6 +167,7 @@ class IssueAddTest extends SoapBase {
 		$this->assertEquals( $issueToAdd['status']['id'], $issue->status->id );
 		$this->assertEquals( $issueToAdd['fixed_in_version'], $issue->fixed_in_version );
 		$this->assertEquals( $issueToAdd['target_version'], $issue->target_version );
+		$this->assertEquals( $issueToAdd['sticky'], $issue->sticky );
 	}
 
 	/**
@@ -213,7 +216,7 @@ class IssueAddTest extends SoapBase {
 		
 		$this->skipIfDueDateIsNotEnabled();
 		
-		$date = '2015-10-29T12:59:14Z';
+		$date = '2015-10-29T12:59:14+00:00';
 		
 		$issueToAdd = $this->getIssueToAdd( 'IssueAddTest.testCreateIssueWithDueDate' );
 		
@@ -488,5 +491,28 @@ class IssueAddTest extends SoapBase {
 		
 		$this->assertEquals( 2, $note->note_type );
 		$this->assertEquals( 'attr_value', $note->note_attr );
+	}
+	
+	public function testCreateIssueWithTags() {
+		
+		// initialise tags
+		$tagId1 = $this->client->mc_tag_add( $this->userName, $this->password, array (
+					'name' => 'IssueCreateTest.createIssueWithTags'
+		));
+		$this->deleteTagAfterRun( $tagId1 );
+		
+		$tagId2 = $this->client->mc_tag_add( $this->userName, $this->password, array (
+					'name' => 'IssueCreateTest.createIssueWithTags2'
+		));
+		$this->deleteTagAfterRun( $tagId2 );
+		
+		// create issue
+		$issueToAdd = $this->getIssueToAdd( 'IssueCreateTest.createIssueWithTags' );
+		$issueToAdd['tags'] = array ( array( 'id' => $tagId1), array('id' => $tagId2 ) );
+		$issueId = $this->client->mc_issue_add( $this->userName, $this->password, $issueToAdd);
+		$this->deleteAfterRun( $issueId );
+		$issue = $this->client->mc_issue_get( $this->userName, $this->password, $issueId );
+		
+		self::assertEquals ( 2, count ( $issue->tags ) );
 	}
 }

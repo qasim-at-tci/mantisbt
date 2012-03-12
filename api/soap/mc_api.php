@@ -1,6 +1,6 @@
 <?php
 # MantisConnect - A webservice interface to Mantis Bug Tracker
-# Copyright (C) 2004-2011  Victor Boctor - vboctor@users.sourceforge.net
+# Copyright (C) 2004-2012  Victor Boctor - vboctor@users.sourceforge.net
 # This program is distributed under dual licensing.  These include
 # GPL and a commercial licenses.  Victor Boctor reserves the right to
 # change the license of future releases.
@@ -51,6 +51,11 @@ function mci_check_login( $p_username, $p_password ) {
 
 		# do not use password validation.
 		$p_password = null;
+	} else {
+		if( is_blank( $p_password ) ) {
+			# require password for authenticated access
+			return false;
+		}
 	}
 
 	if( false === auth_attempt_script_login( $p_username, $p_password ) ) {
@@ -105,6 +110,8 @@ function mci_get_user_id( $p_user ) {
 		$t_user_id = (int) $p_user['id'];
 	} elseif ( isset( $p_user['name'] ) ) {
 		$t_user_id = user_get_id_by_name( $p_user['name'] );
+	} elseif ( isset( $p_user['email'] ) ) {
+		$t_user_id = user_get_id_by_email( $p_user['email'] );
 	}
 
 	return $t_user_id;
@@ -302,7 +309,7 @@ function mci_project_version_as_array( $p_version ) {
 			'id' => $p_version['id'],
 			'name' => $p_version['version'],
 			'project_id' => $p_version['project_id'],
-			'date_order' => timestamp_to_iso8601( $p_version['date_order'] ),
+			'date_order' => timestamp_to_iso8601( $p_version['date_order'], false ),
 			'description' => mci_null_if_empty( $p_version['description'] ),
 			'released' => $p_version['released'],
 		    'obsolete' => $p_version['obsolete']

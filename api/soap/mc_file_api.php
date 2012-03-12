@@ -1,6 +1,6 @@
 <?php
 # MantisConnect - A webservice interface to Mantis Bug Tracker
-# Copyright (C) 2004-2011  Victor Boctor - vboctor@users.sourceforge.net
+# Copyright (C) 2004-2012  Victor Boctor - vboctor@users.sourceforge.net
 # This program is distributed under dual licensing.  These include
 # GPL and a commercial licenses.  Victor Boctor reserves the right to
 # change the license of future releases.
@@ -192,16 +192,16 @@ function mci_file_get( $p_file_id, $p_type, $p_user_id ) {
 	switch( $p_type ) {
 		case 'bug':
 			if( !mci_file_can_download_bug_attachments( $t_bug_id, $p_user_id ) ) {
-				return mci_soap_fault_access_denied( $t_user_id );
+				return mci_soap_fault_access_denied( $p_user_id );
 			}
 			break;
 		case 'doc':
 			# Check if project documentation feature is enabled.
 			if( OFF == config_get( 'enable_project_documentation' ) ) {
-				return mci_soap_fault_access_denied( $t_user_id );
+				return mci_soap_fault_access_denied( $p_user_id );
 			}
 			if( !access_has_project_level( config_get( 'view_proj_doc_threshold' ), $t_project_id, $p_user_id ) ) {
-				return mci_soap_fault_access_denied( $t_user_id );
+				return mci_soap_fault_access_denied( $p_user_id );
 			}
 			break;
 	}

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-define( 'MANTIS_VERSION', '1.2.8' );
+define( 'MANTIS_VERSION', '1.2.9' );
 
 # --- constants -------------------
 # magic numbers
@@ -200,6 +200,8 @@ define( 'REV_ADDITIONAL_INFO', 3 );
 define( 'REV_BUGNOTE', 4 );
 
 # bug relationship constants
+define( 'BUG_REL_NONE', -2 );
+define( 'BUG_REL_ANY', -1 );
 define( 'BUG_DUPLICATE', 0 );
 define( 'BUG_RELATED', 1 );
 define( 'BUG_DEPENDANT', 2 );
@@ -493,6 +495,7 @@ define( 'LOG_FILTERING',                4 );  # logging for filtering.
 define( 'LOG_AJAX',                     8 );  # logging for AJAX / XmlHttpRequests
 define( 'LOG_LDAP',                     16 );  # logging for ldap
 define( 'LOG_DATABASE',                 32 );  # logging for ldap
+define( 'LOG_SOAP',                     64 );  # logging for SOAP
 
 # COLUMNS_TARGET_*
 define( 'COLUMNS_TARGET_VIEW_PAGE', 1 );

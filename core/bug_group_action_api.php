@@ -16,7 +16,7 @@
 
 /**
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  *	@package CoreAPI
  *	@subpackage BugGroupActionAPI
@@ -80,7 +80,10 @@ function bug_group_action_print_bug_list( $p_bug_ids_array ) {
 
 	foreach( $p_bug_ids_array as $t_bug_id ) {
 		$t_class = sprintf( "row-%d", ( $t_i++ % 2 ) + 1 );
-		echo sprintf( "<tr bgcolor=\"%s\"> <td>%s</td> <td>%s</td> </tr>\n", get_status_color( bug_get_field( $t_bug_id, 'status' ) ), string_get_bug_view_link( $t_bug_id ), string_attribute( bug_get_field( $t_bug_id, 'summary' ) ) );
+		echo sprintf( "<tr bgcolor=\"%s\"> <td>%s</td> <td>%s</td> </tr>\n",
+			get_status_color( bug_get_field( $t_bug_id, 'status' ), auth_get_current_user_id(), bug_get_field( $t_bug_id, 'project_id' ) ),
+			string_get_bug_view_link( $t_bug_id ),
+			string_attribute( bug_get_field( $t_bug_id, 'summary' ) ) );
 	}
 
 	echo '</table>';

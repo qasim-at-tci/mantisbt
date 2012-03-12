@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,10 @@
  * @ingroup Language
  * @file
  *
+ * @author Emperyan
+ * @author Joseph
  * @author Karduelis
+ * @author Khutuck
  * @author Korayal
  * @author Oktay Altunergil - oktay@bellatlantic.net
  */
@@ -428,7 +431,9 @@ $s_no_own_sponsored = 'Her hangi bir sorun üstlenmediniz.';
 $s_sponsor = 'Üstlenen';
 $s_sponsor_verb = 'Üstlenen';
 $s_amount = 'Miktar';
+$s_total_owing = 'Toplam Borç';
 $s_total_paid = 'Toplam Ödenen';
+$s_sponsor_hide = 'Çözülen ve Ödeneni Gizle';
 $s_sponsor_show = 'Hepsini göster';
 $s_payment_updated = 'Ödeme bilgilerini güncellendi.';
 $s_account_updated_msg = 'Hesabınız başarıyla güncellendi...';
@@ -602,7 +607,7 @@ $s_manage_workflow_config = 'Workflow';
 $s_manage_tags_link = 'Etiketleri Yönet';
 $s_create_new_account_link = 'Hesap Ekle';
 $s_projects_link = 'Projeler';
-$s_documentation_link = 'Dökümantasyon';
+$s_documentation_link = 'Dokümantasyon';
 $s_new_accounts_title = 'Yeni Hesaplar';
 $s_1_week_title = '1 Hafta';
 $s_never_logged_in_title = 'Sisteme hiç girmeyen kullanıcılar';
@@ -639,6 +644,7 @@ $s_status_level = 'Durum';
 $s_alter_level = 'Bu değeri kim değiştirebilir';
 $s_validation = 'İş İlerleyişi Doğrulama';
 $s_comment = 'Doğrulama Yorumu';
+$s_superfluous = 'Kendisine dönüş ima edilmiş, özellikle belirtilmesine gerek yok.';
 $s_unreachable = 'Bu durumun içine bir sorun taşıyamazsınız';
 $s_no_exit = 'Bu durumun dışına bir sorun taşıyamazsınız';
 $s_access_levels = 'Erişim Seviyeleri';
@@ -661,6 +667,8 @@ $s_submit_status = 'Yeni sorun için yeni bir durum ayarla';
 $s_assigned_status = 'Otomatik ataması yapılacak sorunların durumu';
 $s_resolved_status = 'Çözümlenmiş olarak ayarlanan sorunun durumu';
 $s_readonly_status = 'Sadece okunabilir olan sorun durumu';
+$s_reopen_status = 'Yeniden açılan konunun durumu ayarlandı';
+$s_reopen_resolution = 'Yeniden açılan konunun çözümü ayarlandı';
 $s_config_delete_sure = 'Bunun ayarları silmek istediğinizden emin misiniz?  :';
 $s_in_project = 'Projede';
 $s_delete_config_button = 'Ayarları Sil';
@@ -757,6 +765,7 @@ $s_accounts_pruned_msg = 'Bir haftadan fazla süre önce açılmış oldukları 
 $s_prune_accounts_button = 'Azalt';
 $s_confirm_account_pruning = 'Hiç giriş yapılmamış hesapları silmek istediğinizden emin misiniz?';
 $s_edit_user_title = 'Kullanıcı Düzenle';
+$s_account_unlock_button = 'Hesap kilidini aç';
 $s_reset_password_button = 'Şifre Sıfırla';
 $s_delete_user_button = 'Kullanıcı Sil';
 $s_reset_password_msg = 'Reset Password sends the confirmation URL via email.';
@@ -767,6 +776,7 @@ $s_users_new = 'Yeni';
 $s_account_reset_protected_msg = 'Hesap korumalı. Sifre sıfırlanamaz.';
 $s_account_reset_msg = 'Seçili kullanıcının e-posta adresine bir onay isteği gönderilmiştir. Bunu kullanarak, kullanıcının parolasını değiştirmesi mümkün olacaktır.';
 $s_account_reset_msg2 = 'Hesap şifresi boş olarak düzenlendi...';
+$s_account_unlock_msg = 'Hesap kilidi açıldı.';
 $s_manage_user_protected_msg = 'Hesap Korumalı. Erişim seviyesi ve enabled korumalı. Aksi taktirde, hesap güncellendi...';
 $s_manage_user_updated_msg = 'Hesap başarıyla güncellendi...';
 $s_email_user_updated_subject = 'Hesap güncellendi';
@@ -954,6 +964,7 @@ $s_reopen_bug_button = 'Yeniden Aç';
 $s_move_bug_button = 'Taşı';
 $s_attached_files = 'Eklenen Dosyalar';
 $s_publish = 'Yayınla';
+$s_cached = 'Önbelleğe alındı';
 $s_add_user_to_monitor = 'Ekle';
 $s_bug_view_title = 'Sorun Detaylarını Görüntüle';
 $s_no_users_monitoring_bug = 'Bu sorunu izleyen her hangi bir kullanıcı yok.';
@@ -1019,6 +1030,7 @@ $s_sponsors = '%1$d üstlenen(ler)';
 $s_sponsorship_added = 'Üstlenme Eklendi';
 $s_sponsorship_updated = 'Üstlenme Güncellendi';
 $s_sponsorship_deleted = 'Üstlenme Silindi';
+$s_sponsorship_paid = 'Sponsorluk ödendi';
 $s_sponsorship_more_info = 'Üstlenme hakkında daha fazla bilgi';
 $s_sponsorship_total = 'Toplam Üstlenme';
 $s_changelog = 'Değişiklik Kütüğü';
@@ -1045,6 +1057,9 @@ $s_relationship_warning_blocking_bugs_not_resolved_2 = '<b>Dikkat:</b> Bu sorunu
 $s_create_child_bug_button = 'Klonla';
 $s_bug_cloned_to = 'Sorun klonlanmış';
 $s_bug_created_from = 'Sorunu oluşturan:';
+$s_copy_from_parent = 'Ana konudan genişletilmiş bilgi kopyala';
+$s_copy_notes_from_parent = 'Hata notları kopyala';
+$s_copy_attachments_from_parent = 'Ekleri kopyala';
 $s_viewing_bug_relationship_graph_title = 'İlişki Grafiği';
 $s_viewing_bug_dependency_graph_title = 'Bağımlılık Grafiği';
 $s_relation_graph = 'İlişki Grafiği';
@@ -1156,8 +1171,9 @@ $s_tag_related_issues = 'Paylaşılan Etiketler (%1$s)';
 $s_tag_stats_attached = 'Sorunlar eklendi: %1$s';
 $s_tag_create = 'Etiket Oluştur';
 $s_show_all_tags = 'Hepsi';
-$s_time_tracking_billing_link = 'Fatura';
+$s_time_tracking_billing_link = 'Zaman İzleme';
 $s_time_tracking = 'Zaman izleme';
+$s_time_tracking_time_spent = 'Harcanan süre:';
 $s_time_tracking_get_info_button = 'Zaman İzleme Bilgisini Al';
 $s_time_tracking_cost_per_hour = 'Maliyet / Saat';
 $s_time_tracking_cost = 'Maliyet';

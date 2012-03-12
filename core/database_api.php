@@ -23,7 +23,7 @@
  * @package CoreAPI
  * @subpackage DatabaseAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  *
  * @uses config_api.php
@@ -157,6 +157,9 @@ function db_check_database_support( $p_db_type ) {
 		case 'mssql':
 			$t_support = function_exists( 'mssql_connect' );
 			break;
+		case 'mssqlnative':
+			$t_support = function_exists( 'sqlsrv_connect' );
+			break;
 		case 'oci8':
 			$t_support = function_exists( 'OCILogon' );
 			break;
@@ -208,13 +211,14 @@ function db_is_pgsql() {
 
 /**
  * Checks if the database driver is MS SQL
- * @return bool true if postgres
+ * @return bool true if mssql
  */
 function db_is_mssql() {
 	$t_db_type = config_get_global( 'db_type' );
 
 	switch( $t_db_type ) {
 		case 'mssql':
+		case 'mssqlnative':
 		case 'odbc_mssql':
 			return true;
 	}
@@ -339,14 +343,14 @@ function db_query( $p_query, $p_limit = -1, $p_offset = -1 ) {
 function db_query_bound( $p_query, $arr_parms = null, $p_limit = -1, $p_offset = -1 ) {
 	global $g_queries_array, $g_db, $g_db_log_queries, $g_db_param_count;
 
+	$t_db_type = config_get_global( 'db_type' );
+
 	static $s_check_params;
 	if( $s_check_params === null ) {
-		$s_check_params = ( db_is_pgsql() || config_get_global( 'db_type' ) == 'odbc_mssql' );
+		$s_check_params = ( db_is_pgsql() || $t_db_type == 'odbc_mssql' || $t_db_type == 'mssqlnative');
 	}
 
 	if( ON == $g_db_log_queries ) {
-		$t_db_type = config_get_global( 'db_type' );
-
 		$t_start = microtime(true);
 
 		$t_backtrace = debug_backtrace();
@@ -368,6 +372,9 @@ function db_query_bound( $p_query, $arr_parms = null, $p_limit = -1, $p_offset =
 			if( $arr_parms[$i] === false ) {
 				$arr_parms[$i] = 0;
 			}
+			elseif( $arr_parms[$i] === true && $t_db_type == 'mssqlnative' ) {
+				$arr_parms[$i] = 1;
+			}
 		}
 	}
 
@@ -387,7 +394,12 @@ function db_query_bound( $p_query, $arr_parms = null, $p_limit = -1, $p_offset =
 		$lastoffset = 0;
 		$i = 1;
 		if( !( is_null( $arr_parms ) || empty( $arr_parms ) ) ) {
-			while( preg_match( '/(\?)/', $p_query, $matches, PREG_OFFSET_CAPTURE, $lastoffset ) ) {
+			while( preg_match( '/\?/', $p_query, $matches, PREG_OFFSET_CAPTURE, $lastoffset ) ) {
+				$matches = $matches[0];
+				# Realign the offset returned by preg_match as it is byte-based,
+				# which causes issues with UTF-8 characters in the query string
+				# (e.g. from custom fields names)
+				$matches[1] = utf8_strlen( substr( $p_query, 0, $matches[1]), mb_internal_encoding() );
 				if( $i <= count( $arr_parms ) ) {
 					if( is_null( $arr_parms[$i - 1] ) ) {
 						$replace = 'NULL';
@@ -411,10 +423,10 @@ function db_query_bound( $p_query, $arr_parms = null, $p_limit = -1, $p_offset =
 						echo( "Invalid argument type passed to query_bound(): $i" );
 						exit( 1 );
 					}
-					$p_query = utf8_substr( $p_query, 0, $matches[1][1] ) . $replace . utf8_substr( $p_query, $matches[1][1] + utf8_strlen( $matches[1][0] ) );
-					$lastoffset = $matches[1][1] + utf8_strlen( $replace );
+					$p_query = utf8_substr( $p_query, 0, $matches[1] ) . $replace . utf8_substr( $p_query, $matches[1] + utf8_strlen( $matches[0] ) );
+					$lastoffset = $matches[1] + utf8_strlen( $replace );
 				} else {
-					$lastoffset = $matches[1][1] + 1;
+					$lastoffset = $matches[1] + 1;
 				}
 				$i++;
 			}
@@ -484,7 +496,7 @@ function db_fetch_array( &$p_result ) {
 	}
 
 	# mysql obeys FETCH_MODE_BOTH, hence ->fields works, other drivers do not support this
-	if( $g_db_type == 'mysql' || $g_db_type == 'odbc_mssql' ) {
+	if( $g_db_type == 'mysql' || $g_db_type == 'odbc_mssql'  || $g_db_type == 'mssqlnative' ) {
 		$t_array = $p_result->fields;
 		$p_result->MoveNext();
 		return $t_array;
@@ -593,6 +605,11 @@ function db_insert_id( $p_table = null, $p_field = "id" ) {
 			$result = db_query_bound( $query );
 			return db_result( $result );
 		}
+	}
+	if( db_is_mssql() ) {
+		$query = "SELECT IDENT_CURRENT('$p_table')";
+		$result = db_query_bound( $query );
+		return db_result( $result );
 	}
 	return $g_db->Insert_ID();
 }
@@ -736,6 +753,7 @@ function db_prepare_string( $p_string ) {
 
 	switch( $t_db_type ) {
 		case 'mssql':
+		case 'mssqlnative':
 		case 'odbc_mssql':
 		case 'ado_mssql':
 			if( ini_get( 'magic_quotes_sybase' ) ) {
@@ -752,10 +770,6 @@ function db_prepare_string( $p_string ) {
 		case 'db2':
 			$t_escaped = $g_db->qstr( $p_string, false );
 			return utf8_substr( $t_escaped, 1, utf8_strlen( $t_escaped ) - 2 );
-			break;
-		case 'mssql':
-			break;
-		case 'odbc_mssql':
 			break;
 		case 'mysql':
 			return mysql_real_escape_string( $p_string );
@@ -789,6 +803,7 @@ function db_prepare_binary_string( $p_string ) {
 
 	switch( $t_db_type ) {
 		case 'mssql':
+		case 'mssqlnative':
 		case 'odbc_mssql':
 		case 'ado_mssql':
 			$content = unpack( "H*hex", $p_string );

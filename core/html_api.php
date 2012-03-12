@@ -51,7 +51,7 @@
  * @package CoreAPI
  * @subpackage HTMLAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  * @uses lang_api.php
  */
@@ -463,17 +463,13 @@ function html_top_banner() {
 	if( !is_blank( $t_page ) && file_exists( $t_page ) && !is_dir( $t_page ) ) {
 		include( $t_page );
 	} else if( $t_show_logo ) {
-		if( is_page_name( 'login_page' ) ) {
-			$t_align = 'center';
-		} else {
-			$t_align = 'left';
-		}
+		$t_align = should_center_logo() ? 'center' : 'left';
 
 		echo '<div align="', $t_align, '">';
 		if( $t_show_url ) {
 			echo '<a href="', config_get( 'logo_url' ), '">';
 		}
-		echo '<img border="0" alt="Mantis Bug Tracker" src="' . helper_mantis_url( config_get( 'logo_image' ) ) . '" />';
+		echo '<img border="0" alt="Mantis Bug Tracker" src="' . helper_mantis_url( $t_logo_image ) . '" />';
 		if( $t_show_url ) {
 			echo '</a>';
 		}
@@ -600,7 +596,7 @@ function html_footer( $p_file = null ) {
 		$t_version_suffix = config_get_global( 'version_suffix' );
 		echo "\t", '<span class="timer"><a href="http://www.mantisbt.org/" title="Free Web Based Bug Tracker">MantisBT ', MANTIS_VERSION, ( $t_version_suffix ? " $t_version_suffix" : '' ), '</a>', '[<a href="http://www.mantisbt.org/"  title="Free Web Based Bug Tracker" target="_blank">^</a>]</span>', "\n";
 	}
-	echo "\t", '<address>Copyright &copy; 2000 - 2011 MantisBT Group</address>', "\n";
+	echo "\t", '<address>Copyright &copy; 2000 - 2012 MantisBT Group</address>', "\n";
 
 	# only display webmaster email is current user is not the anonymous user
 	if( !is_page_name( 'login_page.php' ) && auth_is_user_authenticated() && !current_user_is_anonymous() ) {
@@ -659,9 +655,16 @@ function html_footer( $p_file = null ) {
 		}
 	}
 
-	echo '</td><td>', "\n\t", '<div align="right">';
-	echo '<a href="http://www.mantisbt.org" title="Free Web Based Bug Tracker"><img src="' . helper_mantis_url( 'images/mantis_logo_button.gif' ) . '" width="88" height="35" alt="Powered by Mantis Bugtracker" border="0" /></a>';
-	echo '</div>', "\n", '</td></tr></table>', "\n";
+	echo '</td><td>', "\n\t";
+	
+	# We don't have a button anymore, so for now we will only show the resized version of the logo when not on login page.
+	if ( !is_page_name( 'login_page' ) ) {
+		echo '<div align="right">';
+		echo '<a href="http://www.mantisbt.org" title="Free Web Based Bug Tracker"><img src="' . helper_mantis_url( 'images/mantis_logo_232x80.png' ) . '" width="145" height="50" alt="Powered by Mantis Bugtracker" border="0" /></a>';
+		echo '</div>', "\n";
+	}
+
+	echo '</td></tr></table>', "\n";
 }
 
 /**
@@ -1640,7 +1643,7 @@ function html_buttons_view_bug_page( $p_bug_id ) {
 
 	# MONITOR/UNMONITOR button
 	if( !current_user_is_anonymous() ) {
-		echo '<td class=center">';
+		echo '<td class="center">';
 		if( user_is_monitoring_bug( auth_get_current_user_id(), $p_bug_id ) ) {
 			html_button_bug_unmonitor( $p_bug_id );
 		} else {

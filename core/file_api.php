@@ -18,7 +18,7 @@
  * @package CoreAPI
  * @subpackage FileAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -646,10 +646,11 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 		$t_file_path = config_get( 'absolute_path_default_upload_folder' );
 	} else {
 		$t_file_path = project_get_field( $t_project_id, 'file_path' );
-		if( $t_file_path == '' ) {
+		if( is_blank( $t_file_path ) ) {
 			$t_file_path = config_get( 'absolute_path_default_upload_folder' );
 		}
 	}
+
 	$c_file_path = db_prepare_string( $t_file_path );
 	$c_new_file_name = db_prepare_string( $t_file_name );
 
@@ -848,35 +849,35 @@ function file_get_extension( $p_filename ) {
 }
 
 /**
- * 
+ *
  * Copies all attachments from the source bug to the destination bug
- * 
+ *
  * <p>Does not perform history logging and does not perform access checks.</p>
- * 
+ *
  * @param int $p_source_bug_id
  * @param int $p_dest_bug_id
  */
 function file_copy_attachments( $p_source_bug_id, $p_dest_bug_id ) {
-    
+
     $t_mantis_bug_file_table = db_get_table( 'mantis_bug_file_table' );
-    
+
     $query = 'SELECT * FROM ' . $t_mantis_bug_file_table . ' WHERE bug_id = ' . db_param();
     $result = db_query_bound( $query, Array( $p_source_bug_id ) );
     $t_count = db_num_rows( $result );
-    
+
     $t_bug_file = array();
     for( $i = 0;$i < $t_count;$i++ ) {
         $t_bug_file = db_fetch_array( $result );
-    
+
         # prepare the new diskfile name and then copy the file
-        $t_file_path = dirname( $t_bug_file['folder'] );
+        $t_file_path = $t_bug_file['folder'];
         $t_new_diskfile_name = $t_file_path . file_generate_unique_name( 'bug-' . $t_bug_file['filename'], $t_file_path );
         $t_new_file_name = file_get_display_name( $t_bug_file['filename'] );
         if(( config_get( 'file_upload_method' ) == DISK ) ) {
-            copy( $t_bug_file['diskfile'], $t_new_diskfile_name );
+            copy( $t_file_path.$t_bug_file['diskfile'], $t_new_diskfile_name );
             chmod( $t_new_diskfile_name, config_get( 'attachments_file_permissions' ) );
         }
-    
+
         $query = "INSERT INTO $t_mantis_bug_file_table
     						( bug_id, title, description, diskfile, filename, folder, filesize, file_type, date_added, content )
     						VALUES ( " . db_param() . ",
@@ -891,4 +892,19 @@ function file_copy_attachments( $p_source_bug_id, $p_dest_bug_id ) {
     								 " . db_param() . ");";
         db_query_bound( $query, Array( $p_dest_bug_id, $t_bug_file['title'], $t_bug_file['description'], $t_new_diskfile_name, $t_new_file_name, $t_bug_file['folder'], $t_bug_file['filesize'], $t_bug_file['file_type'], $t_bug_file['date_added'], $t_bug_file['content'] ) );
     }
+}
+
+/**
+ * Returns a possibly override content type for a file name
+ *
+ * @param string $p_filename the filename of the file which will be downloaded
+ * @return string the content type, or empty if it should not be overriden
+ */
+function file_get_content_type_override( $p_filename ) {
+
+	global $g_file_download_content_type_overrides;
+
+	$t_extension = pathinfo( $p_filename, PATHINFO_EXTENSION );
+
+	return $g_file_download_content_type_overrides[$t_extension];
 }

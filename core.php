@@ -17,7 +17,7 @@
 /**
  * @package MantisBT
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -106,6 +106,26 @@ set_include_path( implode( PATH_SEPARATOR, $path ) );
  * Unset global variables that are no longer needed.
  */
 unset($mantisRoot, $mantisLibrary, $mantisCore, $path);
+
+require_once( 'mobile_api.php' );
+
+if ( strlen( $GLOBALS['g_mantistouch_url'] ) > 0 && mobile_is_mobile_browser() ) {
+	$t_url = sprintf( $GLOBALS['g_mantistouch_url'], $GLOBALS['g_path'] );
+
+	if ( OFF == $g_use_iis ) {
+		header( 'Status: 302' );
+	}
+
+	header( 'Content-Type: text/html' );
+
+	if ( ON == $g_use_iis ) {
+		header( "Refresh: 0;$t_url" );
+	} else {
+		header( "Location: $t_url" );
+	}
+
+	exit; # additional output can cause problems so let's just stop output here
+}
 
 # load UTF8-capable string functions
 require_once( 'utf8/utf8.php' );

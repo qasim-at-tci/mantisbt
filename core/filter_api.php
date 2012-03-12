@@ -18,7 +18,7 @@
  * @package CoreAPI
  * @subpackage FilterAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2011  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -597,7 +597,7 @@ function filter_ensure_valid_filter( $p_filter_arr ) {
 	$t_fields = helper_get_columns_to_view();
 	$t_n_fields = count( $t_fields );
 	for( $i = 0;$i < $t_n_fields;$i++ ) {
-		if( isset( $t_fields[$i] ) && in_array( $t_fields[$i], array( 'selection', 'edit', 'bugnotes_count', 'attachment' ) ) ) {
+		if( isset( $t_fields[$i] ) && in_array( $t_fields[$i], array( 'selection', 'edit', 'bugnotes_count', 'attachment_count' ) ) ) {
 			unset( $t_fields[$i] );
 		}
 	}
@@ -917,7 +917,7 @@ function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clause
 				$t_custom_field = utf8_substr( $c_sort, utf8_strlen( 'custom_' ) );
 				$t_custom_field_id = custom_field_get_id_from_name( $t_custom_field );
 
-				$c_cf_alias = str_replace( ' ', '_', $t_custom_field );
+				$c_cf_alias = 'custom_field_' . $t_custom_field_id;
 				$t_cf_table_alias = $t_custom_field_string_table . '_' . $t_custom_field_id;
 				$t_cf_select = "$t_cf_table_alias.value $c_cf_alias";
 
@@ -4065,7 +4065,7 @@ function print_filter_show_sort() {
 	$t_n_fields = count( $t_fields );
 	$t_shown_fields[''] = '';
 	for( $i = 0;$i < $t_n_fields;$i++ ) {
-		if( !in_array( $t_fields[$i], array( 'selection', 'edit', 'bugnotes_count', 'attachment' ) ) ) {
+		if( !in_array( $t_fields[$i], array( 'selection', 'edit', 'bugnotes_count', 'attachment_count' ) ) ) {
 			if( strpos( $t_fields[$i], 'custom_' ) === 0 ) {
 				$t_field_name = string_display( lang_get_defaulted( utf8_substr( $t_fields[$i], utf8_strlen( 'custom_' ) ) ) );
 			} else {

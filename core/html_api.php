@@ -434,7 +434,16 @@ function html_body_begin() {
  * @return null
  */
 function html_header() {
+	global $g_mbadmin_mode;
 	$t_title = config_get( 'page_title' );
+
+	# Display header for Maintenance Bypass mode
+	if( $g_mbadmin_mode ) {
+		echo '<div class="center"><span class="pagetitle">',
+			string_display( lang_get( 'maintenance_bypass_mode' ) ),
+			'</span></div>', "\n";
+	}
+
 	if( !is_blank( $t_title ) ) {
 		echo '<div class="center"><span class="pagetitle">', string_display( $t_title ), '</span></div>', "\n";
 	}

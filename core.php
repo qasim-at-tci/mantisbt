@@ -30,9 +30,23 @@
  *   If you have to test MantisBT while it's offline, add the
  *   parameter 'mbadmin=1' to the URL.
  */
-if ( file_exists( 'mantis_offline.php' ) && !isset( $_GET['mbadmin'] ) ) {
-	include( 'mantis_offline.php' );
-	exit;
+if ( file_exists( 'mantis_offline.php' ) ) {
+	# Name of Maintenance Bypass Cookie is defined here, as we have not
+	# loaded config_inc.php yet
+	$g_cookie_mbadmin = 'MANTIS_MBADMIN_COOKIE';
+	$t_mbadmin = isset( $_COOKIE[$g_cookie_mbadmin] );
+	if( !$t_mbadmin ) {
+		# Maintenance Bypass parameter only makes sense at login time
+		$t_backtrace = debug_backtrace();
+		$t_parent = basename( $t_backtrace[0]['file'] );
+		if( !(   $t_parent == 'login_page.php' && isset( $_GET['mbadmin'] )
+			  || $t_parent == 'login.php' && isset( $_POST['mbadmin'] )
+			 )
+		) {
+			include( 'mantis_offline.php' );
+			exit;
+		}
+	}
 }
 
 $g_request_time = microtime(true);
@@ -282,3 +296,10 @@ if ( !isset( $g_skip_lang_load ) ) {
 # signal plugins that the core system is loaded
 event_signal( 'EVENT_CORE_READY' );
 
+
+# Set Maintenance Bypass mode (define global variable)
+$g_mbadmin_mode = isset( $t_mbadmin );
+if( $g_mbadmin_mode && !$t_mbadmin ) {
+	# Clear cookies if we're in Maintenance Bypass mode, to force user login
+	auth_clear_cookies();
+}

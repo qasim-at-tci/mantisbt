@@ -34,6 +34,7 @@
 	$f_username		 = gpc_get_string( 'username', '' );
 	$f_perm_login		 = gpc_get_bool( 'perm_login', false );
 	$f_secure_session	 = gpc_get_bool( 'secure_session', false );
+	$f_mbadmin		 = gpc_get_bool( 'mbadmin', false );
 	$f_secure_session_cookie = gpc_get_cookie( config_get_global( 'cookie_prefix' ) . '_secure_session', null );
 
 	$t_session_validation = ( ON == config_get_global( 'session_validation' ) );
@@ -104,6 +105,11 @@
 <div align="center">
 <form name="login_form" method="post" action="login.php">
 <?php # CSRF protection not required here - form does not result in modifications ?>
+
+<?php if( $f_mbadmin ) { ?>
+<input type="hidden" name="mbadmin" value="1" />
+<?php } ?>
+
 <table class="width50" cellspacing="1">
 <tr>
 	<td class="form-title">

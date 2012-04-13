@@ -493,7 +493,7 @@ function auth_set_cookies( $p_user_id, $p_perm_login = false ) {
  * @access public
  */
 function auth_clear_cookies() {
-	global $g_script_login_cookie, $g_cache_cookie_valid;
+	global $g_script_login_cookie, $g_cache_cookie_valid, $g_cookie_mbadmin;
 
 	$t_cookies_cleared = false;
 	$g_cache_cookie_valid = null;
@@ -502,8 +502,12 @@ function auth_clear_cookies() {
 	if( $g_script_login_cookie == null ) {
 		$t_cookie_name = config_get( 'string_cookie' );
 		$t_cookie_path = config_get( 'cookie_path' );
+		$t_cookie_domain = config_get( 'cookie_domain' );
 
-		gpc_clear_cookie( $t_cookie_name, $t_cookie_path );
+		gpc_clear_cookie( $t_cookie_name, $t_cookie_path, $t_cookie_domain );
+		if( isset( $g_cookie_mbadmin )) {
+			gpc_clear_cookie( $g_cookie_mbadmin, $t_cookie_path, $t_cookie_domain );
+		}
 		$t_cookies_cleared = true;
 	} else {
 		$g_script_login_cookie = null;

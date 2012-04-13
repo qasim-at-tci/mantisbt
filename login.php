@@ -34,6 +34,7 @@
 	$t_return		= string_url( string_sanitize_url( gpc_get_string( 'return', config_get( 'default_home_page' ) ) ) );
 	$f_from			= gpc_get_string( 'from', '' );
 	$f_secure_session = gpc_get_bool( 'secure_session', false );
+	$f_mbadmin		= gpc_get_bool( 'mbadmin', false );
 
 	$f_username = auth_prepare_username($f_username);
 	$f_password = auth_prepare_password($f_password);
@@ -42,6 +43,11 @@
 
 	if ( auth_attempt_login( $f_username, $f_password, $f_perm_login ) ) {
 		session_set( 'secure_session', $f_secure_session );
+		# Set the Maintenance Bypass mode Cookie (for administrators only)
+		if( $f_mbadmin && user_is_administrator( user_get_id_by_name( $f_username ) ) ) {
+			global $g_cookie_mbadmin;
+			gpc_set_cookie( $g_cookie_mbadmin, '1' );
+		}
 
 		$t_redirect_url = 'login_cookie_test.php?return=' . $t_return;
 

@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-define( 'MANTIS_VERSION', '1.2.9' );
+define( 'MANTIS_VERSION', '1.2.10' );
 
 # --- constants -------------------
 # magic numbers
@@ -215,7 +215,6 @@ define( 'ERROR_REPORT', 3 );
 define( 'ERROR_NO_FILE_SPECIFIED', 4 );
 define( 'ERROR_FILE_DISALLOWED', 5 );
 define( 'ERROR_NO_DIRECTORY', 6 );
-define( 'ERROR_DUPLICATE_FILE', 9 );
 define( 'ERROR_DUPLICATE_PROJECT', 10 );
 define( 'ERROR_EMPTY_FIELD', 11 );
 define( 'ERROR_PROTECTED_ACCOUNT', 12 );

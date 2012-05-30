@@ -52,6 +52,9 @@ switch( $GLOBALS['g_db_type'] ) {
 		break;
 }
 
+/**
+ * Begin schema definition
+ */
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table( 'mantis_config_table' ),"
 			  config_id C(64) NOTNULL PRIMARY,
 			  project_id I DEFAULT '0' PRIMARY,
@@ -98,7 +101,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_bug_relationship_
   relationship_type 	I2 NOTNULL DEFAULT '0'
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_relationship_source',db_get_table('mantis_bug_relationship_table'),'source_bug_id'));
-/* 10 */
+
+/**
+ * Schema version: 10
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array('CreateIndexSQL',Array('idx_relationship_destination',db_get_table('mantis_bug_relationship_table'),'destination_bug_id'));
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_bug_table'),"
   id 			 I  UNSIGNED PRIMARY NOTNULL AUTOINCREMENT,
@@ -152,7 +160,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_bugnote_table'),"
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_bug',db_get_table('mantis_bugnote_table'),'bug_id'));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_last_mod',db_get_table('mantis_bugnote_table'),'last_modified'));
-/* 20 */
+
+/**
+ * Schema version: 20
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_bugnote_text_table'),"
   id 			 I  UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
   note 			XL NOTNULL
@@ -227,7 +240,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_file_tabl
   date_added 		T NOTNULL DEFAULT '" . db_null_date() . "',
   content 		B NOTNULL
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
-/* 30 */
+
+/**
+ * Schema version: 30
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_hierarchy_table'),"
 			  child_id I UNSIGNED NOTNULL,
 			  parent_id I UNSIGNED NOTNULL",
@@ -243,11 +261,11 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_table'),"
   description 		XL $t_notnull
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
-// Index autocreated when oci used
+# Index autocreated when oci used
 if( 'oci8' != $GLOBALS['g_db_type'] ) {
 	$upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id'));
 } else {
-	// No-op - required to ensure schema version consistency
+	# No-op - required to ensure schema version consistency
 	$upgrade[] = NULL;
 }
 
@@ -279,7 +297,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_sponsorship_table
   date_submitted 	T NOTNULL DEFAULT '" . db_null_date() . "',
   last_updated 		T NOTNULL DEFAULT '" . db_null_date() . "'
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
-/* 40 */
+
+/**
+ * Schema version: 40
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array('CreateIndexSQL',Array('idx_sponsorship_bug_id',db_get_table('mantis_sponsorship_table'),'bug_id'));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_sponsorship_user_id',db_get_table('mantis_sponsorship_table'),'user_id'));
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_tokens_table'),"
@@ -354,7 +377,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_user_table'),"
 $upgrade[] = Array('CreateIndexSQL',Array('idx_user_cookie_string',db_get_table('mantis_user_table'),'cookie_string',Array('UNIQUE')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_user_username',db_get_table('mantis_user_table'),'username',Array('UNIQUE')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_enable',db_get_table('mantis_user_table'),'enabled'));
-/* 50 */
+
+/**
+ * Schema version: 50
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array('CreateIndexSQL',Array('idx_access',db_get_table('mantis_user_table'),'access_level'));
 
 $upgrade[] = Array('InsertData', Array( db_get_table('mantis_user_table'),
@@ -374,11 +402,11 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_email_table'),"
   body 			XL NOTNULL
   ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
-// Index autocreated when oci used
+# Index autocreated when oci used
 if( 'oci8' != $GLOBALS['g_db_type'] ) {
 	$upgrade[] = Array('CreateIndexSQL',Array('idx_email_id',db_get_table('mantis_email_table'),'email_id'));
 } else {
-	// No-op - required to ensure schema version consistency
+	# No-op - required to ensure schema version consistency
 	$upgrade[] = NULL;
 }
 
@@ -387,7 +415,12 @@ $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bug_table'), "targe
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bugnote_table'), "time_tracking I UNSIGNED NOTNULL DEFAULT \" 0 \""));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_diskfile',db_get_table('mantis_bug_file_table'),'diskfile'));
 $upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_print_pref_table' ), "print_pref C(64) NOTNULL" ) );
-/* 60 */
+
+/**
+ * Schema version: 60
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_bug_history_table' ), "field_name C(64) $t_notnull" ) );
 
 # Release marker: 1.1.0a4
@@ -418,7 +451,9 @@ $upgrade[] = Array('CreateTableSQL', Array( db_get_table( 'mantis_plugin_table' 
 
 $upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "redirect_delay 	I $t_notnull DEFAULT 0" ) );
 
-/* apparently mysql now has a STRICT mode, where setting a DEFAULT value on a blob/text is now an error, instead of being silently ignored */
+/* apparently mysql now has a STRICT mode, where setting a DEFAULT value on a
+ * blob/text is now an error, instead of being silently ignored
+ */
 if ( isset( $f_db_type ) && ( $f_db_type == 'mysql' || $f_db_type == 'mysqli' ) ) {
 	$upgrade[] = Array('AlterColumnSQL', Array( db_get_table( 'mantis_custom_field_table' ), "possible_values X NOTNULL" ) );
 } else {
@@ -436,13 +471,19 @@ $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_category_project_name', db_get
 $upgrade[] = Array( 'InsertData', Array( db_get_table( 'mantis_category_table' ), "
 	( project_id, user_id, name, status ) VALUES
 	( '0', '0', 'General', '0' ) " ) );
-/* 70 */
+
+/**
+ * Schema version: 70
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "category_id I UNSIGNED NOTNULL DEFAULT '1'" ) );
 $upgrade[] = Array( 'UpdateFunction', "category_migrate" );
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "category" ) );
 $upgrade[] = Array( 'DropTableSQL', Array( db_get_table( 'mantis_project_category_table' ) ) );
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_project_table' ), "category_id I UNSIGNED NOTNULL DEFAULT '1'" ) );
-// remove unnecessary indexes
+
+# remove unnecessary indexes
 $upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id', array('DROP')), Array( 'db_index_exists', Array( db_get_table('mantis_project_table'), 'idx_project_id')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_config',db_get_table( 'mantis_config_table' ),'config_id', array('DROP')), Array( 'db_index_exists', Array( db_get_table('mantis_config_table'), 'idx_config')));
 
@@ -452,7 +493,12 @@ $upgrade[] = Array( 'InsertData', Array( db_get_table( 'mantis_plugin_table' ), 
 
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_project_table' ), "inherit_global I UNSIGNED NOTNULL DEFAULT '0'" ) );
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_project_hierarchy_table' ), "inherit_parent I UNSIGNED NOTNULL DEFAULT '0'" ) );
-/* 80 */
+
+/**
+ * Schema version: 80
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_plugin_table' ), "
 	protected		L		NOTNULL DEFAULT \" '0' \",
 	priority		I		UNSIGNED NOTNULL DEFAULT '3'
@@ -476,15 +522,19 @@ $upgrade[] = Array( 'CreateTableSQL', Array( db_get_table( 'mantis_bug_revision_
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_bug_rev_id_time', db_get_table( 'mantis_bug_revision_table' ), 'bug_id, timestamp' ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_bug_rev_type', db_get_table( 'mantis_bug_revision_table' ), 'type' ) );
 
-#date conversion
-
+# date conversion
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "
 	date_submitted_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "
 	due_date_int        			I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "
 	last_updated_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
-/* 90 */
+
+/**
+ * Schema version: 90
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_bug_table', 'id', array( 'date_submitted', 'due_date', 'last_updated' ), array( 'date_submitted_int', 'due_date_int', 'last_updated_int' ) ) );
 
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_bug_table' ), "date_submitted" ) );
@@ -500,7 +550,12 @@ $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bugnote_table' 
 	last_modified_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bugnote_table' ), "
 	date_submitted_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
-/* 100 */
+
+/**
+ * Schema version: 100
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_bugnote_table', 'id', array( 'last_modified', 'date_submitted' ), array( 'last_modified_int', 'date_submitted_int' ) ) );
 
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_bugnote_table' ), "last_modified" ) );
@@ -513,7 +568,11 @@ $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bug_file_table'
 $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_bug_file_table', 'id', 'date_added', 'date_added_int' ) );
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_bug_file_table' ), "date_added" ) );
 $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_bug_file_table' ), "date_added_int", "date_added", "date_added_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
-/* 110 */
+
+/**
+ * Schema version: 110
+ * ----------------------------------------------------------------------------
+ */
 
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_project_file_table' ), "
 	date_added_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
@@ -531,7 +590,11 @@ $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_user_table' ), 
 	last_visit_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_user_table' ), "
 	date_created_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
-/* 120 */
+
+/**
+ * Schema version: 120
+ * ----------------------------------------------------------------------------
+ */
 
 $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_user_table', 'id', array( 'last_visit', 'date_created' ), array( 'last_visit_int', 'date_created_int' ) ) );
 
@@ -548,7 +611,13 @@ $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_email_table'
 
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_tag_table' ), "
 	date_created_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
-/* 130 */
+
+/**
+ * Schema version: 130
+ * ----------------------------------------------------------------------------
+ */
+
+
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_tag_table' ), "
 	date_updated_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 
@@ -564,8 +633,11 @@ $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_bug_tag_table' 
 $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_bug_tag_table', 'bug_id', 'date_attached', 'date_attached_int' ) );
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_bug_tag_table' ), "date_attached" ) );
 $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_bug_tag_table' ), "date_attached_int", "date_attached", "date_attached_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
-/* 140 */
 
+/**
+ * Schema version: 140
+ * ----------------------------------------------------------------------------
+ */
 
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_tokens_table' ), "
 	timestamp_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
@@ -584,7 +656,11 @@ $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_news_table' ), 
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_news_table' ), "
 	date_posted_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_news_table', 'id', array( 'date_posted', 'last_modified' ), array( 'date_posted_int', 'last_modified_int' ) ) );
-/* 150 */
+
+/**
+ * Schema version: 150
+ * ----------------------------------------------------------------------------
+ */
 
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_news_table' ), "last_modified" ) );
 $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_news_table' ), "last_modified_int", "last_modified", "last_modified_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
@@ -598,7 +674,11 @@ $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_bug_revisio
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_bug_revision_table' ), "timestamp" ) );
 $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_bug_revision_table' ), "timestamp_int", "timestamp", "timestamp_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_bug_rev_id_time', db_get_table( 'mantis_bug_revision_table' ), 'bug_id, timestamp' ) );
-/* 160 */
+
+/**
+ * Schema version: 160
+ * ----------------------------------------------------------------------------
+ */
 
 $upgrade[] = Array( 'AddColumnSQL', Array( db_get_table( 'mantis_user_pref_table' ), "
 	 timezone C(32) NOTNULL DEFAULT '' " ) );
@@ -619,7 +699,11 @@ $upgrade[] = Array( 'UpdateFunction', "date_migrate", array( 'mantis_sponsorship
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_sponsorship_table' ), "last_updated" ) );
 $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_sponsorship_table' ), "last_updated_int", "last_updated", "last_updated_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 
-/* 170 */
+/**
+ * Schema version: 170
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_sponsorship_table' ), "date_submitted" ) );
 $upgrade[] = Array( 'RenameColumnSQL', Array( db_get_table( 'mantis_sponsorship_table' ), "date_submitted_int", "date_submitted", "date_submitted_int		I  UNSIGNED     NOTNULL DEFAULT '1' " ) );
 
@@ -633,7 +717,7 @@ $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_tabl
 $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_table'), "advanced_update" ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_project_hierarchy_child_id', db_get_table( 'mantis_project_hierarchy_table' ), 'child_id' ) );
 
-// Decrease index name length for oci8 (30 chars max)
+# Decrease index name length for oci8 (30 chars max)
 if( 'oci8' != $GLOBALS['g_db_type'] ) {
 	$t_index_name = 'idx_project_hierarchy_parent_id';
 } else {
@@ -641,7 +725,11 @@ if( 'oci8' != $GLOBALS['g_db_type'] ) {
 }
 $upgrade[] = Array( 'CreateIndexSQL', Array( $t_index_name, db_get_table( 'mantis_project_hierarchy_table' ), 'parent_id' ) );
 
-/* 180 */
+/**
+ * Schema version: 180
+ * ----------------------------------------------------------------------------
+ */
+
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_tag_name', db_get_table( 'mantis_tag_table' ), 'name' ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_bug_tag_tag_id', db_get_table( 'mantis_bug_tag_table' ), 'tag_id' ) );
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_email_id', db_get_table( 'mantis_email_table' ), 'email_id', array( 'DROP' ) ), Array( 'db_index_exists', Array( db_get_table( 'mantis_email_table' ), 'idx_email_id') ) );

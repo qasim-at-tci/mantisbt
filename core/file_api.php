@@ -720,6 +720,33 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 	}
 }
 
+/**
+ * Add multiple file attachments in one go
+ *
+ * @param integer $p_bug_id the bug id
+ * @param array $p_files an array of files to upload as retrieved from gpc_get_file()
+ */
+function file_add_multiple( $p_bug_id, $p_files ) {
+
+	// transpose the array received, so that the key is the file name and the
+	// value is a sub-array of that file's attributes
+	// i.e. a1(f1,f2,...),a2(f1,...),... ==> a1(k1,k2,...),a2(k1,...),...
+	$t_files = array();
+	foreach( $p_files as $key => $subarr ) {
+		foreach( $subarr as $subkey => $subvalue ) {
+			$t_files[$subkey][$key] = $subvalue;
+		}
+	}
+
+	// Upload the files
+	foreach( $t_files as $t_file ) {
+		// Empty file name means not file was specified
+		if( !empty( $t_file['name'] ) ) {
+			file_add( $f_bug_id, $t_file );
+		}
+	}
+}
+
 # --------------------
 # Return true if file uploading is enabled (in our config and PHP's),
 #  false otherwise

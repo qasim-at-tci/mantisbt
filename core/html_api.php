@@ -656,7 +656,7 @@ function html_footer( $p_file = null ) {
 	}
 
 	echo '</td><td>', "\n\t";
-	
+
 	# We don't have a button anymore, so for now we will only show the resized version of the logo when not on login page.
 	if ( !is_page_name( 'login_page' ) ) {
 		echo '<div align="right">';
@@ -1313,7 +1313,7 @@ function html_status_percentage_legend() {
 /**
  * Print an html button inside a form
  * @param string $p_action
- * @param string $p_buttion_text
+ * @param string $p_button_text
  * @param array $p_fields
  * @param string $p_method
  * @return null
@@ -1365,15 +1365,18 @@ function html_button_bug_update( $p_bug_id ) {
  * This code is similar to print_status_option_list except
  * there is no masking, except for the current state
  *
- * @param int $p_bug_id
+ * @param BugData $p_bug Bug object
  * @return null
  */
-function html_button_bug_change_status( $p_bug_id ) {
-	$t_bug_project_id = bug_get_field( $p_bug_id, 'project_id' );
-	$t_bug_current_state = bug_get_field( $p_bug_id, 'status' );
-	$t_current_access = access_get_project_level( $t_bug_project_id );
+function html_button_bug_change_status( $p_bug ) {
+	$t_current_access = access_get_project_level( $p_bug->project_id );
 
-	$t_enum_list = get_status_option_list( $t_current_access, $t_bug_current_state, false, ( bug_get_field( $p_bug_id, 'reporter_id' ) == auth_get_current_user_id() && ( ON == config_get( 'allow_reporter_close' ) ) ), $t_bug_project_id );
+	$t_enum_list = get_status_option_list(
+		$t_current_access,
+		$p_bug->status,
+		false,
+		bug_is_user_reporter( $p_bug->id, auth_get_current_user_id() ) && ( ON == config_get( 'allow_reporter_close' ) ),
+		$p_bug->project_id );
 
 	if( count( $t_enum_list ) > 0 ) {
 
@@ -1399,7 +1402,7 @@ function html_button_bug_change_status( $p_bug_id ) {
 		}
 		echo '</select>';
 
-		$t_bug_id = string_attribute( $p_bug_id );
+		$t_bug_id = string_attribute( $p_bug->id );
 		echo "<input type=\"hidden\" name=\"id\" value=\"$t_bug_id\" />\n";
 
 		echo "</form>\n";
@@ -1408,36 +1411,32 @@ function html_button_bug_change_status( $p_bug_id ) {
 
 /**
  * Print Assign To: combo box of possible handlers
- * @param int $p_bug_id
+ * @param BugData $p_bug Bug object
  * @return null
  */
-function html_button_bug_assign_to( $p_bug_id ) {
+function html_button_bug_assign_to( $p_bug ) {
 
 	# make sure status is allowed of assign would cause auto-set-status
-	$t_status = bug_get_field( $p_bug_id, 'status' );
-
 	# workflow implementation
-
-	if( ON == config_get( 'auto_set_status_to_assigned' ) && !bug_check_workflow( $t_status, config_get( 'bug_assigned_status' ) ) ) {
-
-		# workflow
+	if(    ON == config_get( 'auto_set_status_to_assigned' )
+		&& !bug_check_workflow( $p_bug->status, config_get( 'bug_assigned_status' ) )
+	) {
 		return;
 	}
 
 	# make sure current user has access to modify bugs.
-	if( !access_has_bug_level( config_get( 'update_bug_assign_threshold', config_get( 'update_bug_threshold' ) ), $p_bug_id ) ) {
+	if( !access_has_bug_level( config_get( 'update_bug_assign_threshold', config_get( 'update_bug_threshold' ) ), $p_bug->id ) ) {
 		return;
 	}
 
-	$t_reporter_id = bug_get_field( $p_bug_id, 'reporter_id' );
-	$t_handler_id = bug_get_field( $p_bug_id, 'handler_id' );
 	$t_current_user_id = auth_get_current_user_id();
-	$t_new_status = ( ON == config_get( 'auto_set_status_to_assigned' ) ) ? config_get( 'bug_assigned_status' ) : $t_status;
-
+	$t_new_status = ( ON == config_get( 'auto_set_status_to_assigned' ) ) ? config_get( 'bug_assigned_status' ) : $p_bug->status;
 	$t_options = array();
 	$t_default_assign_to = null;
 
-	if(( $t_handler_id != $t_current_user_id ) && ( access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug_id, $t_current_user_id ) ) ) {
+	if(    ( $p_bug->handler_id != $t_current_user_id )
+		&& access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug->id, $t_current_user_id )
+	) {
 		$t_options[] = array(
 			$t_current_user_id,
 			'[' . lang_get( 'myself' ) . ']',
@@ -1445,14 +1444,17 @@ function html_button_bug_assign_to( $p_bug_id ) {
 		$t_default_assign_to = $t_current_user_id;
 	}
 
-	if(( $t_handler_id != $t_reporter_id ) && user_exists( $t_reporter_id ) && ( access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug_id, $t_reporter_id ) ) ) {
+	if(    ( $p_bug->handler_id != $p_bug->reporter_id )
+		&& user_exists( $p_bug->reporter_id )
+		&& access_has_bug_level( config_get( 'handle_bug_threshold' ), $p_bug->id, $p_bug->reporter_id )
+	) {
 		$t_options[] = array(
-			$t_reporter_id,
+			$p_bug->reporter_id,
 			'[' . lang_get( 'reporter' ) . ']',
 		);
 
 		if( $t_default_assign_to === null ) {
-			$t_default_assign_to = $t_reporter_id;
+			$t_default_assign_to = $p_bug->reporter_id;
 		}
 	}
 
@@ -1489,17 +1491,15 @@ function html_button_bug_assign_to( $p_bug_id ) {
 	}
 
 	# allow un-assigning if already assigned.
-	if( $t_handler_id != 0 ) {
+	if( $p_bug->handler_id != 0 ) {
 		echo "<option value=\"0\"></option>";
 	}
 
-	$t_project_id = bug_get_field( $p_bug_id, 'project_id' );
-
 	# 0 means currently selected
-	print_assign_to_option_list( 0, $t_project_id );
+	print_assign_to_option_list( 0, $p_bug->project_id );
 	echo "</select>";
 
-	$t_bug_id = string_attribute( $p_bug_id );
+	$t_bug_id = string_attribute( $p_bug->id );
 	echo "<input type=\"hidden\" name=\"bug_id\" value=\"$t_bug_id\" />\n";
 
 	echo "</form>\n";
@@ -1529,17 +1529,33 @@ function html_button_bug_create_child( $p_bug_id ) {
 
 /**
  * Print a button to reopen the given bug
- * @param int $p_bug_id
+ * @param BugData $p_bug Bug object
  * @return null
  */
-function html_button_bug_reopen( $p_bug_id ) {
-	$t_status = bug_get_field( $p_bug_id, 'status' );
-	$t_project = bug_get_field( $p_bug_id, 'project_id' );
-	$t_reopen_status = config_get( 'bug_reopen_status', null, null, $t_project );
+function html_button_bug_reopen( $p_bug ) {
+	if( access_can_reopen_bug( $p_bug ) ) {
+		$t_reopen_status = config_get( 'bug_reopen_status', null, null, $p_bug->project_id );
+		html_button(
+			'bug_change_status_page.php',
+			lang_get( 'reopen_bug_button' ),
+			array( 'id' => $p_bug->id, 'new_status' => $t_reopen_status, 'reopen_flag' => ON )
+		);
+	}
+}
 
-	if( access_has_bug_level( config_get( 'reopen_bug_threshold', null, null, $t_project ), $p_bug_id ) ||
-			(( bug_get_field( $p_bug_id, 'reporter_id' ) == auth_get_current_user_id() ) && ( ON == config_get( 'allow_reporter_reopen', null, null, $t_project ) ) ) ) {
-		html_button( 'bug_change_status_page.php', lang_get( 'reopen_bug_button' ), array( 'id' => $p_bug_id, 'new_status' => $t_reopen_status, 'reopen_flag' => ON ) );
+/**
+ * Print a button to close the given bug
+ * @param BugData $p_bug Bug object
+ * @return null
+ */
+function html_button_bug_close( $p_bug ) {
+	if( access_can_close_bug( $p_bug ) ) {
+		$t_closed_status = config_get( 'bug_closed_status_threshold', null, null, $p_bug->project_id );
+		html_button(
+			'bug_change_status_page.php',
+			lang_get( 'close_bug_button' ),
+			array( 'id' => $p_bug->id, 'new_status' => $t_closed_status )
+		);
 	}
 }
 
@@ -1617,9 +1633,12 @@ function html_button_wiki( $p_bug_id ) {
  */
 function html_buttons_view_bug_page( $p_bug_id ) {
 	$t_resolved = config_get( 'bug_resolved_status_threshold' );
+	$t_closed = config_get( 'bug_closed_status_threshold' );
 	$t_status = bug_get_field( $p_bug_id, 'status' );
 	$t_readonly = bug_is_readonly( $p_bug_id );
 	$t_sticky = config_get( 'set_bug_sticky_threshold' );
+
+	$t_bug = bug_get( $p_bug_id );
 
 	echo '<table><tr class="vcenter">';
 	if( !$t_readonly ) {
@@ -1630,14 +1649,14 @@ function html_buttons_view_bug_page( $p_bug_id ) {
 
 		# ASSIGN button
 		echo '<td class="center">';
-		html_button_bug_assign_to( $p_bug_id );
+		html_button_bug_assign_to( $t_bug );
 		echo '</td>';
 	}
 
 	# Change status button/dropdown
-	if ( !$t_readonly || config_get( 'allow_reporter_close' ) ) {
+	if ( !$t_readonly ) {
 		echo '<td class="center">';
-		html_button_bug_change_status( $p_bug_id );
+		html_button_bug_change_status( $t_bug );
 		echo '</td>';
 	}
 
@@ -1663,21 +1682,23 @@ function html_buttons_view_bug_page( $p_bug_id ) {
 		echo '</td>';
 	}
 
+	# CLONE button
 	if( !$t_readonly ) {
-		# CREATE CHILD button
 		echo '<td class="center">';
 		html_button_bug_create_child( $p_bug_id );
 		echo '</td>';
 	}
 
-	if( $t_resolved <= $t_status ) {
-		# resolved is not the same as readonly
-		echo '<td class="center">';
+	# REOPEN button
+	echo '<td class="center">';
+	html_button_bug_reopen( $t_bug );
+	echo '</td>';
 
-		# REOPEN button
-		html_button_bug_reopen( $p_bug_id );
-		echo '</td>';
-	}
+	# CLOSE button
+	echo '<td class="center">';
+	html_button_bug_close( $t_bug );
+	echo '</td>';
+
 
 	# MOVE button
 	echo '<td class="center">';

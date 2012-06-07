@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** French (Français)
+/** French (français)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -29,6 +29,7 @@
  * @author Atrol
  * @author Cedric31
  * @author Crochet.david
+ * @author DavidL
  * @author Dregad
  * @author Eric Hartmann, eric@rhinfo.com
  * @author Francis Labrie, francis.labrie@smoguli.com
@@ -66,7 +67,7 @@ $s_actiongroup_menu_resolve = 'Résoudre';
 $s_actiongroup_menu_update_priority = 'Mettre à jour la priorité';
 $s_actiongroup_menu_update_status = 'Mettre à jour l\'état';
 $s_actiongroup_menu_update_severity = 'Mettre à jour l\'impact';
-$s_actiongroup_menu_update_view_status = 'Mettre à jour Afficher l\'état';
+$s_actiongroup_menu_update_view_status = 'Mettre à jour l’état d’affichage';
 $s_actiongroup_menu_update_category = 'Mettre à jour la Catégorie';
 $s_actiongroup_menu_set_sticky = 'Activer / désactiver la récurrence';
 $s_actiongroup_menu_update_field = 'Mettre à jour %1$s';
@@ -79,7 +80,7 @@ $s_actiongroup_bugs = 'Bogues sélectionnés';
 $s_actiongroup_error_issue_is_readonly = 'Le bogue est en lecture seule.';
 $s_all_projects = 'Tous les projets';
 $s_move_bugs = 'Déplacer les bogues';
-$s_operation_successful = 'Opération réussie';
+$s_operation_successful = 'Opération réussie.';
 $s_date_order = 'Par date';
 $s_print_all_bug_page_link = 'Rapport imprimable';
 $s_csv_export = 'Export CSV';
@@ -126,7 +127,7 @@ $s_no_category = '(Aucune catégorie)';
 $s_global_categories = 'Catégories globales';
 $s_inherit = 'Hériter les catégories';
 $s_inherit_global = 'Hériter les catégories globales';
-$s_inherit_parent = 'Hériter les catégories parents';
+$s_inherit_parent = 'Hériter les catégories parentes';
 $s_update_subproject_inheritance = 'Mettre à jour l\'héritage du sous-projet';
 $s_duplicate_of = 'doublon de';
 $s_has_duplicate = 'a pour doublon';
@@ -162,7 +163,7 @@ $s_assign_bugs_conf_msg = 'Assigner à';
 $s_resolve_bugs_conf_msg = 'Choisir la résultion des bogues';
 $s_priority_bugs_conf_msg = 'Choisir la priorité des bogues';
 $s_status_bugs_conf_msg = 'Choisir l\'état des bogues';
-$s_view_status_bugs_conf_msg = 'Choisir afficher l\'état des bogues';
+$s_view_status_bugs_conf_msg = 'Choisir afficher l’état des bogues';
 $s_category_bugs_conf_msg = 'Choisir la catégorie des bogues';
 $s_set_sticky_bugs_conf_msg = 'Voulez-vous vraiement activer / désactiver la  récurrence de ces bogues ?';
 $s_fixed_in_version_bugs_conf_msg = 'Inscrire la version de résolution';
@@ -196,7 +197,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Il y avait une erreur dans votre rapport.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Aucun fichier spécifié';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Type de fichier interdit';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'Le répertoire n\'existe pas. Merci de vérifier les paramètres du projet.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Fichier dupliqué.  Supprimer d\'abord le premier.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Un projet ayant ce nom existe déjà.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Le champ obligatoire « %1$s » n\'est pas renseigné.  Merci de vérifier votre saisie.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Ce compte est protégé.  Vous n\'êtes pas autorisés à y accéder tant que la protection existe.';
@@ -299,7 +299,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Le champ « %1$s » possède une colonne
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Gestionnaire de session invalide.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'La variable de session « %1$s » n\'a pas été trouvée.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Votre session a été invalidée.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Jeton de sécurité du formulaire invalide. Avez-vous soumis deux fois le formulaire par accident ?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Jeton de sécurité du formulaire invalide. Cela peut être dû à un dépassement de délai de la session, ou un envoi en double accidentel du formulaire.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Impossible d\'afficher cette page avec cette fonction.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Champ de tri invalide.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Format de date invalide.';
@@ -489,8 +489,11 @@ $s_monitor_bug_button = 'Surveiller';
 $s_unmonitor_bug_button = 'Arrêter surveillance du bogue';
 $s_file_upload_msg = 'Fichier envoyé avec succès...';
 $s_upload_file = 'Joindre un fichier';
+$s_upload_files = 'Importer des fichiers';
 $s_select_file = 'Sélectionner un fichier';
+$s_select_files = 'Sélectionner des fichiers';
 $s_upload_file_button = 'Envoyer le fichier';
+$s_upload_files_button = 'Télécharger des fichiers';
 $s_max_file_size = 'Taille max. ';
 $s_bug_reopened_msg = 'Le bogue a été réouvert...';
 $s_reopen_add_bugnote_title = 'Ajouter une note pour la réouverture du bogue';
@@ -639,6 +642,7 @@ $s_1_week_title = '1 semaine';
 $s_never_logged_in_title = 'Ne s\'est jamais connecté';
 $s_prune_accounts = 'Effacer comptes';
 $s_hide_inactive = 'Cacher inactifs';
+$s_show_disabled = 'Affichage désactivé';
 $s_manage_accounts_title = 'Gérer les comptes';
 $s_p = 'p';
 $s_date_created = 'Date de création';
@@ -742,7 +746,7 @@ $s_project_delete_msg = 'Voulez-vous vraiment supprimer ce projet et tous les ra
 $s_project_delete_button = 'Supprimer le projet';
 $s_edit_project_title = 'Modifier un projet';
 $s_project_name = 'Nom du projet';
-$s_view_status = 'Afficher l\'état';
+$s_view_status = 'Afficher l’état';
 $s_public = 'public';
 $s_private = 'privé';
 $s_update_project_button = 'Mettre à jour le projet';
@@ -988,6 +992,7 @@ $s_update_bug_button = 'Modifier';
 $s_bug_assign_to_button = 'Assigner à :';
 $s_bug_status_to_button = 'Changer l\'état en :';
 $s_reopen_bug_button = 'Rouvrir';
+$s_close_bug_button = 'Fermer';
 $s_move_bug_button = 'Déplacer';
 $s_attached_files = 'Pièces jointes';
 $s_publish = 'Publier';

@@ -32,11 +32,14 @@
  * @author Campmaster
  * @author Diebuche
  * @author Dr. Jürgen Kehrel, jkehrel@kehrel.de
+ * @author Erdemaslancan
+ * @author Exit91
  * @author Heiko Gierer, gierer@rittershaus.de
  * @author Hermann-Josef Beckers, hjb-rheine@t-online.de
  * @author Imre
  * @author KarlReichert
  * @author Kghbln
+ * @author Manuae
  * @author Martin Fuchs, martin-fuchs@gmx.net
  * @author Matthias Bauer, mantis-de@moeffju.de
  * @author Melancholie
@@ -189,11 +192,10 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Während des Reports trat ein Fehler auf.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Keine Datei angegeben.';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Dieser Dateityp ist nicht erlaubt.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'Das Verzeichnis existiert nicht. Überprüfen Sie die Einstellungen.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Dies ist eine doppelte Datei. Löschen Sie bitte die erste Datei.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Ein Projekt mit diesem Namen ist bereits vorhanden.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Ein notwendiges Feld „%1$s“ war leer. Überprüfen Sie Ihre Eingabe.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Dieses Konto ist geschützt. Sie können nicht darauf zugreifen, bevor der Schutz aufgehoben ist.';
-$MANTIS_ERROR[ERROR_ACCESS_DENIED] = 'Zugang verweigert.';
+$MANTIS_ERROR[ERROR_ACCESS_DENIED] = 'Zugriff verweigert.';
 $MANTIS_ERROR[ERROR_UPLOAD_FAILURE] = 'Dateiübertragung fehlgeschlagen. Datei konnte nicht von MantisBT gelesen werden. Bitte prüfe die Projekteinstellungen.';
 $MANTIS_ERROR[ERROR_FILE_TOO_BIG] = 'Dateiübertragung fehlgeschlagen. Wahrscheinlich liegt die Dateigröße über der erlaubten für diese PHP-Installation.';
 $MANTIS_ERROR[ERROR_GPC_VAR_NOT_FOUND] = 'Ein erforderlicher Parameter für diese Seite (%1$s) wurde nicht gefunden.';
@@ -292,7 +294,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Das Feld „%1$s“ enthält ungültiges
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Ungültiger Session-Handler.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Session-Variable „%1$s“ wurde nicht gefunden.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Ihre Sitzung ist ungültig geworden.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Ungültiges Formular Sicherheits-Token. Haben Sie das Formular versehentlich zweimal abgeschickt?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Ungültiges Sicherheitstoken zum Formular. Dies kann durch einen Sitzungsablauf oder durch versehentliches doppeltes Speichern des Formulars verursacht worden sein.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Auf diese Seite kann nicht mit dieser Methode zugegriffen werden.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Ungültiges Sortierfeld.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Ungültiges Datumsformat';
@@ -376,7 +378,7 @@ $s_email_duplicate = 'Duplikat';
 $s_email_fixed_in_version = 'Behoben in Version';
 $s_email_target_version = 'Zielversion';
 $s_email_date_submitted = 'Erstellt am';
-$s_email_last_modified = 'Letzte Aktualisierung';
+$s_email_last_modified = 'Zuletzt geändert';
 $s_email_summary = 'Zusammenfassung';
 $s_email_description = 'Beschreibung';
 $s_email_additional_information = 'Zusätzliche Informationen';
@@ -482,8 +484,11 @@ $s_monitor_bug_button = 'Beobachten';
 $s_unmonitor_bug_button = 'Beobachtung beenden';
 $s_file_upload_msg = 'Dateitransfer erfolgreich';
 $s_upload_file = 'Datei übertragen';
+$s_upload_files = 'Dateien übertragen';
 $s_select_file = 'Datei wählen';
+$s_select_files = 'Dateien wählen';
 $s_upload_file_button = 'Datei übertragen';
+$s_upload_files_button = 'Dateien übertragen';
 $s_max_file_size = 'Max. Größe';
 $s_bug_reopened_msg = 'Eintrag wurde wiedereröffnet …';
 $s_reopen_add_bugnote_title = 'Notiz für Eintragswiedereröffnung hinzufügen';
@@ -515,7 +520,7 @@ $s_category = 'Kategorie';
 $s_severity = 'Auswirkung';
 $s_reproducibility = 'Reproduzierbar';
 $s_date_submitted = 'Meldungsdatum';
-$s_last_update = 'Letzte Aktualisierung';
+$s_last_update = 'Zuletzt aktualisiert';
 $s_reporter = 'Reporter';
 $s_assigned_to = 'Bearbeitung durch';
 $s_priority = 'Priorität';
@@ -632,6 +637,7 @@ $s_1_week_title = '1 Woche';
 $s_never_logged_in_title = 'Noch nie angemeldet';
 $s_prune_accounts = 'Konten löschen';
 $s_hide_inactive = 'Inaktive ausblenden';
+$s_show_disabled = 'Deaktivierte anzeigen';
 $s_manage_accounts_title = 'Konten verwalten';
 $s_p = 'Änderungsgeschützt';
 $s_date_created = 'Erstellungsdatum';
@@ -980,6 +986,7 @@ $s_update_bug_button = 'Aktualisieren';
 $s_bug_assign_to_button = 'Zuordnen zu';
 $s_bug_status_to_button = 'Status wechseln zu:';
 $s_reopen_bug_button = 'Wiedereröffnen';
+$s_close_bug_button = 'Schließen';
 $s_move_bug_button = 'Verschieben';
 $s_attached_files = 'Angehängte Dateien';
 $s_publish = 'Veröffentlichen';

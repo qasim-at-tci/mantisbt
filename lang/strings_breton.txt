@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Breton (Brezhoneg)
+/** Breton (brezhoneg)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -169,7 +169,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Ur fazi a oa en ho tanevell.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'N\'eus bet diferet restr ebet';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Ar seurt restr n\'eo ket aotreet.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'N\'eus ket eus ar c\'havlec\'h. Gwiriit arventennoù ar raktres, mar plij.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Ur restr doublet eo. Dilamit ar restr da gentañ, mar plij.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Ur raktres en anv-se zo anezhañ dija.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Goullo e oa ur vaezienn rekis. Gwiriit ho roadennoù, mar plij.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Gwarezet eo ar gont-mañ. N\'oc\'h ket aotreet da vont dezhañ keit ha ma\'z eo gwarezet.';
@@ -272,7 +271,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Er vaezienn « %1$s » ez eus ur vaezien
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Merour dalc\'h direizh.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'An argemmenn dalc\'h « %1$s » n\'eo ket bet kavet.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Nullet eo bet ho talc\'h.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Direizh eo jedouer surentez ar furmskrid. Daoust ha kaset hoc\'h eus ar frumskrid div wech dre zarvoud ?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Direizh eo jedouer surentez ar furmskrid. Marteze hoc\'h aet en tu all d\'an termen resissaet evit an dalc\'h pe hoc\'h eus kaset ar furmskrid div wezh dre fazi.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Ne c\'haller ket mont d\'ar bajenn-mañ oc\'h implijout an hentenn-mañ.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Maezienn urzhiañ direizh.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Direizh eo furmad an deiziad.';
@@ -462,8 +461,11 @@ $s_monitor_bug_button = 'Evezhiañ';
 $s_unmonitor_bug_button = 'Paouez da evezhiañ';
 $s_file_upload_msg = 'Karget-mat eo bet ar restr.';
 $s_upload_file = 'Kargañ ur restr';
+$s_upload_files = 'Enporzhiañ Restroù';
 $s_select_file = 'Diuzañ ur restr';
+$s_select_files = 'Diuzañ Restroù';
 $s_upload_file_button = 'Kargañ ar restr';
+$s_upload_files_button = 'Enporzhiañ Restroù';
 $s_max_file_size = 'Ment vrasañ';
 $s_bug_reopened_msg = 'Addigoret eo bet an draen...';
 $s_reopen_add_bugnote_title = 'Ouzhpennañ un notenn gant an abeg evit addigeriñ an draen';
@@ -612,6 +614,7 @@ $s_1_week_title = '1 sizhun';
 $s_never_logged_in_title = 'N\'eo ket kevreet morse';
 $s_prune_accounts = 'Lemel ar c\'hontoù';
 $s_hide_inactive = 'Kuzhat ar re zioberiant';
+$s_show_disabled = 'Diskouez ar re zo bet diweredekaet';
 $s_manage_accounts_title = 'Merañ ar c\'hontoù';
 $s_date_created = 'Deiziad krouiñ';
 $s_last_visit = 'Gweladenn diwezhañ';
@@ -959,6 +962,7 @@ $s_update_bug_button = 'Aozañ';
 $s_bug_assign_to_button = 'Deverkañ da :';
 $s_bug_status_to_button = 'Cheñch ar statud da :';
 $s_reopen_bug_button = 'Addigeriñ';
+$s_close_bug_button = 'Serriñ';
 $s_move_bug_button = 'Dilec\'hiañ';
 $s_attached_files = 'Restroù stag';
 $s_publish = 'Embann';
@@ -1147,7 +1151,7 @@ $s_tag_description = 'Deskrivadur ar valizenn';
 $s_tag_statistics = 'Stadegoù implij';
 $s_tag_update = 'Hizivaat ar valizenn : %1$s';
 $s_tag_update_return = 'Distreiñ d\'ar valizenn';
-$s_tag_update_button = 'Hizivaat ar valizenn';
+$s_tag_update_button = 'Hizivaat an dikedenn';
 $s_tag_delete_button = 'Dilemel ar valizenn';
 $s_tag_delete_message = 'Ha sur oc\'h hoc\'h eus c\'hoant da zilemel ar valizenn-mañ ?';
 $s_tag_existing = 'Balizennoù zo anezho';

@@ -48,6 +48,7 @@ require_once( 'bug_api.php' );
 class BugnoteData {
 	var $id;
 	var $bug_id;
+	var $bugnote_text_id;
 	var $reporter_id;
 	var $note;
 	var $view_state;
@@ -438,6 +439,7 @@ function bugnote_get_all_bugnotes( $p_bug_id ) {
 
 			$t_bugnote->id = $row['id'];
 			$t_bugnote->bug_id = $row['bug_id'];
+			$t_bugnote->bugnote_text_id = $row['bugnote_text_id'];
 			$t_bugnote->note = $row['note'];
 			$t_bugnote->view_state = $row['view_state'];
 			$t_bugnote->reporter_id = $row['reporter_id'];
@@ -528,6 +530,7 @@ function bugnote_set_text( $p_bugnote_id, $p_bugnote_text ) {
 
 	# updated the last_updated date
 	bugnote_date_update( $p_bugnote_id );
+	bug_update_date( $t_bug_id );
 
 	# insert a new revision
 	$t_user_id = auth_get_current_user_id();
@@ -642,7 +645,7 @@ function bugnote_stats_get_project_array( $p_project_id, $p_from, $p_to, $p_cost
 	$c_from = strtotime( $p_from );
 
 	if ( $c_to === false || $c_from === false ) {
-		error_parameters( array( $p_form, $p_to ) );
+		error_parameters( array( $p_from, $p_to ) );
 		trigger_error( ERROR_GENERIC, ERROR );
 	}
 

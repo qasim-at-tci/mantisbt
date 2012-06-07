@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Spanish (Español)
+/** Spanish (español)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -184,7 +184,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Se encontró un error en su informe.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Archivo no especificado';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Este tipo de archivo no está permitido';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'El directorio no existe. Por favor revise la configuración del proyecto.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Este es un archivo duplicado. Por favor borre el archivo primero.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Ya existe un proyecto con este nombre.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'El campo requerido «%1$s» está vacío. Por favor, verifique los datos.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Esta cuenta está protegida. No está autorizado a utilizarla hasta que la protección de la cuenta haya sido retirada.';
@@ -287,7 +286,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Campo \'%1$s\' contiene un campo no vál
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Gestor de sesión no válido.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Un parámetro de sesión esperado (%1$s) no se encontró.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Su sesión ya no es válida.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Token de seguridad del formulario no válido. ¿Envió el formulario dos veces accidentalmente?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Token de seguridad del formulario no válido. Esto pudo ser causado por un excesivo tiempo de espera de sesión, o por enviar accidentalmente el formulario dos veces.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Esta página no puede ser accedida utilizando este método.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Campo no válido para ordenamiento.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Formato de fecha no válido';
@@ -474,9 +473,12 @@ $s_delete_bug_button = 'Eliminar';
 $s_monitor_bug_button = 'Monitorizar';
 $s_unmonitor_bug_button = 'Dejar de monitorizar';
 $s_file_upload_msg = 'Archivo subido correctamente.';
-$s_upload_file = 'Subir archivo';
+$s_upload_file = 'Subir un archivo';
+$s_upload_files = 'Subir archivos';
 $s_select_file = 'Seleccionar archivo';
-$s_upload_file_button = 'Subir archivo';
+$s_select_files = 'Seleccionar archivos';
+$s_upload_file_button = 'Subir un archivo';
+$s_upload_files_button = 'Subir archivos';
 $s_max_file_size = 'Tamaño máximo';
 $s_bug_reopened_msg = 'La incidencia ha sido reabierta…';
 $s_reopen_add_bugnote_title = 'Añadir una nota con la razón para reabrir la incidencia';
@@ -625,6 +627,7 @@ $s_1_week_title = '1 semana';
 $s_never_logged_in_title = 'Nunca ha iniciado una sesión';
 $s_prune_accounts = 'Purgar Cuentas';
 $s_hide_inactive = 'Ocultar Inactivas';
+$s_show_disabled = 'Mostrar los desactivados';
 $s_manage_accounts_title = 'Administrar Cuentas';
 $s_p = 'P';
 $s_date_created = 'Fecha de Creación';
@@ -833,7 +836,7 @@ $s_select_post = 'Seleccionar Publicación';
 $s_news_updated_msg = 'Noticia actualizada...';
 $s_back_link = 'Atrás';
 $s_file_uploaded_msg = 'Archivo subido';
-$s_upload_file_title = 'Subir archivo';
+$s_upload_file_title = 'Subir un archivo';
 $s_title = 'Título';
 $s_project_file_deleted_msg = 'Archivo borrado del proyecto...';
 $s_confirm_file_delete_msg = '¿Está seguro que desea eliminar este archivo?';
@@ -974,6 +977,7 @@ $s_update_bug_button = 'Editar';
 $s_bug_assign_to_button = 'Asignar A:';
 $s_bug_status_to_button = 'Cambiar estado a:';
 $s_reopen_bug_button = 'Reabrir';
+$s_close_bug_button = 'Cerrar';
 $s_move_bug_button = 'Mover';
 $s_attached_files = 'Archivos Adjuntos';
 $s_publish = 'Publicar';

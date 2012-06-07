@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Traditional Chinese (‪中文(繁體)‬)
+/** Traditional Chinese (‪中文（繁體）‬)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -174,7 +174,6 @@ $MANTIS_ERROR[ERROR_REPORT] = '在你的回報中發生錯誤.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = '沒有指定檔案';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = '檔案類型不被接受';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = '檔案路徑不存在。請檢查專案設定值或洽系統管理員建立檔案路徑。';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = '這是重複的檔案。請先刪除原本檔案。';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = '這專案的名稱已經存在。';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = '一個必要欄位 \'%1$s\' 是空值.  請重新檢查你輸入的資料.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = '這個帳戶目前為保護狀態. 你不可以去執行這個作業. 如果要執行這個作業, 必須要先將這個保護狀態取消.';
@@ -277,7 +276,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = '欄位 "%1$s" 中含有無效的欄位�
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = '無效的 Session Handler 。';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = '查無 Session 變數 "%1$s"  。';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = '您的 Session 已經失效。';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = '表單安全性資訊無效。您是否重複送出相同表單?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = '表單安全性資訊無效，可能因 Session 逾時或重複送出表單所造成。';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = '無法使用此方式存取該頁面。';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = '無效的排序欄位。';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = '無效的日期格式。';
@@ -467,8 +466,11 @@ $s_monitor_bug_button = '追蹤';
 $s_unmonitor_bug_button = '取消追蹤';
 $s_file_upload_msg = '檔案上傳成功';
 $s_upload_file = '上傳檔案';
+$s_upload_files = '上傳檔案';
 $s_select_file = '選擇檔案';
+$s_select_files = '選擇檔案';
 $s_upload_file_button = '上傳檔案';
+$s_upload_files_button = '上傳檔案';
 $s_max_file_size = '檔案大小限制';
 $s_bug_reopened_msg = '問題已重新開啟...';
 $s_reopen_add_bugnote_title = '說明尚未解決問題的原因';
@@ -964,6 +966,7 @@ $s_update_bug_button = '編輯';
 $s_bug_assign_to_button = '分配給:';
 $s_bug_status_to_button = '更改狀態為：';
 $s_reopen_bug_button = '重新開啟';
+$s_close_bug_button = '關閉';
 $s_move_bug_button = '移動';
 $s_attached_files = '附加檔案';
 $s_publish = '發佈';

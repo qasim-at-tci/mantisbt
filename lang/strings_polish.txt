@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Polish (Polski)
+/** Polish (polski)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -180,7 +180,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Wystąpił błąd w zgłoszeniu.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Żaden plik nie został wybrany.';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Typ przesyłanego pliku nie jest dozwolony.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'Podany katalog nie istnieje. Sprawdź ustawienia projektu.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Plik o podanej nazwie już istnieje. Usuń najpierw istniejący plik.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Istnieje już projekt o takiej nazwie.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Wymagane pole „%1$s” nie zostało wypełnione. Sprawdź wprowadzone dane.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Konto jest zabezpieczone. Nie masz uprawnień dostępu do tego konta dopóki zabezpieczenie jest aktywne.';
@@ -283,7 +282,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Pole „%1$s” zawiera nieprawidłowe p
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Nieprawidłowy handler sesji.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Zmienna sesyjna „%1$s” nie została znaleziona.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Twoja sesja została unieważniona.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Nieprawidłowy znacznik bezpieczeństwa formularza. Czy przez przypadek nie złożyłeś formularza dwa razy?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Niewłaściwy token bezpieczeństwa. Może być to spowodowane wygaśnięciem sesji lub przypadkowo wysłanym dwukrotnie formularzem.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Tej strony nie moża uzyskać za pomocą tej metody.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Nieprawidłowe pole sortowania.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Nieprawidłowy format daty.';
@@ -473,8 +472,11 @@ $s_monitor_bug_button = 'Obserwuj';
 $s_unmonitor_bug_button = 'Zakończ obserwowanie zgłoszenia';
 $s_file_upload_msg = 'Plik został pomyślnie przesłany.';
 $s_upload_file = 'Prześlij plik';
+$s_upload_files = 'Prześlij pliki';
 $s_select_file = 'Wybierz plik';
+$s_select_files = 'Wybierz pliki';
 $s_upload_file_button = 'Prześlij plik';
+$s_upload_files_button = 'Prześlij pliki';
 $s_max_file_size = 'Maksymalny rozmiar';
 $s_bug_reopened_msg = 'Zgłoszenie zostało ponownie otwarte...';
 $s_reopen_add_bugnote_title = 'Dodaj komentarz z wyjaśnieniem powodu ponownego otwarcia zgłoszenia';
@@ -623,6 +625,7 @@ $s_1_week_title = '1 tydzień';
 $s_never_logged_in_title = 'Nigdy nie zalogowani';
 $s_prune_accounts = 'Usuń konta';
 $s_hide_inactive = 'Ukryj nieaktywne';
+$s_show_disabled = 'Pokaż zablokowane';
 $s_manage_accounts_title = 'Zarządzanie kontami';
 $s_p = 'z';
 $s_date_created = 'Stworzone';
@@ -972,6 +975,7 @@ $s_update_bug_button = 'Edytuj';
 $s_bug_assign_to_button = 'Przypisz do:';
 $s_bug_status_to_button = 'Zmień status na:';
 $s_reopen_bug_button = 'Otwórz ponownie';
+$s_close_bug_button = 'Zamknij';
 $s_move_bug_button = 'Przenieś';
 $s_attached_files = 'Dołączone pliki';
 $s_publish = 'Opublikuj';

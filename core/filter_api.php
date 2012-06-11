@@ -4398,7 +4398,7 @@ function filter_clear_cache( $p_filter_id = null ) {
 function filter_db_set_for_current_user( $p_project_id, $p_is_public, $p_name, $p_filter_string ) {
 	$t_user_id = auth_get_current_user_id();
 	$c_project_id = db_prepare_int( $p_project_id );
-	$c_is_public = db_prepare_bool( $p_is_public, false );
+	$c_is_public = db_prepare_bool( $p_is_public );
 
 	$t_filters_table = db_get_table( 'mantis_filters_table' );
 
@@ -4632,6 +4632,8 @@ function filter_db_delete_current_filters() {
 }
 
 /**
+ * Note: any changes made in this function should be reflected in
+ * mci_filter_db_get_available_queries())
  * @param int $p_project_id
  * @param int $p_user_id
  * @return mixed
@@ -4662,17 +4664,17 @@ function filter_db_get_available_queries( $p_project_id = null, $p_user_id = nul
 	# with that private one
 	$query = "SELECT * FROM $t_filters_table
 					WHERE (project_id=" . db_param() . "
-					OR project_id=0)
+						OR project_id=0)
 					AND name!=''
+					AND (is_public = " . db_prepare_bool(true) . "
+						OR user_id = " . db_param() . ")
 					ORDER BY is_public DESC, name ASC";
-	$result = db_query_bound( $query, Array( $t_project_id ) );
+	$result = db_query_bound( $query, Array( $t_project_id, $t_user_id ) );
 	$query_count = db_num_rows( $result );
 
 	for( $i = 0;$i < $query_count;$i++ ) {
 		$row = db_fetch_array( $result );
-		if(( $row['user_id'] == $t_user_id ) || db_prepare_bool( $row['is_public'] ) ) {
-			$t_overall_query_arr[$row['id']] = $row['name'];
-		}
+		$t_overall_query_arr[$row['id']] = $row['name'];
 	}
 
 	$t_overall_query_arr = array_unique( $t_overall_query_arr );

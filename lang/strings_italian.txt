@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Italian (Italiano)
+/** Italian (italiano)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -35,7 +35,9 @@
  * @author Marco Vassura, m.vassura@itools.it
  * @author Massimo itaca
  * @author McDutchie
+ * @author Nemo bis
  * @author Stefano-c
+ * @author Ximo17
  */
 
 $s_actiongroup_menu_move = 'Sposta';
@@ -177,7 +179,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Il tuo report conteneva un errore.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Non è stato specificato nessun file';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Tipo di file non consentito';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'La directory non esiste.  Controlla le impostazioni del progetto.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Il file è un duplicato.  Cancella prima il file presente.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Esiste già un progetto con quel nome.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Il campo obbligatorio "%1$s" era vuoto.  Ricontrolla le informazioni che hai inserito.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Questo account è protetto.  Non ti è consentito accedere finché non verrà tolta la protezione.';
@@ -280,7 +281,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Il campo "%1$s" contiene un campo invali
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Gestore di sessione invalido.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Variabile di sessione "%1$s" non trovato.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'La sessione è scaduta.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Chiave di sicurezza del modulo invalido. Hai sottomesso il modulo più volte per errore?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Chiave di sicurezza del modulo (token) invalido. Questo potrebbe essere causato da un timeout di sessione, o da un invio del modulo più volte per errore.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Non si può accedere a questa pagina usando questo metodo.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Campo ordinamento invalido.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Formato data invalido.';
@@ -441,7 +442,7 @@ $s_amount = 'Somma';
 $s_total_owing = 'Totale dovuto';
 $s_total_paid = 'Totale pagato';
 $s_sponsor_hide = 'Nascondi risolte e pagate';
-$s_sponsor_show = 'Mostrale tutte';
+$s_sponsor_show = 'Mostra tutte';
 $s_payment_updated = 'Informazioni sul pagamento aggiornate.';
 $s_account_updated_msg = 'Il tuo Account è stato aggiornato con successo...';
 $s_email_updated = 'L\'indirizzo email è stato aggiornato con successo';
@@ -470,8 +471,11 @@ $s_monitor_bug_button = 'Tieni sotto controllo';
 $s_unmonitor_bug_button = 'Non tenere sotto controllo';
 $s_file_upload_msg = 'File caricato con successo';
 $s_upload_file = 'Carica file';
+$s_upload_files = 'Carica file';
 $s_select_file = 'Seleziona file';
+$s_select_files = 'Seleziona file';
 $s_upload_file_button = 'Carica file';
+$s_upload_files_button = 'Carica file';
 $s_max_file_size = 'Dimensione massima';
 $s_bug_reopened_msg = 'L\'anomalia è stata riaperta...';
 $s_reopen_add_bugnote_title = 'Aggiungi una nota con le ragioni per la riapertura dell\'anomalia';
@@ -621,6 +625,7 @@ $s_1_week_title = '1 Settimana';
 $s_never_logged_in_title = 'Mai entrato nel sistema';
 $s_prune_accounts = 'Pulisci account';
 $s_hide_inactive = 'Nascondi inattivi';
+$s_show_disabled = 'Visualizza non abilitati';
 $s_manage_accounts_title = 'Gestione account';
 $s_date_created = 'Data inserimento';
 $s_last_visit = 'Ultima visita';
@@ -693,7 +698,7 @@ $s_plugins_installed = 'Plugin installati';
 $s_plugins_available = 'Plugin disponibili';
 $s_plugin_description = 'Descrizione';
 $s_plugin_author = 'Autore: %1$s';
-$s_plugin_url = 'Website:';
+$s_plugin_url = 'Sito web:';
 $s_plugin_depends = 'Dipendenze';
 $s_plugin_no_depends = 'Nessuna dipendenza';
 $s_plugin_priority = 'Priorità';
@@ -777,7 +782,7 @@ $s_reset_password_button = 'Resetta password';
 $s_delete_user_button = 'Elimina utente';
 $s_reset_password_msg = 'Resettando la password, verrà inviata all\'utente una email di verifica con il codice di convalida.';
 $s_reset_password_msg2 = 'Resettando la password, questa verrà impostata come vuota.';
-$s_show_all_users = 'TUTTI';
+$s_show_all_users = 'Tutti';
 $s_users_unused = 'Non usato';
 $s_users_new = 'Nuovo';
 $s_account_reset_protected_msg = 'Account protetto.  Non è possibile resettare la password.';
@@ -968,6 +973,7 @@ $s_update_bug_button = 'Modifica';
 $s_bug_assign_to_button = 'Assegna a:';
 $s_bug_status_to_button = 'Cambia stato in:';
 $s_reopen_bug_button = 'Riapri';
+$s_close_bug_button = 'Chiudi';
 $s_move_bug_button = 'Sposta';
 $s_attached_files = 'File allegati';
 $s_publish = 'Pubblica';
@@ -1176,7 +1182,7 @@ $s_tag_history_renamed = 'Etichetta rinominata';
 $s_tag_related = 'Etichette correlate';
 $s_tag_related_issues = 'Anomalie correlate (%1$s)';
 $s_tag_stats_attached = 'Anomalie contrassegnate: %1$s';
-$s_tag_create = 'Crea voce';
+$s_tag_create = 'Crea Tag';
 $s_show_all_tags = 'Tutto';
 $s_time_tracking_billing_link = 'Tempistiche';
 $s_time_tracking = 'Tempistiche';
@@ -1199,14 +1205,14 @@ $s_view_issues_columns_title = 'Colonne anomalia in visualizzazione';
 $s_print_issues_columns_title = 'Colonne anomalia in Stampa';
 $s_excel_columns_title = 'Colonne Excel';
 $s_update_columns_as_global_default = 'Aggiorna Colonne come Standard Globale per tutti i Progetti';
-$s_update_columns_for_current_project = 'Aggiorna Colonne per il progetto corrente';
+$s_update_columns_for_current_project = 'Aggiorna colonne per il progetto attuale';
 $s_update_columns_as_my_default = 'Aggiorna colonne come Standard per Tutti i progetti';
 $s_reset_columns_configuration = 'Ripristina configurazione colonne';
 $s_copy_columns_from = 'Copia colonne da';
 $s_copy_columns_to = 'Copia colonne a';
 $s_due_date = 'Data di scadenza';
 $s_overdue = 'In ritardo';
-$s_view_account_title = 'Informazioni Utente';
+$s_view_account_title = 'Informazioni utente';
 $s_manage_user = 'Gestisci Utente';
 $s_install_information = 'MantisBT Informazioni d\'installazione';
 $s_database_information = 'MantisBT Informazioni del Database';

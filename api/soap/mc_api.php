@@ -9,17 +9,6 @@
 # set up error_handler() as the new default error handling function
 set_error_handler( 'mc_error_handler' );
 
-# override some MantisBT configurations
-$g_show_detailed_errors = OFF;
-$g_stop_on_errors = ON;
-$g_display_errors = array(
-	E_WARNING => 'halt',
-	E_NOTICE => 'halt',
-	E_USER_ERROR => 'halt',
-	E_USER_WARNING => 'halt',
-	E_USER_NOTICE => 'halt',
-);
-
 /**
  * Get the MantisConnect webservice version.
  */
@@ -86,10 +75,12 @@ function mci_has_administrator_access( $p_user_id, $p_project_id = ALL_PROJECTS 
 }
 
 function mci_get_project_id( $p_project ) {
-	if( (int) $p_project['id'] != 0 ) {
+	if ( isset( $p_project['id'] ) && (int) $p_project['id'] != 0 ) {
 		$t_project_id = (int) $p_project['id'];
-	} else {
+	} else if ( isset( $p_project['name'] ) && !is_blank( $p_project['name'] ) ) {
 		$t_project_id = project_get_id_by_name( $p_project['name'] );
+	} else {
+		$t_project_id = ALL_PROJECTS;
 	}
 
 	return $t_project_id;
@@ -177,7 +168,7 @@ function mci_null_if_empty( $p_value ) {
  * @return MantisBT URL terminated by a /.
  */
 function mci_get_mantis_path() {
-    
+
 	return config_get( 'path' );
 }
 
@@ -260,26 +251,26 @@ function mci_filter_db_get_available_queries( $p_project_id = null, $p_user_id =
 	# first, we can override any query that has the same name as a private query
 	# with that private one
 	$query = "SELECT * FROM $t_filters_table
-				WHERE (project_id='$t_project_id'
-				OR project_id='0')
-				AND name!=''
-				ORDER BY is_public DESC, name ASC";
-	$result = db_query( $query );
+					WHERE (project_id=" . db_param() . "
+						OR project_id=0)
+					AND name!=''
+					AND (is_public = " . db_prepare_bool(true) . "
+						OR user_id = " . db_param() . ")
+					ORDER BY is_public DESC, name ASC";
+	$result = db_query_bound( $query, Array( $t_project_id, $t_user_id ) );
 	$query_count = db_num_rows( $result );
 
 	for( $i = 0;$i < $query_count;$i++ ) {
 		$row = db_fetch_array( $result );
-		if(( $row['user_id'] == $t_user_id ) || db_prepare_bool( $row['is_public'] ) ) {
 
-		    $t_filter_detail = explode( '#', $row['filter_string'], 2 );
-		    if ( !isset($t_filter_detail[1]) ) {
-		    	continue;
-		    }
-        	$t_filter = unserialize( $t_filter_detail[1] );
-	        $t_filter = filter_ensure_valid_filter( $t_filter );
-		    $row['url'] = filter_get_url( $t_filter );
-			$t_overall_query_arr[$row['name']] = $row;
+		$t_filter_detail = explode( '#', $row['filter_string'], 2 );
+		if ( !isset($t_filter_detail[1]) ) {
+			continue;
 		}
+		$t_filter = unserialize( $t_filter_detail[1] );
+		$t_filter = filter_ensure_valid_filter( $t_filter );
+		$row['url'] = filter_get_url( $t_filter );
+		$t_overall_query_arr[$row['name']] = $row;
 	}
 
 	return array_values( $t_overall_query_arr );
@@ -300,11 +291,11 @@ function mci_category_as_array_by_id( $p_category_id ) {
 
 /**
  * Transforms a version array into an array suitable for marshalling into ProjectVersionData
- * 
+ *
  * @param array $p_version
  */
 function mci_project_version_as_array( $p_version ) {
-    
+
     return array(
 			'id' => $p_version['id'],
 			'name' => $p_version['version'],
@@ -318,30 +309,22 @@ function mci_project_version_as_array( $p_version ) {
 
 /**
  * Returns time tracking information from a bug note.
- * 
+ *
  * @param int $p_issue_id The id of the issue
  * @param Array $p_note A note as passed to the soap api methods
- * 
+ *
  * @return String the string time entry to be added to the bugnote, in 'HH:mm' format
  */
 function mci_get_time_tracking_from_note( $p_issue_id, $p_note) {
-	
+
 	if ( !access_has_bug_level( config_get( 'time_tracking_view_threshold' ), $p_issue_id ) )
 		return '00:00';
 
 	if ( !isset( $p_note['time_tracking'] ))
 		return '00:00';
-		
+
 	return db_minutes_to_hhmm($p_note['time_tracking']);
 }
-
-/**
- * SECURITY NOTE: these globals are initialized here to prevent them
- * being spoofed if register_globals is turned on
- */
-$g_error_parameters = array();
-$g_error_handled = false;
-$g_error_proceed_url = null;
 
 # Default error handler
 #
@@ -352,9 +335,6 @@ $g_error_proceed_url = null;
 # The others, being system errors, will come with a string in $p_error
 #
 function mc_error_handler( $p_type, $p_error, $p_file, $p_line, $p_context ) {
-	global $g_error_parameters, $g_error_handled, $g_error_proceed_url;
-	global $g_lang_overrides;
-	global $g_error_send_page_header;
 	global $l_oServer;
 
 	# check if errors were disabled with @ somewhere in this call chain
@@ -363,22 +343,11 @@ function mc_error_handler( $p_type, $p_error, $p_file, $p_line, $p_context ) {
 		return;
 	}
 
-	$t_lang_pushed = false;
-
 	# flush any language overrides to return to user's natural default
 	if( function_exists( 'db_is_connected' ) ) {
 		if( db_is_connected() ) {
 			lang_push( lang_get_default() );
-			$t_lang_pushed = true;
 		}
-	}
-
-	$t_short_file = basename( $p_file );
-	$t_method_array = config_get( 'display_errors' );
-	if( isset( $t_method_array[$p_type] ) ) {
-		$t_method = $t_method_array[$p_type];
-	} else {
-		$t_method = 'none';
 	}
 
 	# build an appropriate error string
@@ -400,22 +369,21 @@ function mc_error_handler( $p_type, $p_error, $p_file, $p_line, $p_context ) {
 			$t_error_description = error_string( $p_error );
 			break;
 		case E_USER_NOTICE:
-
 			# used for debugging
 			$t_error_type = 'DEBUG';
 			$t_error_description = $p_error;
 			break;
 		default:
-
 			#shouldn't happen, just display the error just in case
 			$t_error_type = '';
 			$t_error_description = $p_error;
 	}
 
-	$t_error_description = $t_error_description;
 	$t_error_stack = error_get_stack_trace();
+	
+	error_log("[mantisconnect.php] Error Type: $t_error_type,\nError Description: $t_error_description\nStack Trace:\n$t_error_stack");
 
-	$l_oServer->fault( 'Server', "Error Type: $t_error_type,\nError Description:\n$t_error_description,\nStack Trace:\n$t_error_stack" );
+	$l_oServer->fault( 'Server', "Error Type: $t_error_type,\nError Description: $t_error_description" );
 	$l_oServer->send_response();
 	exit();
 }
@@ -480,9 +448,9 @@ function error_get_stack_trace() {
 }
 
 /**
- * Returns a soap_fault signalling corresponding to a failed login 
+ * Returns a soap_fault signalling corresponding to a failed login
  * situation
- * 
+ *
  * @return soap_fault
  */
 function mci_soap_fault_login_failed() {
@@ -492,7 +460,7 @@ function mci_soap_fault_login_failed() {
 /**
  * Returns a soap_fault signalling that the user does not have
  * access rights for the specific action.
- * 
+ *
  * @param int $p_user_id a valid user id
  * @param string $p_detail The optional details to append to the error message
  * @return soap_fault
@@ -502,6 +470,6 @@ function mci_soap_fault_access_denied( $p_user_id, $p_detail = '' ) {
 	$t_reason = 'Access denied for user '. $t_user_name . '.';
 	if ( !is_blank( $p_detail ))
 		$t_reason .= ' Reason: ' . $p_detail . '.';
-	
+
 	return new soap_fault( 'Client', '',  $t_reason );
 }

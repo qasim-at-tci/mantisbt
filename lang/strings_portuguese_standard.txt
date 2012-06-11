@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Portuguese (Português)
+/** Portuguese (português)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -175,7 +175,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Houve um erro no seu relatório';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Nenhum ficheiro especificado';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'O tipo de ficheiro não é permitido.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'A pasta não existe. Por favor verifique as definições do projecto.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Este é um ficheiro duplicado. Por favor, apague o ficheiro antes.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Já existe um projecto com esse nome.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'O campo necessário "%1$s" estava vazio. Por favor, verifique novamente as entradas.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Esta conta está protegida. Você não tem permissão para aceder a isto até que a proteção seja removida.';
@@ -278,7 +277,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Campo "%1$s" contém campo inválido "%2
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Handler de sessão inválido.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Variável de sessão "%1$s" não encontrada.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'A sua sessão tornou-se inválida.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Token de segurança de formulário inválido. Enviou o formulário duas vezes, por engano?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Token de segurança de formulário inválido. Isto pode ser causado por um timeout da sessão ou pelo envio acidental do formulário em duplicado.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Esta página não pode ser acedida por este método.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Campo de ordenação inválido.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Formato de data inválido.';
@@ -468,8 +467,11 @@ $s_monitor_bug_button = 'Acompanhar';
 $s_unmonitor_bug_button = 'Terminar acompanhamento';
 $s_file_upload_msg = 'Ficheiro Enviado com Sucesso';
 $s_upload_file = 'Enviar Ficheiro';
+$s_upload_files = 'Carregar Ficheiros';
 $s_select_file = 'Selecionar Ficheiro';
+$s_select_files = 'Selecionar Ficheiros';
 $s_upload_file_button = 'Enviar Ficheiro';
+$s_upload_files_button = 'Carregar Ficheiros';
 $s_max_file_size = 'Tamanho Máx.';
 $s_bug_reopened_msg = 'O problema foi reaberto...';
 $s_reopen_add_bugnote_title = 'Adicione uma nota com o motivo da reabertura do problema';
@@ -594,7 +596,7 @@ $s_verify_password = 'Verificar palavra-chave';
 $s_enabled = 'Activado';
 $s_protected = 'Protegido';
 $s_create_user_button = 'Criar Utilizador';
-$s_hide_disabled = 'Esconder Desabilitados';
+$s_hide_disabled = 'Esconder desativados';
 $s_filter_button = 'Aplicar Filtro';
 $s_create_filter_link = 'Criar Permalink';
 $s_create_short_link = 'Criar link curto';
@@ -618,6 +620,7 @@ $s_1_week_title = '1 Semana';
 $s_never_logged_in_title = 'Nunca Entrou';
 $s_prune_accounts = 'Cortar Contas';
 $s_hide_inactive = 'Esconder Inactivas';
+$s_show_disabled = 'Mostrar desativados';
 $s_manage_accounts_title = 'Gestor de Contas';
 $s_date_created = 'Data de Criação';
 $s_last_visit = 'Última Visita';
@@ -965,6 +968,7 @@ $s_update_bug_button = 'Editar';
 $s_bug_assign_to_button = 'Atribuir a:';
 $s_bug_status_to_button = 'Mudar estado para:';
 $s_reopen_bug_button = 'Reabrir';
+$s_close_bug_button = 'Fechar';
 $s_move_bug_button = 'Mover';
 $s_attached_files = 'Ficheiros anexos';
 $s_publish = 'Publicar';

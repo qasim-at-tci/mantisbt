@@ -492,7 +492,8 @@ function graph_bydate( $p_metrics, $p_labels, $p_title, $p_graph_width = 300, $p
 
 		$graph->xAxis->labelCallback =  'graph_date_format';
 		$graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
-		$graph->xAxis->axisLabelRenderer->angle = -45;
+		$graph->xAxis->axisLabelRenderer->angle = -60;
+		$graph->xAxis->axisSpace = .15;
 
 		$graph->legend->position      = ezcGraph::BOTTOM;
 		$graph->legend->background    = '#FFFFFF80';
@@ -503,6 +504,7 @@ function graph_bydate( $p_metrics, $p_labels, $p_title, $p_graph_width = 300, $p
 		$graph->driver->options->imageFormat = IMG_JPEG;
 
 		$graph->title = $p_title . ' ' . lang_get( 'by_date' );
+		$graph->title->maxHeight = .03;
 		$graph->options->font = $t_graph_font ;
 
 		$graph->renderToOutput( $p_graph_width, $p_graph_height);
@@ -750,7 +752,7 @@ function create_category_summary() {
 
 	$query = "SELECT id, name
 				FROM $t_cat_table
-				WHERE $specific_where
+				WHERE $specific_where OR project_id=" . ALL_PROJECTS . "
 				ORDER BY name";
 	$result = db_query_bound( $query );
 	$category_count = db_num_rows( $result );
@@ -767,7 +769,8 @@ function create_category_summary() {
 		if ( isset($t_metrics[$t_cat_name]) ) {
 			$t_metrics[$t_cat_name] = $t_metrics[$t_cat_name] + db_result( $result2, 0, 0 );
 		} else {
-			$t_metrics[$t_cat_name] = db_result( $result2, 0, 0 );
+      if (db_result( $result2, 0, 0 ) > 0)
+					$t_metrics[$t_cat_name] = db_result( $result2, 0, 0 );
 		}
 	}
 

@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Russian (Русский)
+/** Russian (русский)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -182,7 +182,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Во введенной информации об
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Не указан файл.';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Этот тип файлов запрещен.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'Каталог не существует. Проверьте настройки проекта.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Дубликат файла. Сначала удалите старый файл.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Проект с таким названием уже существует.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Обязательное поле \'%1$s\' не заполнено. Пожалуйста, проверьте правильность заполнения.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Эта учетная запись защищена. Вы не сможете получить к ней доступ, пока защита не снята.';
@@ -473,8 +472,11 @@ $s_monitor_bug_button = 'Отслеживать';
 $s_unmonitor_bug_button = 'Не отслеживать';
 $s_file_upload_msg = 'Файл успешно загружен';
 $s_upload_file = 'Приложить файл';
+$s_upload_files = 'Загрузить файлы';
 $s_select_file = 'Выбор файла';
+$s_select_files = 'Выбрать файлы';
 $s_upload_file_button = 'Загрузить';
+$s_upload_files_button = 'Загрузить файлы';
 $s_max_file_size = 'Максимальный размер';
 $s_bug_reopened_msg = 'Инцидент повторно открыт...';
 $s_reopen_add_bugnote_title = 'Укажите причины повторного открытия инцидента';
@@ -623,6 +625,7 @@ $s_1_week_title = 'за неделю';
 $s_never_logged_in_title = 'Никогда не входившие в систему';
 $s_prune_accounts = 'Удалить учетные записи';
 $s_hide_inactive = 'скрыть неактивные';
+$s_show_disabled = 'Показать отключенные';
 $s_manage_accounts_title = 'Управление учетными записями';
 $s_p = 'з';
 $s_date_created = 'Создана';
@@ -972,6 +975,7 @@ $s_update_bug_button = 'Изменить';
 $s_bug_assign_to_button = 'Назначить:';
 $s_bug_status_to_button = 'Изм. сост. на:';
 $s_reopen_bug_button = 'Повторно открыть';
+$s_close_bug_button = 'Закрыть';
 $s_move_bug_button = 'Переместить';
 $s_attached_files = 'Вложенные файлы';
 $s_publish = 'Опубликовать';

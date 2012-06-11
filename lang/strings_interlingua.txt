@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Interlingua (Interlingua)
+/** Interlingua (interlingua)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -167,7 +167,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Il habeva un error in tu reporto.';
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Nulle file specificate.';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Iste typo de file non es permittite.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'Le directorio non existe. Per favor verifica le configuration del projecto.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Isto es un file duplicate. Per favor dele primo le file.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Existe ja un projecto con iste nomine.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Le campo obligatori "%1$s" esseva vacue. Per favor verifica tu entrata.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Iste conto es protegite. Tu non ha le permission de acceder a illo usque le protection del conto es levate.';
@@ -270,7 +269,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Le campo "%1$s" contine un campo invalid
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Gestor de session invalide.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Variabile de session "%1$s" non trovate.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Tu session ha devenite invalide.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Indicio de securitate del formulario invalide. Submitteva tu le formulario duo vices per accidente?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Le indicio de securitate del formulario es invalide. Isto pote esser causate per un expiration del session, o per submitter le formulario duo vices per accidente.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Non es possibile acceder a iste pagina usante iste methodo.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Campo de ordinamento invalide.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Formato de data invalide.';
@@ -460,8 +459,11 @@ $s_monitor_bug_button = 'Surveliar';
 $s_unmonitor_bug_button = 'Finir surveliantia';
 $s_file_upload_msg = 'File incargate con successo.';
 $s_upload_file = 'Incargar file';
+$s_upload_files = 'Incargar files';
 $s_select_file = 'Seliger file';
+$s_select_files = 'Seliger files';
 $s_upload_file_button = 'Incargar file';
+$s_upload_files_button = 'Incargar files';
 $s_max_file_size = 'Dimension maxime';
 $s_bug_reopened_msg = 'Le problema ha essite reaperite...';
 $s_reopen_add_bugnote_title = 'Adder nota con motivo pro reaperir problema';
@@ -610,6 +612,7 @@ $s_1_week_title = '1 septimana';
 $s_never_logged_in_title = 'Nunquam aperiva session';
 $s_prune_accounts = 'Purgar contos';
 $s_hide_inactive = 'Celar inactives';
+$s_show_disabled = 'Monstrar disactivates';
 $s_manage_accounts_title = 'Gerer contos';
 $s_date_created = 'Data de creation';
 $s_last_visit = 'Ultime visita';
@@ -957,6 +960,7 @@ $s_update_bug_button = 'Modificar';
 $s_bug_assign_to_button = 'Assignar a:';
 $s_bug_status_to_button = 'Cambiar stato in:';
 $s_reopen_bug_button = 'Reaperir';
+$s_close_bug_button = 'Clauder';
 $s_move_bug_button = 'Displaciar';
 $s_attached_files = 'Files annexate';
 $s_publish = 'Publicar';

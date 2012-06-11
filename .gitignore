@@ -14,6 +14,7 @@ docbook/*/*/builddate
 docbook/*/*/build
 docbook/*/*/install
 docbook/*/builddate
+docbook/*/tmp
 
 # Build output
 build/
@@ -32,6 +33,7 @@ plugins/*
 .cache
 .project
 .settings
+.idea/
 *.kdev4
 
 # IIS7 

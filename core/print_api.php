@@ -860,10 +860,15 @@ function print_enum_string_option_list( $p_enum_name, $p_val = 0 ) {
 	}
 }
 
-# Select the proper enum values for status based on workflow
-# or the input parameter if workflows are not used
-# $p_enum_name : name of enumeration (eg: status)
-# $p_current_value : current value
+/*
+ * Returns a list of valid status options based on workflow
+ * @param int $p_user_auth User's access level
+ * @param int $p_current_value Current issue's status
+ * @param bool $p_show_current Add current status to return list
+ * @param bool $p_add_close Add 'closed' to return list
+ * @param int $p_project_id
+ * @return array
+ */
 function get_status_option_list( $p_user_auth = 0, $p_current_value = 0, $p_show_current = true, $p_add_close = false, $p_project_id = ALL_PROJECTS ) {
 	$t_config_var_value = config_get( 'status_enum_string', null, null, $p_project_id );
 	$t_enum_workflow = config_get( 'status_enum_workflow', null, null, $p_project_id );
@@ -877,15 +882,16 @@ function get_status_option_list( $p_user_auth = 0, $p_current_value = 0, $p_show
 			$t_enum_values = MantisEnum::getValues( $t_enum_workflow[$p_current_value] );
 		} else {
 			# workflow was not set for this status, this shouldn't happen
-			$t_enum_values = MantisEnum::getValues( $t_config_var_value );
+			# caller should be able to handle empty list
+			$t_enum_values = array();
 		}
 	}
-
 	$t_enum_list = array();
 
 	foreach ( $t_enum_values as $t_enum_value ) {
-		if ( ( access_compare_level( $p_user_auth, access_get_status_threshold( $t_enum_value, $p_project_id ) ) )
-				&& ( !(( false == $p_show_current ) && ( $p_current_value == $t_enum_value ) ) ) ) {
+		if (   ( $p_show_current || $p_current_value != $t_enum_value )
+			&& access_compare_level( $p_user_auth, access_get_status_threshold( $t_enum_value, $p_project_id ) )
+		) {
 			$t_enum_list[$t_enum_value] = get_enum_element( 'status', $t_enum_value );
 		}
 	}
@@ -896,7 +902,9 @@ function get_status_option_list( $p_user_auth = 0, $p_current_value = 0, $p_show
 
 	if ( $p_add_close && access_compare_level( $p_current_value, config_get( 'bug_resolved_status_threshold', null, null, $p_project_id ) ) ) {
 		$t_closed = config_get( 'bug_closed_status_threshold', null, null, $p_project_id );
-		$t_enum_list[$t_closed] = get_enum_element( 'status', $t_closed );
+		if( $p_show_current || $p_current_value != $t_closed ) {
+			$t_enum_list[$t_closed] = get_enum_element( 'status', $t_closed );
+		}
 	}
 
 	return $t_enum_list;
@@ -1229,7 +1237,7 @@ function print_view_bug_sort_link( $p_string, $p_sort_field, $p_sort, $p_dir, $p
 	}
 }
 
-function print_manage_user_sort_link( $p_page, $p_string, $p_field, $p_dir, $p_sort_by, $p_hide = 0, $p_filter = ALL ) {
+function print_manage_user_sort_link( $p_page, $p_string, $p_field, $p_dir, $p_sort_by, $p_hide_inactive = 0, $p_filter = ALL, $p_show_disabled = 0 ) {
 	if( $p_sort_by == $p_field ) {
 
 		# If this is the selected field flip the order
@@ -1244,7 +1252,7 @@ function print_manage_user_sort_link( $p_page, $p_string, $p_field, $p_dir, $p_s
 	}
 
 	$t_field = rawurlencode( $p_field );
-	print_link( "$p_page?sort=$t_field&dir=$t_dir&save=1&hide=$p_hide&filter=$p_filter", $p_string );
+	print_link( "$p_page?sort=$t_field&dir=$t_dir&save=1&hideinactive=$p_hide_inactive&showdisabled=$p_show_disabled&filter=$p_filter", $p_string );
 }
 
 function print_manage_project_sort_link( $p_page, $p_string, $p_field, $p_dir, $p_sort_by ) {

@@ -501,7 +501,7 @@ class BugData {
 
 			if( $t_old_data->description != $this->description ) {
 				if ( bug_revision_count( $c_bug_id, REV_DESCRIPTION ) < 1 ) {
-					$t_revision_id = bug_revision_add( $c_bug_id, $t_current_user, REV_DESCRIPTION, $t_old_data->description, 0, $t_old_data->last_updated );
+					$t_revision_id = bug_revision_add( $c_bug_id, $t_old_data->reporter_id, REV_DESCRIPTION, $t_old_data->description, 0, $t_old_data->date_submitted );
 				}
 				$t_revision_id = bug_revision_add( $c_bug_id, $t_current_user, REV_DESCRIPTION, $this->description );
 				history_log_event_special( $c_bug_id, DESCRIPTION_UPDATED, $t_revision_id );
@@ -509,7 +509,7 @@ class BugData {
 
 			if( $t_old_data->steps_to_reproduce != $this->steps_to_reproduce ) {
 				if ( bug_revision_count( $c_bug_id, REV_STEPS_TO_REPRODUCE ) < 1 ) {
-					$t_revision_id = bug_revision_add( $c_bug_id, $t_current_user, REV_STEPS_TO_REPRODUCE, $t_old_data->steps_to_reproduce, 0, $t_old_data->last_updated );
+					$t_revision_id = bug_revision_add( $c_bug_id, $t_old_data->reporter_id, REV_STEPS_TO_REPRODUCE, $t_old_data->steps_to_reproduce, 0, $t_old_data->date_submitted );
 				}
 				$t_revision_id = bug_revision_add( $c_bug_id, $t_current_user, REV_STEPS_TO_REPRODUCE, $this->steps_to_reproduce );
 				history_log_event_special( $c_bug_id, STEP_TO_REPRODUCE_UPDATED, $t_revision_id );
@@ -517,7 +517,7 @@ class BugData {
 
 			if( $t_old_data->additional_information != $this->additional_information ) {
 				if ( bug_revision_count( $c_bug_id, REV_ADDITIONAL_INFO ) < 1 ) {
-					$t_revision_id = bug_revision_add( $c_bug_id, $t_current_user, REV_ADDITIONAL_INFO, $t_old_data->additional_information, 0, $t_old_data->last_updated );
+					$t_revision_id = bug_revision_add( $c_bug_id, $t_old_data->reporter_id, REV_ADDITIONAL_INFO, $t_old_data->additional_information, 0, $t_old_data->date_submitted );
 				}
 				$t_revision_id = bug_revision_add( $c_bug_id, $t_current_user, REV_ADDITIONAL_INFO, $this->additional_information );
 				history_log_event_special( $c_bug_id, ADDITIONAL_INFO_UPDATED, $t_revision_id );
@@ -831,8 +831,20 @@ function bug_is_readonly( $p_bug_id ) {
  * @uses config_api.php
  */
 function bug_is_resolved( $p_bug_id ) {
-	$t_status = bug_get_field( $p_bug_id, 'status' );
-	return( $t_status >= config_get( 'bug_resolved_status_threshold' ) );
+	$t_bug = bug_get( $p_bug_id );
+	return( $t_bug->status >= config_get( 'bug_resolved_status_threshold', null, null, $t_bug->project_id ) );
+}
+
+/**
+ * Check if a given bug is closed
+ * @param int p_bug_id integer representing bug id
+ * @return bool true if bug is closed, false otherwise
+ * @access public
+ * @uses config_api.php
+ */
+function bug_is_closed( $p_bug_id ) {
+	$t_bug = bug_get( $p_bug_id );
+	return( $t_bug->status >= config_get( 'bug_closed_status_threshold', null, null, $t_bug->project_id ) );
 }
 
 /**

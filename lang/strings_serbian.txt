@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
  */
-/** Serbian (Cyrillic script) (‪Српски (ћирилица)‬)
+/** Serbian (Cyrillic script) (‪српски (ћирилица)‬)
  * 
  * See the qqq 'language' for message documentation incl. usage of parameters
  * To improve a translation please visit http://translatewiki.net
@@ -173,7 +173,6 @@ $MANTIS_ERROR[ERROR_REPORT] = 'Пронађена је грешка у вашо�
 $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Нема назначене датотеке.';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Ова врста датотеке није дозвољена.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'Фасцикла не постоји. Проверите пројектне поставке.';
-$MANTIS_ERROR[ERROR_DUPLICATE_FILE] = 'Ова датотека је дупликат. Прво је обришите.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Пројекат с тим називом већ постоји.';
 $MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Обавезно поље „%1$s“ је празно. Проверите да ли сте га попунили како треба.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Налог је заштићен. Немате дозволу за приступ све док се заштита на уклони.';
@@ -276,7 +275,7 @@ $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Поље „%1$s“ садржи неи�
 $MANTIS_ERROR[ERROR_SESSION_HANDLER_INVALID] = 'Неисправан обрађивач сесије.';
 $MANTIS_ERROR[ERROR_SESSION_VAR_NOT_FOUND] = 'Не могу да пронађем променљиву „%1$s“.';
 $MANTIS_ERROR[ERROR_SESSION_NOT_VALID] = 'Ваша сесија је постала неисправна.';
-$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Неисправан сигурносни жетон. Можда сте случајно поднели образац двапут?';
+$MANTIS_ERROR[ERROR_FORM_TOKEN_INVALID] = 'Неисправан сигурносни жетон. Можда је истекла сесија или сте случајно поднели образац двапут.';
 $MANTIS_ERROR[ERROR_INVALID_REQUEST_METHOD] = 'Ова страница не може да се отвори с овом методом.';
 $MANTIS_ERROR[ERROR_INVALID_SORT_FIELD] = 'Неисправно поље за разврставање.';
 $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = 'Неисправан облик датума.';
@@ -466,8 +465,11 @@ $s_monitor_bug_button = 'Надгледај';
 $s_unmonitor_bug_button = 'Прекини надгледање';
 $s_file_upload_msg = 'Датотека је отпремљена.';
 $s_upload_file = 'Отпремање';
+$s_upload_files = 'Отпремање датотека';
 $s_select_file = 'Изабери датотеку';
+$s_select_files = 'Одабир датотека';
 $s_upload_file_button = 'Отпреми';
+$s_upload_files_button = 'Отпреми датотеке';
 $s_max_file_size = 'Највећа величина';
 $s_bug_reopened_msg = 'Проблем је поново отворен.';
 $s_reopen_add_bugnote_title = 'Додавање белешке с разлогом за поновно отварање проблема';
@@ -616,6 +618,7 @@ $s_1_week_title = '1 недеља';
 $s_never_logged_in_title = 'Никада пријављен';
 $s_prune_accounts = 'Уклони налоге';
 $s_hide_inactive = 'Сакриј неактивне';
+$s_show_disabled = 'Прикажи онемогућено';
 $s_manage_accounts_title = 'Управљање налозима';
 $s_p = 'з';
 $s_date_created = 'Датум стварања';
@@ -965,6 +968,7 @@ $s_update_bug_button = 'Уреди';
 $s_bug_assign_to_button = 'Додели:';
 $s_bug_status_to_button = 'Измени стање:';
 $s_reopen_bug_button = 'Отвори поново';
+$s_close_bug_button = 'Затвори';
 $s_move_bug_button = 'Премести';
 $s_attached_files = 'Закачене датотеке';
 $s_publish = 'Објави';

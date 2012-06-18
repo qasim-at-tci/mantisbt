@@ -890,6 +890,8 @@ function filter_get_field( $p_filter_id, $p_field_name ) {
  * @return array $p_query_clauses
  */
 function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clauses ) {
+	static $s_fk_map;
+
 	$t_bug_table = db_get_table( 'mantis_bug_table' );
 	$t_custom_field_string_table = db_get_table( 'mantis_custom_field_string_table' );
 
@@ -912,13 +914,16 @@ function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clause
 	}
 
 	# Define a foreign key map to handle sorting (we don't want to sort by id)
-	$t_username = config_get( 'show_realname' ) ? 'realname' : 'username';
-	$t_fk_map = array(
-		'category_id' => array('table' => db_get_table( 'mantis_category_table' ), 'sort_field' => 'name' ),
-		'project_id'  => array('table' => db_get_table( 'mantis_project_table' ), 'sort_field' => 'name' ),
-		'handler_id'  => array('table' => db_get_table( 'mantis_user_table' ), 'sort_field' => $t_username . " ASC, mantis_user_table_handler_id.username" ),
-		'reporter_id' => array('table' => db_get_table( 'mantis_user_table' ), 'sort_field' => $t_username . ", username" ),
-	);
+	# For user fields, the complete definition of the sort_field is deferred
+	# until for loop below
+	if( !isset( $s_fk_map ) ) {
+		$s_fk_map = array(
+			'category_id' => array('table' => db_get_table( 'mantis_category_table' ), 'sort_field' => 'name' ),
+			'project_id'  => array('table' => db_get_table( 'mantis_project_table' ), 'sort_field' => 'name' ),
+			'handler_id'  => array('table' => db_get_table( 'mantis_user_table' ), ),
+			'reporter_id' => array('table' => db_get_table( 'mantis_user_table' ), ),
+		);
+	}
 
 	$t_count = count( $t_sort_fields );
 	for( $i = 0;$i < $t_count;$i++ ) {
@@ -961,19 +966,48 @@ function filter_get_query_sort_data( &$p_filter, $p_show_sticky, $p_query_clause
 					}
 				}
 
+			# if sorting by foreign key column
+			} else if ( array_key_exists( $c_sort, $s_fk_map ) ) {
+				$t_fk_table_alias = $s_fk_map[$c_sort]['table'] . '_' . $c_sort;
+
+				# Defining sort field for user fields
+				# The if statement below is a hack required to have (at least semi-)
+				# proper sorting of username fields (see #10853); the code somewhat
+				# replicates the logic from function user_get_name()
+				# use of CASE, COALESCE should be fine for all db (SQL92 standard)
+				# however string concatenation operator '||' has a different meaning
+				# in MySQL, so we use CONCAT function which exists in all DBs
+				if( !array_key_exists( 'sort_field', $s_fk_map ) ) {
+					$t_select = "CASE WHEN $c_sort = 0 THEN NULL ";
+					if( config_get( 'show_realname' ) ) {
+						$t_select .=
+							  "WHEN COALESCE( $t_fk_table_alias.realname, '' ) <> '' "
+							. "THEN $t_fk_table_alias.realname ";
+					}
+					$t_select .=
+						  "WHEN COALESCE( $t_fk_table_alias.username, '' ) <> '' "
+						. "THEN $t_fk_table_alias.username "
+						. "ELSE CONCAT( '". lang_get( 'prefix_for_deleted_users' ) . "', $c_sort ) "
+						. "END";
+					$s_fk_map[$c_sort]['select']     = $t_select;
+					$s_fk_map[$c_sort]['sort_field'] = "sort_$c_sort";
+				}
+
+				$p_query_clauses['join'][] =
+					"LEFT JOIN " . $s_fk_map[$c_sort]['table'] . " $t_fk_table_alias" .
+					" ON $t_fk_table_alias.id = $t_bug_table.$c_sort";
+
+				# If select field is defined, add it to the query and sort on it
+				if( array_key_exists( 'select', $s_fk_map[$c_sort] ) ) {
+					$p_query_clauses['select'][] = $s_fk_map[$c_sort]['select'] . " " . $s_fk_map[$c_sort]['sort_field'];
+					$p_query_clauses['order'][] = $s_fk_map[$c_sort]['sort_field'] . " $c_dir";
+				} else {
+					$p_query_clauses['order'][] = "$t_fk_table_alias." . $s_fk_map[$c_sort]['sort_field'] . " $c_dir";
+				}
+
 			# standard column
 			} else {
-				# Special handling for sort by foreign key column
-				if ( array_key_exists( $c_sort, $t_fk_map ) ) {
-					$t_fk_table_alias = $t_fk_map[$c_sort]['table'] . '_' . $c_sort;
-					$p_query_clauses['join'][] =
-						"LEFT JOIN " . $t_fk_map[$c_sort]['table'] . " " . $t_fk_table_alias .
-						" ON $t_fk_table_alias.id = $t_bug_table.$c_sort";
-					$p_query_clauses['order'][] = "$t_fk_table_alias." . $t_fk_map[$c_sort]['sort_field'] . " $c_dir";
-				}
-				else {
-					$p_query_clauses['order'][] = "$t_bug_table.$c_sort $c_dir";
-				}
+				$p_query_clauses['order'][] = "$t_bug_table.$c_sort $c_dir";
 			}
 		}
 	}

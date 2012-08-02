@@ -263,6 +263,7 @@
 	 * or password reset (this requires mail settings to be correctly configured).
 	 * If OFF, then the Administrator will have to provide a password when
 	 * creating new accounts, and the password will be set to blank when reset.
+	 * Note: If set to ON, mail settings must be correctly configured.
 	 * @global int $g_send_reset_password
 	 */
 	$g_send_reset_password	= ON;
@@ -344,12 +345,12 @@
 	$g_return_path_email	= 'admin@example.com';
 
 	/**
-	 * Allow email notification.
-	 * Set to ON to enable email notifications, OFF to disable them. Note that
-	 * disabling email notifications has no effect on emails generated as part
-	 * of the user signup process. When set to OFF, the password reset feature
-	 * is disabled. Additionally, notifications of administrators updating
-	 * accounts are not sent to users.
+	 * Allow email notifications.
+	 * Set to ON to enable email notifications, OFF to disable them.
+	 * When OFF, the password reset feature is disabled, and notifications
+	 * of administrators updating accounts are not sent to users.
+	 * Note that disabling notifications has no effect on emails generated
+	 * as part of the user signup process.
 	 * @global int $g_enable_email_notification
 	 */
 	$g_enable_email_notification	= ON;

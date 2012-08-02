@@ -433,13 +433,14 @@ function email_collect_recipients( $p_bug_id, $p_notify_type, $p_extra_user_ids_
  * @return null
  */
 function email_signup( $p_user_id, $p_password, $p_confirm_hash, $p_admin_name = '' ) {
-	if(( OFF == config_get( 'send_reset_password' ) ) || ( OFF == config_get( 'enable_email_notification' ) ) ) {
+	if( OFF == config_get( 'send_reset_password' ) ) {
 		return;
 	}
 
 	#	@@@ thraxisp - removed to address #6084 - user won't have any settings yet,
 	#  use same language as display for the email
 	#  lang_push( user_pref_get_language( $p_user_id ) );
+
 	# retrieve the username and email
 	$t_username = user_get_field( $p_user_id, 'username' );
 	$t_email = user_get_email( $p_user_id );
@@ -447,14 +448,16 @@ function email_signup( $p_user_id, $p_password, $p_confirm_hash, $p_admin_name =
 	# Build Welcome Message
 	$t_subject = '[' . config_get( 'window_title' ) . '] ' . lang_get( 'new_account_subject' );
 
-	//if( $p_admin_created && $p_admin_name) {
 	if( $p_admin_name ) {
 		$intro_text = sprintf( lang_get( 'new_account_greeting_admincreated' ), $p_admin_name, $t_username );
 	} else {
 		$intro_text = sprintf( lang_get( 'new_account_greeting' ), $t_username );
 	}
 
-	$t_message = $intro_text . "\n\n" . string_get_confirm_hash_url( $p_user_id, $p_confirm_hash ) . "\n\n" . lang_get( 'new_account_message' ) . "\n\n" . lang_get( 'new_account_do_not_reply' );
+	$t_message = $intro_text . "\n\n"
+		. string_get_confirm_hash_url( $p_user_id, $p_confirm_hash ) . "\n\n"
+		. lang_get( 'new_account_message' ) . "\n\n"
+		. lang_get( 'new_account_do_not_reply' );
 
 	# Send signup email regardless of mail notification pref
 	# or else users won't be able to sign up
@@ -465,6 +468,8 @@ function email_signup( $p_user_id, $p_password, $p_confirm_hash, $p_admin_name =
 		if( OFF == config_get( 'email_send_using_cronjob' ) ) {
 			email_send_all();
 		}
+	} else {
+		log_event( LOG_EMAIL, "Signup Email for user $t_username (@U$p_user_id) not sent: email address is blank" );
 	}
 
 	#		lang_pop(); # see above

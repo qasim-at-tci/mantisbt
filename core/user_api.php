@@ -444,9 +444,7 @@ function user_get_logged_in_user_ids( $p_session_duration_in_minutes ) {
 # --------------------
 # Create a user.
 # returns false if error, the generated cookie string if ok
-function user_create( $p_username, $p_password, $p_email = '',
-	$p_access_level = null, $p_protected = false, $p_enabled = true,
-	$p_realname = '', $p_admin_name = '' ) {
+function user_create( $p_username, $p_password, $p_email = '', $p_access_level = null, $p_protected = false, $p_enabled = true, $p_realname = '', $p_admin_name = '' ) {
 	if( null === $p_access_level ) {
 		$p_access_level = config_get( 'default_new_account_access_level' );
 	}
@@ -499,6 +497,7 @@ function user_create( $p_username, $p_password, $p_email = '',
 # ldap. $p_email may be empty, but the user wont get any emails.
 # returns false if error, the generated cookie string if ok
 function user_signup( $p_username, $p_email = null ) {
+/*
 	if( null === $p_email ) {
 		$p_email = '';
 
@@ -513,7 +512,7 @@ function user_signup( $p_username, $p_email = null ) {
 		#  to retrieve it anyway.
 		#  I'll re-enable this once a plan has been properly formulated for LDAP
 		#  account management and creation.
-		/*			$t_email = '';
+					$t_email = '';
 					if ( ON == config_get( 'use_ldap_email' ) ) {
 						$t_email = ldap_email_from_username( $p_username );
 					}
@@ -521,9 +520,8 @@ function user_signup( $p_username, $p_email = null ) {
 					if ( !is_blank( $t_email ) ) {
 						$p_email = $t_email;
 					}
-		*/
 	}
-
+*/
 	$p_email = trim( $p_email );
 
 	$t_seed = $p_email . $p_username;
@@ -531,7 +529,15 @@ function user_signup( $p_username, $p_email = null ) {
 	# Create random password
 	$t_password = auth_generate_random_password( $t_seed );
 
-	return user_create( $p_username, $t_password, $p_email );
+	$t_cookie_string = user_create( $p_username, $t_password, $p_email );
+
+	# Send notification email
+	if( !is_blank( $p_email ) ) {
+		$t_confirm_hash = auth_generate_confirm_hash( $t_user_id );
+		email_signup( $t_user_id, $p_password, $t_confirm_hash, $p_admin_name );
+	}
+
+	return $t_cookie_string;
 }
 
 # --------------------

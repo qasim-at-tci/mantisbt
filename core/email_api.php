@@ -813,8 +813,6 @@ function email_store( $p_recipient, $p_subject, $p_message, $p_headers = null ) 
 	$t_email_data->metadata = array();
 	$t_email_data->metadata['headers'] = $p_headers === null ? array() : $p_headers;
 	$t_email_data->metadata['priority'] = config_get( 'mail_priority' );
-
-	# Urgent = 1, Not Urgent = 5, Disable = 0
 	$t_email_data->metadata['charset'] = 'utf-8';
 
 	$t_hostname = '';

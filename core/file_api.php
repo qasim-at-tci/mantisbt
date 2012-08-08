@@ -469,7 +469,15 @@ function file_get_field( $p_file_id, $p_field_name, $p_table = 'bug' ) {
 	return db_result( $result );
 }
 
-function file_delete( $p_file_id, $p_table = 'bug' ) {
+/*
+ * Delete a file attachment from disk and optionally the corresponding DB record
+ *
+ * @param string $p_file_id
+ * @param string $p_table 'bug' or 'project' (defaults to 'bug')
+ * @param bool $p_delete_record If false, delete the file only, not the DB record (defaults to true)
+ * @return true
+ */
+function file_delete( $p_file_id, $p_table = 'bug', $p_delete_record = true ) {
 	$t_upload_method = config_get( 'file_upload_method' );
 
 	$c_file_id = db_prepare_int( $p_file_id );
@@ -501,10 +509,15 @@ function file_delete( $p_file_id, $p_table = 'bug' ) {
 		history_log_event_special( $t_bug_id, FILE_DELETED, file_get_display_name( $t_filename ) );
 	}
 
-	$t_file_table = db_get_table( 'mantis_' . $p_table . '_file_table' );
-	$query = "DELETE FROM $t_file_table
-				WHERE id=" . db_param();
-	db_query_bound( $query, Array( $c_file_id ) );
+	# Only delete the corresponding DB record when specified
+	# this is used when updating project documentation
+	if( $p_delete_record ) {
+		$t_file_table = db_get_table( 'mantis_' . $p_table . '_file_table' );
+		$query = "DELETE FROM $t_file_table
+					WHERE id=" . db_param();
+		db_query_bound( $query, Array( $c_file_id ) );
+	}
+
 	return true;
 }
 
@@ -607,7 +620,7 @@ function file_is_name_unique( $p_name, $p_bug_id ) {
  * @param integer $p_bug_id the bug id
  * @param array $p_file the uploaded file info, as retrieved from gpc_get_file()
  */
-function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc = '', $p_user_id = null ) {
+function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc = '', $p_user_id = null, $p_old_file_id = null ) {
 
 	file_ensure_uploaded( $p_file );
 	$t_file_name = $p_file['name'];
@@ -654,8 +667,13 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 	$c_file_path = db_prepare_string( $t_file_path );
 	$c_new_file_name = db_prepare_string( $t_file_name );
 
-	$t_file_hash = ( 'bug' == $p_table ) ? $t_bug_id : config_get( 'document_files_prefix' ) . '-' . $t_project_id;
-	$t_unique_name = file_generate_unique_name( $t_file_hash . '-' . $t_file_name, $t_file_path );
+	# If replacing an existing file, reuse its unique name
+	if( null === $p_old_file_id ) {
+		$t_file_hash = ( 'bug' == $p_table ) ? $t_bug_id : config_get( 'document_files_prefix' ) . '-' . $t_project_id;
+		$t_unique_name = file_generate_unique_name( $t_file_hash . '-' . $t_file_name, $t_file_path );
+	} else {
+		$t_unique_name = file_get_field( $p_old_file_id, 'diskfile', $p_table );
+	}
 	$t_disk_file_name = $t_file_path . $t_unique_name;
 	$c_unique_name = db_prepare_string( $t_unique_name );
 
@@ -704,11 +722,35 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 	$t_file_table = db_get_table( 'mantis_' . $p_table . '_file_table' );
 	$c_id = ( 'bug' == $p_table ) ? $c_bug_id : $c_project_id;
 
-	$query = "INSERT INTO $t_file_table
-						(" . $p_table . "_id, title, description, diskfile, filename, folder, filesize, file_type, date_added, content, user_id)
-					  VALUES
-						($c_id, '$c_title', '$c_desc', '$c_unique_name', '$c_new_file_name', '$c_file_path', $c_file_size, '$c_file_type', '" . db_now() . "', $c_content, $c_user_id)";
-	db_query( $query );
+	if( null === $p_old_file_id ) {
+		# Old file id not specified - add new file
+		$query = "INSERT INTO $t_file_table
+							(" . $p_table . "_id, title, description, diskfile, filename, folder, filesize, file_type, date_added, content, user_id)
+						  VALUES
+							($c_id, '$c_title', '$c_desc', '$c_unique_name', '$c_new_file_name', '$c_file_path', $c_file_size, '$c_file_type', '" . db_now() . "', $c_content, $c_user_id)";
+		db_query( $query );
+	} else {
+		# Update existing file record
+		$query = "UPDATE $t_file_table SET"
+			. "  title=" . db_param()
+			. ", description=" . db_param()
+			. ", date_added=" . db_param()
+			. ", filename=" . db_param()
+			. ", filesize=" . db_param()
+			. ", file_type=" .db_param()
+			. ", content=" .db_param()
+			. " WHERE id=" . db_param();
+		db_query_bound( $query, Array(
+			$p_title,
+			$p_desc,
+			db_now(),
+			$t_file_name,
+			$t_file_size,
+			$p_file['type'],
+			$c_content,
+			$p_old_file_id,
+		) );
+	}
 
 	if( 'bug' == $p_table ) {
 

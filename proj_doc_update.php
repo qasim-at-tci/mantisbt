@@ -36,92 +36,41 @@
 		access_denied();
 	}
 
-	$f_file_id = gpc_get_int( 'file_id' );
-	$f_title = gpc_get_string( 'title' );
-	$f_description	= gpc_get_string( 'description' );
-	$f_file = gpc_get_file( 'file' );
+	$f_file_id     = gpc_get_int( 'file_id' );
+	$f_title       = gpc_get_string( 'title' );
+	$f_description = gpc_get_string( 'description' );
+	$f_file        = gpc_get_file( 'file' );
 
-	$t_project_id = file_get_field( $f_file_id, 'project_id', 'project' );
-
+	$t_project_id  = file_get_field( $f_file_id, 'project_id', 'project' );
 	access_ensure_project_level( config_get( 'upload_project_file_threshold' ), $t_project_id );
 
 	if ( is_blank( $f_title ) ) {
 		trigger_error( ERROR_EMPTY_FIELD, ERROR );
 	}
 
-	$c_file_id = db_prepare_int( $f_file_id );
-	$c_title = db_prepare_string( $f_title );
-	$c_description = db_prepare_string( $f_description );
-
 	$t_project_file_table = db_get_table( 'mantis_project_file_table' );
-
-	/** @todo (thraxisp) this code should probably be integrated into file_api to share methods used to store files */
-
-	file_ensure_uploaded( $f_file );
 
 	extract( $f_file, EXTR_PREFIX_ALL, 'v' );
 
 	if ( is_uploaded_file( $v_tmp_name ) ) {
+		# Replacing a previously uploaded file
 
-		$t_project_id = helper_get_current_project();
+		# Remove the old file, keeping the DB record
+		file_delete( $f_file_id, 'project', false );
 
-		# grab the original file path and name
-		$t_disk_file_name = file_get_field( $f_file_id, 'diskfile', 'project' );
-		$t_file_path = dirname( $t_disk_file_name );
+		# Add the new file, linking to existing record
+		file_add( 0, $f_file, 'project', $f_title, $f_description, null, $f_file_id );
 
-		# prepare variables for insertion
-		$c_file_name = db_prepare_string( $v_name );
-		$c_file_type = db_prepare_string( $v_type );
-		$t_file_size = filesize( $v_tmp_name );
-		$t_max_file_size = (int)min( ini_get_number( 'upload_max_filesize' ), ini_get_number( 'post_max_size' ), config_get( 'max_file_size' ) );
-        if ( $t_file_size > $t_max_file_size ) {
-            trigger_error( ERROR_FILE_TOO_BIG, ERROR );
-        }
-		$c_file_size = db_prepare_int( $t_file_size );
-
-		$t_method = config_get( 'file_upload_method' );
-		switch ( $t_method ) {
-			case FTP:
-			case DISK:
-				file_ensure_valid_upload_path( $t_file_path );
-
-				if ( FTP == $t_method ) {
-					$conn_id = file_ftp_connect();
-					file_ftp_delete ( $conn_id, $t_disk_file_name );
-					file_ftp_put ( $conn_id, $t_disk_file_name, $v_tmp_name );
-					file_ftp_disconnect ( $conn_id );
-				}
-				if ( file_exists( $t_disk_file_name ) ) {
-					file_delete_local( $t_disk_file_name );
-				}
-				if ( !move_uploaded_file( $v_tmp_name, $t_disk_file_name ) ) {
-					trigger_error( ERROR_FILE_MOVE_FAILED, ERROR );
-				}
-				chmod( $t_disk_file_name, config_get( 'attachments_file_permissions' ) );
-
-				$c_content = '';
-				break;
-			case DATABASE:
-				$c_content = db_prepare_binary_string( fread ( fopen( $v_tmp_name, 'rb' ), $v_size ) );
-				break;
-			default:
-				/** @todo Such errors should be checked in the admin checks */
-				trigger_error( ERROR_GENERIC, ERROR );
-		}
-		$query = "UPDATE $t_project_file_table
-			SET title=" . db_param() . ", description=" . db_param() . ", date_added=" . db_param() . ",
-				filename=" . db_param() . ", filesize=" . db_param() . ", file_type=" .db_param() . ", content=" .db_param() . "
-				WHERE id=" . db_param();
-		$result = db_query_bound( $query, Array( $c_title, $c_description, db_now(), $c_file_name, $c_file_size, $c_file_type, $c_content, $c_file_id ) );
 	} else {
+		# No file was provided, just update the title and description
 		$query = "UPDATE $t_project_file_table
 				SET title=" . db_param() . ", description=" . db_param() . "
 				WHERE id=" . db_param();
-		$result = db_query_bound( $query, Array( $c_title, $c_description, $c_file_id ) );
-	}
+		$result = db_query_bound( $query, Array( $f_title, $f_description, $f_file_id ) );
 
-	if ( !$result ) {
-		trigger_error( ERROR_GENERIC, ERROR  );
+		if ( !$result ) {
+			trigger_error( ERROR_GENERIC, ERROR  );
+		}
 	}
 
 	form_security_purge( 'proj_doc_update' );

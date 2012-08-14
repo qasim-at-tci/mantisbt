@@ -602,49 +602,67 @@ function file_is_name_unique( $p_name, $p_bug_id ) {
 }
 
 /**
- * Add a file to the system using the configured storage method
+ * Generic File Add API, allowing upload of attachments for bugs or projects
+ * to the system using the configured storage method, either from an existing
+ * file, or by providing the file's contents.
  *
  * @param integer $p_bug_id the bug id (should be 0 when adding project doc)
- * @param array $p_file the uploaded file info, as retrieved from gpc_get_file()
- * @param string $p_table 'bug' or 'project' depending on attachment type
- * @param string $p_title file title
- * @param string $p_desc file description
+ * @param string $p_file_name original name of the file
+ * @param string $p_file_type mime type of the file
+ * @param string $p_tmp_file path to the temporary file to upload (should be NULL if uploading by contents)
+ * @param string $p_file_contents file's contents (should be NULL if uploading by by file name) - optional, defaults to NULL
+ * @param string $p_table 'bug' (default) or 'project' depending on attachment type
+ * @param string $p_title file title, defaults to ''
+ * @param string $p_desc file description, defaults to ''
  * @param string $p_user_id user id (defaults to current user)
- * @param int $p_date_added date added
+ * @param int $p_date_added date added, defaults to current date
  * @param bool $p_skip_bug_update skip bug last modification update (useful when importing bug attachments)
+ *
+ * @return int the id of the inserted file attachment record
  */
-function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc = '', $p_user_id = null, $p_date_added = 0, $p_skip_bug_update = false ) {
+function file_add2( $p_bug_id, $p_file_name, $p_file_type, $p_tmp_file, $p_file_contents = null, $p_table = 'bug', $p_title = '', $p_desc = '', $p_user_id = null, $p_date_added = 0, $p_skip_bug_update = false ) {
 
-	file_ensure_uploaded( $p_file );
-	$t_file_name = $p_file['name'];
-	$t_tmp_file = $p_file['tmp_name'];
-	$c_date_added = $p_date_added <= 0 ? db_now() : db_prepare_int( $p_date_added );
-
-	if( !file_type_check( $t_file_name ) ) {
+	# Make sure the file's type (extension) is allowed
+	if( !file_type_check( $p_file_name ) ) {
 		trigger_error( ERROR_FILE_NOT_ALLOWED, ERROR );
 	}
 
-	if( !file_is_name_unique( $t_file_name, $p_bug_id ) ) {
-		trigger_error( ERROR_FILE_DUPLICATE, ERROR );
+	# File size checks
+	$t_upload_type_file = ( $p_file_contents === null );
+	if( $t_upload_type_file ) {
+		# Use the uploaded file name
+		$t_file_size = filesize( $p_tmp_file );
+	} else {
+		# We got the file's contents
+		$t_file_size = strlen( $p_file_contents );
 	}
-
-	$t_file_size = filesize( $t_tmp_file );
-	if( 0 == $t_file_size ) {
+	if( $t_file_size == 0 ) {
 		trigger_error( ERROR_FILE_NO_UPLOAD_FAILURE, ERROR );
 	}
-	$t_max_file_size = (int) min( ini_get_number( 'upload_max_filesize' ), ini_get_number( 'post_max_size' ), config_get( 'max_file_size' ) );
+	$t_max_file_size = (int) min(
+		ini_get_number( 'upload_max_filesize' ),
+		ini_get_number( 'post_max_size' ),
+		config_get( 'max_file_size' )
+	);
 	if( $t_file_size > $t_max_file_size ) {
 		trigger_error( ERROR_FILE_TOO_BIG, ERROR );
 	}
 
 	if( 'bug' == $p_table ) {
+		# Duplicate file check
+		if( !file_is_name_unique( $p_file_name, $p_bug_id ) ) {
+			trigger_error( ERROR_FILE_DUPLICATE, ERROR );
+		}
+
 		$t_project_id = bug_get_field( $p_bug_id, 'project_id' );
 		$t_id = (int)$p_bug_id;
 		$t_bug_id = bug_format_id( $p_bug_id );
+		$t_file_hash = $t_bug_id;
 	} else {
 		$t_project_id = helper_get_current_project();
 		$t_id = $t_project_id;
 		$t_bug_id = 0;
+		$t_file_hash = config_get( 'document_files_prefix' ) . '-' . $t_project_id;
 	}
 
 	if( $p_user_id === null ) {
@@ -664,75 +682,133 @@ function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc 
 		}
 	}
 
-	$t_file_hash = ( 'bug' == $p_table ) ? $t_bug_id : config_get( 'document_files_prefix' ) . '-' . $t_project_id;
-	$t_unique_name = file_generate_unique_name( $t_file_hash . '-' . $t_file_name, $t_file_path );
+	$t_unique_name = file_generate_unique_name( "$t_file_hash-$p_file_name", $t_file_path );
 	$t_disk_file_name = $t_file_path . $t_unique_name;
 
-	$t_method = config_get( 'file_upload_method' );
+	$t_upload_method = config_get( 'file_upload_method' );
 
-	switch( $t_method ) {
+	switch( $t_upload_method ) {
 		case FTP:
 		case DISK:
 			file_ensure_valid_upload_path( $t_file_path );
 
-			if( !file_exists( $t_disk_file_name ) ) {
-				if( FTP == $t_method ) {
-					$conn_id = file_ftp_connect();
-					file_ftp_put( $conn_id, $t_disk_file_name, $t_tmp_file );
-					file_ftp_disconnect( $conn_id );
-				}
+			if( file_exists( $t_disk_file_name ) ) {
+				trigger_error( ERROR_FILE_DUPLICATE, ERROR );
+			}
 
-				if( !move_uploaded_file( $t_tmp_file, $t_disk_file_name ) ) {
+			# Generate a local file if adding by contents
+			if( !$t_upload_type_file ) {
+				$p_tmp_file = $t_disk_file_name;
+				$t_handle = fopen( $p_tmp_file, "w" );
+				fwrite( $t_handle, $p_file_contents );
+				fclose( $t_handle );
+
+				# Clearing file contents so that nothing gets uploaded to DB
+				$p_file_contents = null;
+			}
+
+			if( FTP == $t_upload_method ) {
+				$conn_id = file_ftp_connect();
+				file_ftp_put( $conn_id, $t_disk_file_name, $p_tmp_file );
+				file_ftp_disconnect( $conn_id );
+
+				# Delete temp file
+				if( !$t_upload_type_file ) {
+					file_delete_local( $t_disk_file_name );
+				}
+			} else {
+				# DISK
+				if( !move_uploaded_file( $p_tmp_file, $t_disk_file_name ) ) {
 					trigger_error( ERROR_FILE_MOVE_FAILED, ERROR );
 				}
 
 				chmod( $t_disk_file_name, config_get( 'attachments_file_permissions' ) );
-
-				$c_content = "''";
-			} else {
-				trigger_error( ERROR_FILE_DUPLICATE, ERROR );
 			}
 			break;
+
 		case DATABASE:
-			$c_content = db_prepare_binary_string( fread( fopen( $t_tmp_file, 'rb' ), $t_file_size ) );
+			if( $t_upload_type_file ) {
+				$p_file_contents = fread( fopen( $p_tmp_file, 'rb' ), $t_file_size );
+			}
+			$p_file_contents = db_prepare_binary_string( $p_file_contents );
 			break;
+
 		default:
 			trigger_error( ERROR_GENERIC, ERROR );
 	}
 
+	# Insert database record
 	$t_file_table = db_get_table( 'mantis_' . $p_table . '_file_table' );
 	$t_id_col = $p_table . "_id";
 
-	$query = "INSERT INTO $t_file_table
-				( $t_id_col, title, description, diskfile, filename, folder, filesize, file_type, date_added, content, user_id )
-			  VALUES
-				( " . db_param() . ", " . db_param() . ", " . db_param() . ", "
-				    . db_param() . ", " . db_param() . ", " . db_param() . ", "
-				    . db_param() . ", " . db_param() . ", " . db_param() . ", "
-				    . db_param() . ", " . db_param() . " )";
+	$query = "
+		INSERT INTO $t_file_table
+			( $t_id_col, title, description, diskfile, filename, folder,
+			  filesize, file_type, date_added, content, user_id
+			)
+		VALUES
+			(" . db_param() . ", " . db_param() . ", " . db_param() . ", "
+			   . db_param() . ", " . db_param() . ", " . db_param() . ", "
+			   . db_param() . ", " . db_param() . ", " . db_param() . ", "
+			   . db_param() . ", " . db_param() . "
+			)";
 	db_query_bound( $query, Array(
 		$t_id,
 		$p_title,
 		$p_desc,
 		$t_unique_name,
-		$t_file_name,
+		$p_file_name,
 		$t_file_path,
 		$t_file_size,
-		$p_file['type'],
+		$p_file_type,
 		$p_date_added,
-		$c_content,
+		$p_file_contents,
 		(int)$p_user_id,
 	) );
 
 	if( 'bug' == $p_table ) {
 		# bump the last_updated date
 		if ( !$p_skip_bug_update ) {
-			$result = bug_update_date( $p_bug_id );
+			bug_update_date( $p_bug_id );
 		}
 
 		# add history entry
 		history_log_event_special( $p_bug_id, FILE_ADDED, $t_file_name );
 	}
+
+	# Return inserted attachment's id
+	return db_insert_id( $t_file_table );
+}
+
+/**
+ * Add a file to the system using the configured storage method
+ *
+ * @param integer $p_bug_id the bug id (should be 0 when adding project doc)
+ * @param array $p_file the uploaded file info, as retrieved from gpc_get_file()
+ * @param string $p_table 'bug' or 'project' depending on attachment type
+ * @param string $p_title file title
+ * @param string $p_desc file description
+ * @param string $p_user_id user id (defaults to current user)
+ * @param int $p_date_added date added
+ * @param bool $p_skip_bug_update skip bug last modification update (useful when importing bug attachments)
+ */
+function file_add( $p_bug_id, $p_file, $p_table = 'bug', $p_title = '', $p_desc = '', $p_user_id = null, $p_date_added = 0, $p_skip_bug_update = false ) {
+
+	file_ensure_uploaded( $p_file );
+
+	return file_add2(
+		$p_bug_id,
+		$p_file['name'],
+		$p_file['type'],
+		$p_file['tmp_name'],
+		null,
+		$p_table,
+		$p_title,
+		$p_desc,
+		$p_user_id,
+		$p_date_added,
+		$p_skip_bug_update
+	);
 }
 
 # --------------------

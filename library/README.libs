@@ -10,6 +10,7 @@ ezc             | ez Components   | 2009.2.1 | unpatched
 nusoap          | nusoap          | 0.9.5    | patched: XSS vulnerabilities as per #12312
 phpmailer       | PHPMailer       | 5.2.1    | unpatched
 projax          | projax          |          | unpatched
+recaptcha       | reCAPTCHA PHP   | 1.11     | unpatched
 rssbuilder      | RSSBuilder      | 2.2.1    | patched: removed __autoload function
 utf8            | phputf8         | 0.5      | unpatched
 
@@ -21,5 +22,6 @@ ezc        -  http://ezcomponents.org/
 nusoap     -  http://sourceforge.net/projects/nusoap/
 phpmailer  -  http://code.google.com/a/apache-extras.org/p/phpmailer/
 projax     -  http://script.aculo.us/downloads / http://www.ngcoders.com/projax/
+recaptcha  -  http://www.google.com/recaptcha
 rssbuilder -  http://code.google.com/p/flaimo-php/
 utf8       -  http://sourceforge.net/projects/phputf8

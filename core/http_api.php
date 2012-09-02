@@ -132,17 +132,62 @@ function http_content_headers() {
  * Set security headers (frame busting, clickjacking/XSS/CSRF protection).
  */
 function http_security_headers() {
+	static $s_csp_header = null;
+
 	if ( !headers_sent() ) {
-		header( 'X-Frame-Options: DENY' );
-		$t_avatar_img_allow = '';
-		if ( config_get_global( 'show_avatar' ) ) {
-			if ( http_is_protocol_https() ) {
-				$t_avatar_img_allow = "; img-src 'self' https://secure.gravatar.com:443";
-			} else {
-				$t_avatar_img_allow = "; img-src 'self' http://www.gravatar.com:80";
+		if( is_null( $s_csp_header ) ) {
+			# Build Content Security Policy header
+
+			# Base Policy
+			$s_csp_header = 'X-Content-Security-Policy';
+			$t_policy = array(
+				'default-src' => array( 'base' => "'self'" ),
+				'script-src'  => array( "'unsafe-inline'", "'unsafe-eval'" , 'base' => "'self'", ),
+				'frame-src'   => array( 'base' => "'none'" ),
+				# Firefox (tested with v15) fails recognize/parse the
+				# 'unsafe-inline' and 'unsafe-eval' directives from W3
+				# standard [1], and relies instead on non-standard
+				# 'options' from the deprecated CSP specification [2]
+				# [1] http://www.w3.org/TR/CSP/
+				# [2] https://wiki.mozilla.org/Security/CSP/Specification
+				'options'     => array( 'base' => "inline-script eval-script" ),
+			);
+
+			# Gravatar CSP exception
+			$t_avatar_img_allow = '';
+			if ( config_get_global( 'show_avatar' ) ) {
+				if ( http_is_protocol_https() ) {
+					$t_policy['img-src'][] = "https://secure.gravatar.com:443";
+				} else {
+					$t_policy['img-src'][] = "http://www.gravatar.com:80";
+				}
 			}
+
+			# CSP monitoring - to test policy, uncomment the next 2 lines
+			# and set report_uri to a cgi script that can handle the policy
+			# violation reports policy (see http://www.w3.org/TR/CSP/#report-uri)
+			#$s_csp_header .= '-report-only';
+			#$t_policy['report-uri'] = array( 'base' => "/csp.pl" );
+
+			# Build the CSP
+			$s_csp_header .= ': ';
+			foreach( $t_policy as $t_directive => $t_list ) {
+				if( !array_key_exists( 'base', $t_list ) ) {
+					# exceptions were added to this directive, add self
+					array_unshift( $t_list, "'self'" );
+				}
+				$t_value = '';
+				foreach( $t_list as $t_element ) {
+					$t_value .= "$t_element ";
+				}
+				$s_csp_header .= "$t_directive " . trim( $t_value, ' ' ) . "; ";
+			}
+			$s_csp_header = trim( $s_csp_header, '; ' );
 		}
-		header( "X-Content-Security-Policy: allow 'self'; options inline-script eval-script$t_avatar_img_allow; frame-ancestors 'none'" );
+
+		# Send headers
+		header( 'X-Frame-Options: DENY' );
+		header( $s_csp_header );
 	}
 }
 

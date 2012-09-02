@@ -25,6 +25,15 @@
 	  */
 	require_once( 'core.php' );
 
+	/**
+	 * reCAPTCHA library
+	 */
+	require_once( 'recaptcha' . DIRECTORY_SEPARATOR . 'recaptchalib.php' );
+
+	$recaptcha_public_key = '6LeM-NUSAAAAAOHf5md0TX3NoQzt4r1OZT9Ca2gB';
+	$recaptcha_public_key = '6Ld3-NUSAAAAAO4ry8l8gio_vvKDmz5JEI63qywm';
+	$recaptcha_private_key = '6LeM-NUSAAAAAM_3ffmPHOeaWKB2n1n7Nk0hJfrg ';
+
 	# Check for invalid access to signup page
 	if ( OFF == config_get_global( 'allow_signup' ) || LDAP == config_get_global( 'login_method' ) ) {
 		print_header_redirect( 'login_page.php' );
@@ -67,19 +76,16 @@
 </tr>
 <?php
 	$t_allow_passwd = helper_call_custom_function( 'auth_can_change_password', array() );
-	if( ON == config_get( 'signup_use_captcha' ) && get_gd_version() > 0 && ( true == $t_allow_passwd ) ) {
-		# captcha image requires GD library and related option to ON
+
+	# display the captcha widget
+	if( $t_allow_passwd && ON == config_get( 'signup_use_captcha' ) ) {
 ?>
 <tr class="row-1">
 	<td class="category">
 		<?php echo lang_get( 'signup_captcha_request' ) ?>:
 	</td>
 	<td>
-		<?php print_captcha_input( 'captcha', '' ) ?>
-	</td>
-	<td>
-		<img src="make_captcha_img.php?public_key=<?php echo $t_key ?>" alt="visual captcha" />
-		<input type="hidden" name="public_key" value="<?php echo $t_key ?>" />
+		<?php echo recaptcha_get_html( $recaptcha_public_key ) ?>
 	</td>
 </tr>
 <?php

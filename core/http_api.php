@@ -163,6 +163,17 @@ function http_security_headers() {
 				}
 			}
 
+			# reCAPTCHA CSP exception
+			if( config_get_global( 'signup_use_captcha' ) ) {
+				if ( http_is_protocol_https() ) {
+					$t_recaptcha_host = "https://www.google.com:443";
+				} else {
+					$t_recaptcha_host = "http://www.google.com:80";
+				}
+				$t_policy['script-src'][] = $t_recaptcha_host;
+				$t_policy['img-src'][] = $t_recaptcha_host;
+			}
+
 			# CSP monitoring - to test policy, uncomment the next 2 lines
 			# and set report_uri to a cgi script that can handle the policy
 			# violation reports policy (see http://www.w3.org/TR/CSP/#report-uri)

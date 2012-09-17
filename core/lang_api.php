@@ -160,6 +160,30 @@ function lang_map_auto() {
 }
 
 /**
+ * Returns the browser's 2-char language code for the specified MantisBT language
+ * If no match found, defaults to 'en' (English)
+ * @param string $p_lang (defaults to current language)
+ * @return string Browser language code
+ */
+function lang_map_reverse( $p_lang = null ) {
+	$t_auto_map = config_get( 'language_auto_map' );
+
+	if( null === $p_lang ) {
+		$t_lang = lang_get_current();
+	} else {
+		$t_lang = $p_lang;
+	}
+
+	$t_key = array_search( $t_lang, $t_auto_map );
+
+	if( $t_key === false ) {
+		return 'en';
+	} else {
+		return substr( $t_key, 0, 2 );
+	}
+}
+
+/**
  * Ensures that a language file has been loaded
  * @param string $p_lang the language name
  * @return null

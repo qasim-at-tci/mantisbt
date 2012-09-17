@@ -140,6 +140,21 @@ function html_rss_link() {
 }
 
 /**
+ * Prints a <link> tag to include a CSS file.
+ * This includes either minimal or development file depending on whether mantis is set for debug/production use
+ * @param string $p_filename
+ * @return null
+ */
+function html_css_link( $p_filename ) {
+	if( config_get_global( 'minimal_jscss' ) ) {
+		echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url( helper_mantis_url( $p_filename ), true ), '" />', "\n";
+		echo '<script type="text/css" src="', helper_mantis_url( 'javascript/min/' . $p_filename ), '"></script>' . "\n";
+	} else {
+		echo '<script type="text/css" src="', helper_mantis_url( 'javascript/dev/' . $p_filename ), '"></script>' . "\n";
+	}
+}
+
+/**
  * Prints a <script> tag to include a javascript file.
  * This includes either minimal or development file from /javascript depending on whether mantis is set for debug/production use
  * @param string $p_filename

@@ -36,16 +36,32 @@
 
 	html_page_top1( plugin_lang_get( 'graph_page' ) );
 	$t_path = config_get( 'path' );
-	// follows the convention in html_api::html_javascript_link
+
+	# jsCalendar scripts and CSS
 	if( config_get_global( 'minimal_jscss' ) ) {
-		echo '<link rel="stylesheet" type="text/css" href="', helper_mantis_url( 'javascript/min/jscalendar/calendar-blue.css' ), '">' . "\n";
+		$t_javascript_path = 'javascript' . DIRECTORY_SEPARATOR . 'min';
 	} else {
-		echo '<link rel="stylesheet" type="text/css" href="', helper_mantis_url( 'javascript/dev/jscalendar/calendar-blue.css' ), '">' . "\n";
+		$t_javascript_path = 'javascript' . DIRECTORY_SEPARATOR . 'dev';
+	}
+	$t_jscal_path = 'jscalendar' . DIRECTORY_SEPARATOR;
+	$t_jscal_lang_path = $t_jscal_path . 'lang' . DIRECTORY_SEPARATOR;
+
+	echo '<link rel="stylesheet" type="text/css" href="'
+		. helper_mantis_url( $t_javascript_path . DIRECTORY_SEPARATOR . $t_jscal_path . 'calendar-blue.css' )
+		. '">' . "\n";
+
+	# Set jscalendar language to match MantisBT setting
+	$t_lang_code = lang_map_reverse();
+	$t_jscal_lang_script = $t_jscal_lang_path . "calendar-$t_lang_code.js";
+	# Default to English if language file not found
+	if( !file_exists( "$t_javascript_path/$t_jscal_lang_script" ) ) {
+		$t_jscal_lang_script = $t_jscal_lang_path . 'calendar-en.js';
 	}
 
-	html_javascript_link( 'jscalendar/calendar.js');
-	html_javascript_link( 'jscalendar/lang/calendar-en.js');
-	html_javascript_link( 'jscalendar/calendar-setup.js');
+	html_javascript_link( $t_jscal_path . 'calendar.js' );
+	html_javascript_link( $t_jscal_lang_script );
+	html_javascript_link( $t_jscal_path . 'calendar-setup.js' );
+
 	html_page_top2();
 
 	$t_period = new Period();

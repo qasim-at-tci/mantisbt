@@ -189,17 +189,38 @@ function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_
 
 	# log new bug
 	if ( TRUE == $p_log_history)
-    	history_log_event_special( $p_bug_id, BUGNOTE_ADDED, bugnote_format_id( $t_bugnote_id ) );
+		history_log_event_special( $p_bug_id, BUGNOTE_ADDED, bugnote_format_id( $t_bugnote_id ) );
 
-	# if it was FEEDBACK its NEW_ now
+	# Change issue status if previous was FEEDBACK and auto-reassign is on
 	if ( config_get( 'reassign_on_feedback' ) &&
 		bug_get_field( $p_bug_id, 'status' ) == config_get( 'bug_feedback_status' ) &&
 		bug_get_field( $p_bug_id, 'reporter_id' ) == $c_user_id ) {
 
-		if ( bug_get_field( $p_bug_id, 'handler_id') == 0 ) {
-			bug_set_field( $p_bug_id, 'status', config_get( 'bug_submit_status' ) );
-		} else {
-			bug_set_field( $p_bug_id, 'status', config_get( 'bug_assigned_status' ) );
+		# Retrieve previous status from history
+		function filter_history( $t_elem ) {
+			return $t_elem['field'] == 'status' && $t_elem['new_value'] == config_get( 'bug_feedback_status' );
+		}
+		$t_bug_history = array_filter( history_get_raw_events_array( $p_bug_id ), 'filter_history' );
+		if( 'ASC' == config_get( 'history_order' ) ) {
+			$t_elem = end( $t_bug_history );
+		}
+		else {
+			$t_elem = reset( $t_bug_history );
+		}
+		$t_previous_status = $t_elem['old_value'];
+
+		# Status is changed to the one that was set prior to FEEDBACK
+		# unless that was higher than the resolved threshold, in which case
+		# we revert to previous behavior (bug_submit_status if no handler,
+		# bug_assigned status otherwise)
+		if( $t_previous_status < config_get( 'bug_resolved_status_threshold' ) )
+			bug_set_field( $p_bug_id, 'status', $t_previous_status );
+		else {
+			if ( bug_get_field( $p_bug_id, 'handler_id') == 0 ) {
+				bug_set_field( $p_bug_id, 'status', config_get( 'bug_submit_status' ) );
+			} else {
+				bug_set_field( $p_bug_id, 'status', config_get( 'bug_assigned_status' ) );
+			}
 		}
 	}
 

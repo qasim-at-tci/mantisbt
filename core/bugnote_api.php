@@ -121,10 +121,11 @@ function bugnote_is_user_reporter( $p_bugnote_id, $p_user_id ) {
  * @param string $p_attr
  * @param int $p_user_id user id
  * @param bool $p_send_email generate email?
+ * @param bool $p_log_history add history entry
  * @return false|int false or indicating bugnote id added
  * @access public
  */
-function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_private = false, $p_type = BUGNOTE, $p_attr = '', $p_user_id = null, $p_send_email = TRUE, $p_log_history = TRUE) {
+function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_private = false, $p_type = BUGNOTE, $p_attr = '', $p_user_id = null, $p_send_email = true, $p_log_history = true ) {
 	$c_bug_id = db_prepare_int( $p_bug_id );
 	$c_time_tracking = helper_duration_to_minutes( $p_time_tracking );
 	$c_type = db_prepare_int( $p_type );
@@ -188,8 +189,9 @@ function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_
 	bug_update_date( $p_bug_id );
 
 	# log new bug
-	if ( TRUE == $p_log_history)
+	if ( true == $p_log_history ) {
 		history_log_event_special( $p_bug_id, BUGNOTE_ADDED, bugnote_format_id( $t_bugnote_id ) );
+	}
 
 	# Change issue status if previous was FEEDBACK and auto-reassign is on
 	if ( config_get( 'reassign_on_feedback' ) &&
@@ -228,7 +230,7 @@ function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_
 	event_signal( 'EVENT_BUGNOTE_ADD', array( $p_bug_id, $t_bugnote_id ) );
 
 	# only send email if the text is not blank, otherwise, it is just recording of time without a comment.
-	if( TRUE == $p_send_email && !is_blank( $t_bugnote_text ) ) {
+	if( true == $p_send_email && !is_blank( $t_bugnote_text ) ) {
 		email_bugnote_add( $p_bug_id );
 	}
 

@@ -32,10 +32,11 @@
 
 	form_security_validate( 'bugnote_add' );
 
-	$f_bug_id		= gpc_get_int( 'bug_id' );
-	$f_private		= gpc_get_bool( 'private' );
-	$f_time_tracking	= gpc_get_string( 'time_tracking', '0:00' );
-	$f_bugnote_text	= trim( gpc_get_string( 'bugnote_text', '' ) );
+	$f_bug_id           = gpc_get_int( 'bug_id' );
+	$f_private          = gpc_get_bool( 'private' );
+	$f_time_trackin     = gpc_get_string( 'time_tracking', '0:00' );
+	$f_bugnote_text     = trim( gpc_get_string( 'bugnote_text', '' ) );
+	$f_bugnote_feedback = gpc_get_bool( 'feedback' );
 
 	$t_bug = bug_get( $f_bug_id, true );
 	if( $t_bug->project_id != helper_get_current_project() ) {
@@ -53,7 +54,10 @@
 
 	// We always set the note time to BUGNOTE, and the API will overwrite it with TIME_TRACKING
 	// if $f_time_tracking is not 0 and the time tracking feature is enabled.
-	$t_bugnote_id = bugnote_add( $f_bug_id, $f_bugnote_text, $f_time_tracking, $f_private, BUGNOTE );
+	$t_bugnote_id = bugnote_add(
+		$f_bug_id, $f_bugnote_text, $f_time_tracking, $f_private, BUGNOTE,
+		'', null, true, true, $f_bugnote_feedback
+	);
 	if ( !$t_bugnote_id ) {
 		error_parameters( lang_get( 'bugnote' ) );
 		trigger_error( ERROR_EMPTY_FIELD, ERROR );

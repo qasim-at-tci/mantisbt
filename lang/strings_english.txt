@@ -668,6 +668,7 @@ $s_no_bugnotes_msg = 'There are no notes attached to this issue.';
 $s_delete_link = 'Delete';
 $s_add_bugnote_title = 'Add Note';
 $s_add_bugnote_button = 'Add Note';
+$s_add_bugnote_feedback_button = 'Provide Feedback';
 $s_bugnote_edit_link = 'Edit';
 $s_closed_bug_button = 'Close Issue';
 

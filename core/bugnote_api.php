@@ -122,10 +122,11 @@ function bugnote_is_user_reporter( $p_bugnote_id, $p_user_id ) {
  * @param int $p_user_id user id
  * @param bool $p_send_email generate email?
  * @param bool $p_log_history add history entry
+ * @param bool $p_feedback_forced true if the note provides feedback (changes issue's status if config allows)
  * @return false|int false or indicating bugnote id added
  * @access public
  */
-function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_private = false, $p_type = BUGNOTE, $p_attr = '', $p_user_id = null, $p_send_email = true, $p_log_history = true ) {
+function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_private = false, $p_type = BUGNOTE, $p_attr = '', $p_user_id = null, $p_send_email = true, $p_log_history = true, $p_feedback_forced = false ) {
 	$c_bug_id = db_prepare_int( $p_bug_id );
 	$c_time_tracking = helper_duration_to_minutes( $p_time_tracking );
 	$c_type = db_prepare_int( $p_type );
@@ -194,10 +195,10 @@ function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_
 	}
 
 	# Change issue status if previous was FEEDBACK and auto-reassign is on
-	if ( config_get( 'reassign_on_feedback' ) &&
-		bug_get_field( $p_bug_id, 'status' ) == config_get( 'bug_feedback_status' ) &&
-		bug_get_field( $p_bug_id, 'reporter_id' ) == $c_user_id ) {
-
+	if (   config_get( 'reassign_on_feedback' )
+		&& bug_get_field( $p_bug_id, 'status' ) == config_get( 'bug_feedback_status' )
+		&& ( $p_feedback_forced || bug_get_field( $p_bug_id, 'reporter_id' ) == $c_user_id )
+	) {
 		# Retrieve previous status from history
 		function filter_history( $t_elem ) {
 			return $t_elem['field'] == 'status' && $t_elem['new_value'] == config_get( 'bug_feedback_status' );

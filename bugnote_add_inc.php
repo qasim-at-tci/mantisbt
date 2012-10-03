@@ -99,7 +99,24 @@
 <?php event_signal( 'EVENT_BUGNOTE_ADD_FORM', array( $f_bug_id ) ); ?>
 <tr>
 	<td class="center" colspan="2">
-		<input type="submit" class="button" value="<?php echo lang_get( 'add_bugnote_button' ) ?>"  onclick="this.disabled=1;document.bugnoteadd.submit();" />
+		<input type="hidden" name="feedback" value="" />
+<?php
+	$t_awaiting_feedback = bug_get_field( $f_bug_id, 'status' ) == config_get( 'bug_feedback_status' );
+	if( $t_awaiting_feedback ) {
+?>
+		<input type="submit" class="button"
+			value="<?php echo lang_get( 'add_bugnote_feedback_button' ) ?>"
+			onclick="this.disabled=1;document.bugnoteadd.feedback.value=1;document.bugnoteadd.submit();" />
+<?php
+	}
+	if( !$t_awaiting_feedback || !bug_is_user_reporter( $f_bug_id, auth_get_current_user_id() ) ) {
+?>
+		<input type="submit" class="button"
+			value="<?php echo lang_get( 'add_bugnote_button' ) ?>"
+			onclick="this.disabled=1;document.bugnoteadd.submit();" />
+<?php
+	}
+?>
 	</td>
 </tr>
 </table>
@@ -120,5 +137,5 @@
 ?>
 
 <?php # Bugnote Add Form END ?>
-<?php 
+<?php
 }

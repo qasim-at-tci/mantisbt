@@ -382,9 +382,13 @@ if( 2 == $t_install_state ) {
 					$t_error = 'MySQL 4.1.0 or later is required for installation.';
 				}
 				break;
-			case 'pgsql':
 			case 'mssql':
 			case 'mssqlnative':
+				if( version_compare( $t_version_info['version'], '9.0.0', '<' ) ) {
+					$t_error = 'SQL Server 2005 or later is required for installation.';
+				}
+				break;
+			case 'pgsql':
 			case 'db2':
 			default:
 				break;
@@ -528,7 +532,7 @@ if( !$g_database_upgrade ) {?>
 		Attempt Installation
 	</td>
 	<td>
-		<input name="go" type="submit" value="Install/Upgrade Database"></input>
+		<input name="go" type="submit" class="button" value="Install/Upgrade Database"></input>
 	</td>
 </tr>
 <input name="install" type="hidden" value="2"></input>
@@ -593,7 +597,7 @@ if( 3 == $t_install_state ) {
 				}
 			} else {
 				$sqlarray = $dict->CreateDatabase( $f_database_name, Array( 'mysql' => 'DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci' ) );
-				$ret = $dict->ExecuteSQLArray( $sqlarray );
+				$ret = $dict->ExecuteSQLArray( $sqlarray, false );
 				if( $ret == 2 ) {
 					print_test_result( GOOD );
 					$t_db_open = true;
@@ -747,7 +751,7 @@ if( 3 == $t_install_state ) {
 			} else {
 				echo 'Schema ' . $upgrade[$i][0] . ' ( ' . $t_target . ' )</td>';
 				if( $t_sql ) {
-					$ret = $dict->ExecuteSQLArray( $sqlarray );
+					$ret = $dict->ExecuteSQLArray( $sqlarray, false );
 				} else {
 					if( isset( $sqlarray[1] ) ) {
 						$ret = call_user_func( 'install_' . $sqlarray[0], $sqlarray[1] );
@@ -1041,8 +1045,8 @@ if( $g_failed ) {
 		<input name="admin_username" type="hidden" value="<?php echo $f_admin_username?>"></input>
 		<input name="admin_password" type="hidden" value="<?php echo $f_admin_password?>"></input>
 		<input name="log_queries" type="hidden" value="<?php echo( $f_log_queries ? 1 : 0 )?>"></input>
-		<input name="retry" type="submit" value="Retry"></input>
 		<input name="db_exists" type="hidden" value="<?php echo( $f_db_exists ? 1 : 0 )?>"></input>
+		<input name="retry" type="submit" class="button" value="Retry"></input>
 	</td>
 </tr>
 </table>

@@ -202,12 +202,17 @@
 				<listitem>
 					<para>Database</para>
 					<para>MantisBT requires a database to store its data.
-						The supported RDBMS are
-							MySQL,
+						The supported RDBMS are:
+							MySQL (recommended),
 							PostgreSQL,
 							DB2,
-							MS SQL and
+							Microsoft SQL Server and
 							Oracle (experimental).
+					</para>
+					<para>Note: There are known issues with all of the above
+						platforms except MySQL, and to a lesser extend PostgreSQL;
+						moreover, you should be aware that support for DB2, SQL
+						server and Oracle is limited.
 					</para>
 				</listitem>
 
@@ -249,8 +254,8 @@
 							</row>
 							<row>
 								<entry>MS SQL Server</entry>
-								<entry></entry>
-								<entry></entry>
+								<entry>2005</entry>
+								<entry>2005 or above</entry>
 								<entry>PHP extension: mssql or sqlsrv</entry>
 							</row>
 							<row>
@@ -545,6 +550,22 @@ tar -xf <emphasis>filename.tar</emphasis>
 
 		</orderedlist>
 
+		<note>
+			<title>Upgrading large databases</title>
+
+			<para>When processing large databases from versions older than 1.2,
+				the upgrade script may fail during the conversion of date fields,
+				leaving the system in an inconsistent (i.e. partially updated)
+				state.
+			</para>
+			<para>In this case, you should simply restart the upgrade process,
+				which will resume where it left off. Note that you may have to
+				repeat this several times, until normal completion.
+			</para>
+			<para>Reference: MantisBT issue
+				<ulink url="http://www.mantisbt.org/bugs/view.php?id=12735">12735</ulink>.
+			</para>
+		</note>
 	</section>
 
 

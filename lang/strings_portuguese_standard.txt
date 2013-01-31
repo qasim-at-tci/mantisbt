@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -786,7 +786,7 @@ $s_account_reset_protected_msg = 'Conta protegida. Não é possível limpar a pa
 $s_account_reset_msg = 'Um pedido de confirmação foi enviado para o email do utilizador. Através deste pedido, o utilizador poderá modificar a sua palavra-passe.';
 $s_account_reset_msg2 = 'Palavra-chave da conta definida para vazia...';
 $s_account_unlock_msg = 'A conta foi desbloqueada.';
-$s_manage_user_protected_msg = 'Conta protegida. Nível de acesso e protecção activa. Caso contrário a conta foi actualizada...';
+$s_manage_user_protected_msg = 'Conta protegida; os campos \'Nível de acesso\' e \'Ativa\' não podem ser modificados. Os outros campos foram atualizados com sucesso.';
 $s_manage_user_updated_msg = 'Conta Actualizada com Sucesso...';
 $s_email_user_updated_subject = 'Conta actualizada';
 $s_email_user_updated_msg = 'A sua conta foi actualizada por um administrador. Segue-se uma lista destas alterações. Pode actualizar os detalhes e preferências da sua conta em qualquer altura através do URL:';
@@ -1140,7 +1140,7 @@ $s_status_changed_to = 'Estado muda para';
 $s_email_on_deleted = 'Email quando for apagado';
 $s_email_on_sponsorship_changed = 'Email ao mudar de patrocínio';
 $s_email_on_relationship_changed = 'Email quando houver alterações de relacionamento';
-$s_loading = 'A carregar...';
+$s_loading = 'A carregar…';
 $s_between_date = 'Entre';
 $s_on_or_before_date = 'Em ou antes de';
 $s_before_date = 'Antes de';

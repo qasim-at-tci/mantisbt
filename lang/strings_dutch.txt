@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ $s_bug_monitor = 'Melding gevolgd door';
 $s_bug_end_monitor = 'Melding niet langer gevolgd door';
 $s_announcement = 'Aankondiging';
 $s_stays_on_top = 'Staat bovenaan';
-$s_bugnote_link_title = 'Directe verwijzing naar opmerkingen';
+$s_bugnote_link_title = 'Directe koppeling naar opmerkingen';
 $s_delete_bugnote_button = 'Opmerking verwijderen';
 $s_delete_bugnote_sure_msg = 'Weet u zeker dat u deze opmerking wilt verwijderen?';
 $s_bug_relationships = 'Relaties';
@@ -308,8 +308,8 @@ $s_projection_enum_string = '10:geen,30:tweak,50:eenvoudige oplossing,70:ingewik
 $s_eta_enum_string = '10:geen,20:< 1 dag,30:2-3 dagen,40:< 1 week,50:< 1 maand,60:> 1 maand';
 $s_sponsorship_enum_string = '0:Niet betaald,1:Gemaand,2:Betaald';
 $s_new_account_subject = 'Gebruikersregistratie';
-$s_new_account_greeting = 'Bedankt voor het aanmelden. Uw gebruikersnaam is "%1$s". Bezoek de volgende verwijzing om uw eigen wachtwoord in te stellen en om uw registratie af te ronden. Zorg ervoor dat de URL op één regel wordt ingevoerd:';
-$s_new_account_greeting_admincreated = 'De gebruiker %1$s heeft een gebruiker voor u aangemaakt met de gebruikersnaam "%2$s". Bezoek de volgende verwijzing om uw eigen wachtwoord in te stellen en om uw registratie af te ronden. Zorg ervoor dat de URL op één regel wordt ingevoerd:';
+$s_new_account_greeting = 'Bedankt voor het aanmelden. Uw gebruikersnaam is "%1$s". Bezoek de volgende koppeling om uw eigen wachtwoord in te stellen en om uw registratie af te ronden. Zorg ervoor dat de URL op één regel wordt ingevoerd:';
+$s_new_account_greeting_admincreated = 'De gebruiker %1$s heeft een gebruiker voor u aangemaakt met de gebruikersnaam "%2$s". Bezoek de volgende koppeling om uw eigen wachtwoord in te stellen en om uw registratie af te ronden. Zorg ervoor dat de URL op één regel wordt ingevoerd:';
 $s_new_account_username = 'Gebruikersnaam:';
 $s_new_account_message = 'Als u zich niet hebt aangemeld, dan kunt u dit bericht negeren. Dan gebeurt er niets.';
 $s_new_account_do_not_reply = 'Verstuur geen antwoord op dit bericht';
@@ -577,7 +577,7 @@ $s_select_project_button = 'Project selecteren';
 $s_lost_password_title = 'Wachtwoord opnieuw instellen';
 $s_lost_password_done_title = 'Het wachtwoordbericht is verstuurd';
 $s_lost_password_subject = 'Wachtwoord opnieuw instellen';
-$s_lost_password_info = 'Geef hier uw naam en e-mailadres in om uw verloren wachtwoord opnieuw in te stellen.<br/><br/>Als de gegevens overeen komen met een geldige gebruiker, ontvangt u een verwijzing met de validatiecode via e-mail. Volg deze verwijzing om uw wachtwoord aan te passen.';
+$s_lost_password_info = 'Geef hier uw naam en e-mailadres in om uw verloren wachtwoord opnieuw in te stellen.<br/><br/>Als de gegevens overeen komen met een geldige gebruiker, ontvangt u een koppeling met de validatiecode via e-mail. Volg deze koppeling om uw wachtwoord aan te passen.';
 $s_lost_password_confirm_hash_OK = 'Uw bevestiging is geaccepteerd. Pas uw wachtwoord aan.';
 $s_open_and_assigned_to_me = 'Open en aan mij toegewezen';
 $s_open_and_reported_to_me = 'Open en door mij gemeld';
@@ -600,9 +600,10 @@ $s_protected = 'Beschermd';
 $s_create_user_button = 'Gebruiker aanmaken';
 $s_hide_disabled = 'Uitgeschakelde gebruikers verbergen';
 $s_filter_button = 'Filteren';
-$s_create_filter_link = 'Permanente verwijzing aanmaken';
-$s_create_short_link = 'Korte verwijzing aanmaken';
-$s_filter_permalink = 'Hieronder staat een permanente verwijzing naar de op dit moment ingestelde filter:';
+$s_default_filter = 'Standaardfilter';
+$s_create_filter_link = 'Permanente koppeling aanmaken';
+$s_create_short_link = 'Korte koppeling aanmaken';
+$s_filter_permalink = 'Hieronder staat een permanente koppeling naar de op dit moment ingestelde filter:';
 $s_manage_users_link = 'Gebruikersbeheer';
 $s_manage_projects_link = 'Projectenbeheer';
 $s_manage_custom_field_link = 'Gebruikersvelden beheren';
@@ -787,7 +788,7 @@ $s_account_reset_protected_msg = 'Deze gebruiker is beschermd. Het wachtwoord ka
 $s_account_reset_msg = 'Bevestigingsbericht is verstuurd e-mailadres van gebruiker. Hiermee kan de gebruiker het wachtwoord wijzigen.';
 $s_account_reset_msg2 = 'Het wachtwoord voor de gebruiker ingesteld op leeg.';
 $s_account_unlock_msg = 'De gebruiker is ontgrendeld.';
-$s_manage_user_protected_msg = 'Deze gebruiker is beschermd. Toegangsniveau en beschermd tegen activeren. Verder is de gebruiker aangepast.';
+$s_manage_user_protected_msg = 'Deze gebruiker is beschermd. De velden "Toegangsniveau" en "Ingeschakeld" kunnen niet gewijzigd worden. Eventuele overige velden zijn bijgewerkt.';
 $s_manage_user_updated_msg = 'De gebruiker is bijgewerkt.';
 $s_email_user_updated_subject = 'Gebruiker bijgewerkt';
 $s_email_user_updated_msg = 'Uw gebruiker is bijgewerkt door een beheerder. Een lijst van deze wijzigingen vindt u hieronder. U kunt uw gebruikersgegevens en voorkeuren op elk gewenst moment bijwerken via de volgende URL:';
@@ -864,7 +865,7 @@ $s_report_more_bugs = 'Meer meldingen invoeren';
 $s_submission_thanks_msg = 'Bedankt voor uw melding.';
 $s_simple_report_link = 'Eenvoudig rapport';
 $s_enter_report_details_title = 'Details invoeren';
-$s_required = 'verplicht';
+$s_required = 'vereist';
 $s_select_category = 'Selecteer categorie';
 $s_select_reproducibility = 'Selecteer reproduceerbaarheid';
 $s_select_severity = 'Selecteer impact';
@@ -1113,7 +1114,7 @@ $s_delete_attachments = 'Bijlage(n) verwijderen';
 $s_delete_attachment_button = 'Verwijderen';
 $s_delete_attachment_sure_msg = 'Weet u zeker dat u deze bijlage wilt verwijderen?';
 $s_upload_issue_attachments = 'Bestand toevoegen';
-$s_filters = 'filters';
+$s_filters = 'Filters';
 $s_save_filters = 'Filters bewaren';
 $s_save_filters_as_shared = 'Filters voor iedereen bewaren';
 $s_use_saved_filters = 'Bewaarde filters gebruiken';
@@ -1135,6 +1136,7 @@ $s_handle_sponsored_issue = 'Gesponsorde melding behandelen';
 $s_others = 'Overige';
 $s_see_email_addresses_of_other_users = 'E-mailadressen van andere gebruikers zichtbaar maken';
 $s_send_reminders = 'Herinneringen verzenden';
+$s_receive_reminders = 'Herinneringen ontvangen';
 $s_add_profiles = 'Profielen toevoegen';
 $s_notify_of_new_user_created = 'Melding bij aanmaken nieuwe gebruiker';
 $s_email_notification = 'E-mailmeldingen';

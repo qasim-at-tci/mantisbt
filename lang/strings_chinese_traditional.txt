@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,16 @@
  *
  * @author Anakmalaysia
  * @author Andrew971218
+ * @author Barlos
  * @author Cwlin0416
  * @author Firesueprtom
+ * @author Frankou
  * @author Jonathan Tsai, tryweb@ichiayi.com
  * @author Lauhenry
  * @author Mark85296341
  * @author Oapbtommy
+ * @author Simon Shek
+ * @author Waihorace
  */
 
 $s_actiongroup_menu_move = '移動';
@@ -183,7 +187,7 @@ $MANTIS_ERROR[ERROR_FILE_TOO_BIG] = '檔案上傳失敗. 這很有可能是因�
 $MANTIS_ERROR[ERROR_GPC_VAR_NOT_FOUND] = '缺少這個頁面 \"%1$s\" 所必要的參數.';
 $MANTIS_ERROR[ERROR_USER_NAME_NOT_UNIQUE] = '這個使用者帳號已經存在. 請返回上ㄧ頁選擇其他的帳號.';
 $MANTIS_ERROR[ERROR_CONFIG_OPT_NOT_FOUND] = '缺少 \'%1$s\' 這個參數設定選項.';
-$MANTIS_ERROR[ERROR_CONFIG_OPT_CANT_BE_SET_IN_DB] = 'Configuration option \'%1$s\' can not be set in the database.  It must be set in config_inc.php.';
+$MANTIS_ERROR[ERROR_CONFIG_OPT_CANT_BE_SET_IN_DB] = '設定選項 \'%1$s\' 不能在資料庫內設置, 它必須設在 config_inc.php.';
 $MANTIS_ERROR[ERROR_LANG_STRING_NOT_FOUND] = '缺少 \'%1$s\' 這個字串.';
 $MANTIS_ERROR[ERROR_BUGNOTE_NOT_FOUND] = '查無說明。';
 $MANTIS_ERROR[ERROR_PROJECT_NOT_FOUND] = '專案 \"%1$d\" 找不到.';
@@ -219,6 +223,7 @@ $MANTIS_ERROR[ERROR_CUSTOM_FIELD_NAME_NOT_UNIQUE] = '這是一個重複的名稱
 $MANTIS_ERROR[ERROR_CUSTOM_FIELD_IN_USE] = '最少有一個以上的專案仍在使用這欄位。';
 $MANTIS_ERROR[ERROR_CUSTOM_FIELD_INVALID_VALUE] = '"%1$s" 欄位值無效。';
 $MANTIS_ERROR[ERROR_CUSTOM_FIELD_INVALID_DEFINITION] = '無效的自訂欄位定義';
+$MANTIS_ERROR[ERROR_CUSTOM_FIELD_INVALID_PROPERTY] = '不正確自訂欄位屬性 （ %1$s ）。';
 $MANTIS_ERROR[ERROR_LDAP_AUTH_FAILED] = 'LDAP 認證失敗';
 $MANTIS_ERROR[ERROR_LDAP_SERVER_CONNECT_FAILED] = '連線至 LDAP 伺服器失敗';
 $MANTIS_ERROR[ERROR_LDAP_UPDATE_FAILED] = '更新 LDAP 記錄失敗。';
@@ -231,6 +236,7 @@ $MANTIS_ERROR[ERROR_CATEGORY_DUPLICATE] = '相同名稱的類別已經存在。'
 $MANTIS_ERROR[ERROR_CATEGORY_NO_ACTION] = '沒有指定的複製作業。';
 $MANTIS_ERROR[ERROR_CATEGORY_NOT_FOUND] = '類別找不到。';
 $MANTIS_ERROR[ERROR_CATEGORY_NOT_FOUND_FOR_PROJECT] = '"%2$s" 專案並沒有 "%1$s" 類別。';
+$MANTIS_ERROR[ERROR_CATEGORY_CANNOT_DELETE_DEFAULT] = '此類別不能刪除，因為它被定義為"在移動為預設類別"。';
 $MANTIS_ERROR[ERROR_VERSION_DUPLICATE] = '相同名稱的版本已經存在.';
 $MANTIS_ERROR[ERROR_VERSION_NOT_FOUND] = '查無 "%1$s" 版本。';
 $MANTIS_ERROR[ERROR_USER_NAME_INVALID] = '使用者名稱無效。使用者名稱僅能包含英文、數字、空格、 “-” 或 “_” 。';
@@ -269,6 +275,7 @@ $MANTIS_ERROR[ERROR_EVENT_UNDECLARED] = '事件 "%1$s" 尚未被宣告。';
 $MANTIS_ERROR[ERROR_PLUGIN_NOT_REGISTERED] = '此套件未向 MantisBT 註冊。';
 $MANTIS_ERROR[ERROR_PLUGIN_ALREADY_INSTALLED] = '套件已安裝。';
 $MANTIS_ERROR[ERROR_PLUGIN_PAGE_NOT_FOUND] = '查無套件頁面。';
+$MANTIS_ERROR[ERROR_PLUGIN_INSTALL_FAILED] = '外掛程式安裝失敗：%1$s 。';
 $MANTIS_ERROR[ERROR_PLUGIN_UPGRADE_FAILED] = '升級套件資料庫結構失敗於區塊 #%1$s。';
 $MANTIS_ERROR[ERROR_PLUGIN_GENERIC] = '在執行 "%2$s" 套件時發生了未知的錯誤 "%1$s"。';
 $MANTIS_ERROR[ERROR_COLUMNS_DUPLICATE] = '欄位 "%1$s" 內包含重複的資料 "%2$s"。';
@@ -283,7 +290,7 @@ $MANTIS_ERROR[ERROR_INVALID_DATE_FORMAT] = '無效的日期格式。';
 $MANTIS_ERROR[ERROR_UPDATING_TIMEZONE] = '無法更新時區。';
 $s_login_error = '你的帳號可能被暫停或封鎖或者輸入不正確的帳號密碼.';
 $s_login_cookies_disabled = '錯誤: 你的瀏覽器可能不支援 Cookies 功能或是沒有將 Cookies 功能開啟。';
-$s_go_back = '回上頁';
+$s_go_back = '返回';
 $s_proceed = '繼續';
 $s_switch = '切換';
 $s_logged_in_as = '登入身份';
@@ -307,10 +314,10 @@ $s_sponsorship_enum_string = '0:未付款,1:已請求支付,2:已付款';
 $s_new_account_subject = '新帳號註冊通知';
 $s_new_account_greeting = '謝謝您的註冊. 您的帳號為 \'%1$s\'. 請點選下面的網址來完成註冊程序, 點選後會自動開啟瀏覽器連入讓你設定密碼的畫面:';
 $s_new_account_greeting_admincreated = '使用者 %1$s 已為您建立了一個帳號為 "%2$s"。請參觀下列網址(請確認該網址為單行)並設定密碼來完成您的註冊程序:';
-$s_new_account_username = '帳號:';
+$s_new_account_username = '用戶名：';
 $s_new_account_message = '如果你沒有在本網站註冊，請不要理這封註冊確認信件，就當成沒發生過好了。';
 $s_new_account_do_not_reply = '請不要直接回覆這封註冊確認信件';
-$s_new_account_email = '電子郵件:';
+$s_new_account_email = '電子郵件：';
 $s_new_account_IP = '遠端 IP 位址：';
 $s_new_account_signup_msg = '這個帳號已經建立完成：';
 $s_reset_request_msg = '有人 (或許是你自己) 提出更改密碼的需求. 如果你沒有提出更改密碼的需求, 請不要理這封註冊確認信件, 就當成沒發生過好了.
@@ -372,7 +379,7 @@ $s_delete_account_button = '刪除帳號';
 $s_manage_profiles_link = '基本資料';
 $s_change_preferences_link = '偏好設定';
 $s_edit_account_title = '編輯帳號';
-$s_username = '帳號';
+$s_username = '用戶名';
 $s_realname = '真實姓名';
 $s_email = 'E-Mail';
 $s_password = '密碼';
@@ -783,7 +790,7 @@ $s_account_reset_protected_msg = '帳號受保護。不可以重設密碼。';
 $s_account_reset_msg = '確認訊息已經被寄送到你的 E-Mail 信箱...';
 $s_account_reset_msg2 = '這帳號的密碼已經被設為空白...';
 $s_account_unlock_msg = '這個帳戶已經解鎖。';
-$s_manage_user_protected_msg = '帳號受保護。存取權限且保護功能已啟動。否則，帳號將會被更新...';
+$s_manage_user_protected_msg = '帳號受保護。存取權限且保護功能已啟動，存取程度及啟用項目不能被更新。其他項目已經成功更改。';
 $s_manage_user_updated_msg = '帳號成功更新...';
 $s_email_user_updated_subject = '帳號已更新';
 $s_email_user_updated_msg = '管理者已更新您的帳號資訊，更改的項目如下，您可以使用此網址隨時自行修改您的帳號資訊:';
@@ -929,6 +936,9 @@ $s_sort = '排序方式';
 $s_issue_id = '問題編號 #';
 $s_recently_visited = '近期瀏覽';
 $s_note_user_id = '說明由';
+$s_filter_match_type = '匹配類型';
+$s_filter_match_all = '所有條件';
+$s_filter_match_any = '任何條件';
 $s_none = '無';
 $s_current = '目前';
 $s_search = '搜尋';
@@ -1045,7 +1055,7 @@ $s_roadmap = '版本規劃';
 $s_resolved_progress = '%1$d / %2$d 問題已解決。 進度 (%3$d%%)。';
 $s_http_auth_realm = 'MantisBT 登入';
 $s_bug = '問題';
-$s_bugs = ' 個問題';
+$s_bugs = '個問題';
 $s_add_new_relationship = '新增關聯';
 $s_add_new_relationship_button = '新增';
 $s_this_bug = '此問題';

@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
  * @author Bithunter
  * @author Ciencia Al Poder
  * @author Crazymadlover
+ * @author Dalton2
  * @author Fitoschido
  * @author Javier Poveda - javierpoveda@arsystel.com
  * @author Jorge Andrés Brugger - jbrugger@gmx.net
@@ -144,7 +145,7 @@ $s_bug_actiongroup_handler = 'El usuario especificado no está autorizado para g
 $s_bug_actiongroup_version = 'La versión especificada no existe en el proyecto de esta incidencia';
 $s_close_bugs_conf_msg = '¿Está seguro que desea cerrar estas incidencias?';
 $s_delete_bugs_conf_msg = '¿Está seguro que desea eliminar estas incidencias?';
-$s_move_bugs_conf_msg = 'Mover Incidencias a';
+$s_move_bugs_conf_msg = 'Mover incidencias a';
 $s_copy_bugs_conf_msg = 'Copiar incidencias a';
 $s_assign_bugs_conf_msg = 'Asignar incidencias a';
 $s_resolve_bugs_conf_msg = 'Elegir la resolución de las incidencias';
@@ -155,12 +156,12 @@ $s_category_bugs_conf_msg = 'Elegir categoría de las incidencias';
 $s_set_sticky_bugs_conf_msg = '¿Está seguro que desea fijar/desfijar estas incidencias?';
 $s_fixed_in_version_bugs_conf_msg = 'Actualizar Resuelta en Versión a';
 $s_target_version_bugs_conf_msg = 'Actualizar Previsto para Versión a';
-$s_close_group_bugs_button = 'Cerrar incidencias';
-$s_delete_group_bugs_button = 'Eliminar incidencias';
-$s_move_group_bugs_button = 'Mover incidencias';
-$s_copy_group_bugs_button = 'Copiar incidencias';
-$s_assign_group_bugs_button = 'Asignar incidencias';
-$s_resolve_group_bugs_button = 'Resolver incidencias';
+$s_close_group_bugs_button = 'Cerrar Incidencias';
+$s_delete_group_bugs_button = 'Eliminar Incidencias';
+$s_move_group_bugs_button = 'Mover Incidencias';
+$s_copy_group_bugs_button = 'Copiar Incidencias';
+$s_assign_group_bugs_button = 'Asignar Incidencias';
+$s_resolve_group_bugs_button = 'Resolver Incidencias';
 $s_priority_group_bugs_button = 'Actualizar prioridad';
 $s_status_group_bugs_button = 'Actualizar estado';
 $s_category_group_bugs_button = 'Actualizar categoría';
@@ -221,7 +222,7 @@ $MANTIS_ERROR[ERROR_FILE_NOT_ALLOWED] = 'Tipo de archivo no permitido para subir
 $MANTIS_ERROR[ERROR_FILE_DUPLICATE] = 'Este archivo está duplicado.  Por favor, elimine antes el archivo original.';
 $MANTIS_ERROR[ERROR_FILE_INVALID_UPLOAD_PATH] = 'Ruta de subida no válida.  El directorio no existe o el servidor web no puede escribir en él.';
 $MANTIS_ERROR[ERROR_FILE_NO_UPLOAD_FAILURE] = 'No se ha cargado ningún archivo. Por favor, vuelva atrás y seleccione un archivo antes de presionar Subir';
-$MANTIS_ERROR[ERROR_FILE_MOVE_FAILED] = 'El archivo cargado no se puede mover al directorio de almacenamiento. El directorio no existe o no se puede escribir en él';
+$MANTIS_ERROR[ERROR_FILE_MOVE_FAILED] = 'El archivo subido no puede trasladarse al directorio de almacenamiento. El directorio no existe o no puede escribirse en él.';
 $MANTIS_ERROR[ERROR_BUG_DUPLICATE_SELF] = 'No se puede establecer una incidencia como duplicada de si misma.';
 $MANTIS_ERROR[ERROR_BUG_REVISION_NOT_FOUND] = 'Revisión de la incidencia no encontrada';
 $MANTIS_ERROR[ERROR_CUSTOM_FIELD_NOT_FOUND] = 'Campo personalizado no encontrado';
@@ -663,8 +664,8 @@ $s_alter_level = 'Quien puede alterar este valor';
 $s_validation = 'Validación del flujo de trabajo';
 $s_comment = 'Comentario de Validación';
 $s_superfluous = 'La transición del estado a sí mismo está implícita y no necesita explicitarse';
-$s_unreachable = 'No puede mover una incidencia a ese Estado';
-$s_no_exit = 'No puede mover una incidencia fuera de ese Estado';
+$s_unreachable = 'No puede definir ese estado para una incidencia';
+$s_no_exit = 'No puede definir otro estado para una incidencia';
 $s_access_levels = 'Niveles de Acceso';
 $s_access_change = 'Nivel de Acceso Mínimo para cambiar a ese Estado';
 $s_desc_bug_submit_status = 'Estado en el que se establece una Nueva Incidencia';
@@ -795,7 +796,7 @@ $s_account_reset_protected_msg = 'Cuenta Protegida. No es posible reinicializar 
 $s_account_reset_msg = 'Se ha enviado un correo electrónico de solicitud de confirmación a las direcciones de correo electrónico del usuario seleccionado. Utilizándolo, el usuario podrá cambiar si contraseña.';
 $s_account_reset_msg2 = 'La contraseña de la cuenta fue establecida en blanco...';
 $s_account_unlock_msg = 'Se ha desbloqueado la cuenta.';
-$s_manage_user_protected_msg = 'Cuenta Protegida. Nivel de acceso y protección activada. Además, la cuenta ha sido actualizada...';
+$s_manage_user_protected_msg = 'Cuenta protegida. Los campos "Nivel de acceso" y "Activado" no se pueden modificar. Los demás campos se actualizaron satisfactoriamente.';
 $s_manage_user_updated_msg = 'La cuenta ha sido actualizada...';
 $s_email_user_updated_subject = 'Cuenta actualizada';
 $s_email_user_updated_msg = 'Tu cuenta ha sido actualizada por un administrador. Una lista de esos cambios es proveída debajo. Puedes actualizar los detalles y preferencias de tu cuenta en cualquier momento visitando el siguiente URL:';
@@ -1098,7 +1099,7 @@ $s_report_issue = 'Reportar Incidencia';
 $s_update_issue = 'Actualizar Incidencia';
 $s_monitor_issue = 'Monitorizar Incidencia';
 $s_handle_issue = 'Modificar Incidencia';
-$s_move_issue = 'Mover Incidencia';
+$s_move_issue = 'Mover una incidencia';
 $s_delete_issue = 'Borrar Incidencia';
 $s_reopen_issue = 'Reabrir Incidencia';
 $s_view_private_issues = 'Ver Incidencias privadas';
@@ -1143,6 +1144,7 @@ $s_handle_sponsored_issue = 'Modificar Incidencia Patrocinada';
 $s_others = 'Otros';
 $s_see_email_addresses_of_other_users = 'Ver la dirección de correo de otros usuarios';
 $s_send_reminders = 'Enviar recordatorios';
+$s_receive_reminders = 'Recibir recordatorios';
 $s_add_profiles = 'Añadir perfiles';
 $s_notify_of_new_user_created = 'Notificación de creación de nuevos usuarios';
 $s_email_notification = 'Notificación por correo electrónico';

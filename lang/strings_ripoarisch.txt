@@ -2,7 +2,7 @@
 /** MantisBT - a php based bugtracking system
  *
  * Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  *
  * MantisBT is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -470,7 +470,7 @@ $s_product_version = 'Väsjohn vum Produk
 ';
 $s_fixed_in_version = 'Jedonn en dä Version';
 $s_target_version = 'Jeplaant för de Version';
-$s_votes = 'Shtemme';
+$s_votes = 'Schtemme';
 $s_summary = 'Zosammefaßong';
 $s_update_information_button = 'Lohß Jonn!';
 $s_profile = 'Profil';
@@ -597,7 +597,7 @@ $s_signup_title = 'Aanmälde';
 $s_signup_button = 'Aanmälde';
 $s_no_password_request = 'Ding Paßwoot weed vun enem andere Süßteem verwalldt. Donn Desch aan Dinge Verwallder vun däm Süßteem wende.';
 $s_edit_site_settings_title = 'Enschtellunge för di Websait Ändere';
-$s_save_settings_button = 'Enschtellunge faßhallde';
+$s_save_settings_button = 'Enschtällonge faßhallde';
 $s_site_settings_title = 'Enschtellunge för di Webßait';
 $s_system_info_link = 'Enfommazjuhne övver et Süßteem';
 $s_site_settings_link = 'Enschtellunge för di Webßait';

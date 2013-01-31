@@ -18,7 +18,7 @@
  * @package CoreAPI
  * @subpackage FilterAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  */
 
@@ -1085,11 +1085,11 @@ function filter_get_bug_rows( &$p_page_number, &$p_per_page, &$p_page_count, &$p
 	}
 
 	$t_view_type = $t_filter['_view_type'];
-	
+
 	// project query clauses must be AND-ed always, irrespective of how the filter
 	// clauses are requested by the user ( all matching -> AND, any matching -> OR )
 	$t_where_clauses = array();
-	
+
 	$t_project_where_clauses =  array(
 		"$t_project_table.enabled = " . db_param(),
 		"$t_project_table.id = $t_bug_table.project_id",
@@ -1238,6 +1238,17 @@ function filter_get_bug_rows( &$p_page_number, &$p_per_page, &$p_page_count, &$p
 
 		log_event( LOG_FILTERING, 'project query = ' . $t_project_query );
 		array_push( $t_project_where_clauses, $t_project_query );
+	}
+
+	# date filter
+	if(( 'on' == $t_filter[FILTER_PROPERTY_FILTER_BY_DATE] ) && is_numeric( $t_filter[FILTER_PROPERTY_START_MONTH] ) && is_numeric( $t_filter[FILTER_PROPERTY_START_DAY] ) && is_numeric( $t_filter[FILTER_PROPERTY_START_YEAR] ) && is_numeric( $t_filter[FILTER_PROPERTY_END_MONTH] ) && is_numeric( $t_filter[FILTER_PROPERTY_END_DAY] ) && is_numeric( $t_filter[FILTER_PROPERTY_END_YEAR] ) ) {
+
+		$t_start_string = $t_filter[FILTER_PROPERTY_START_YEAR] . "-" . $t_filter[FILTER_PROPERTY_START_MONTH] . "-" . $t_filter[FILTER_PROPERTY_START_DAY] . " 00:00:00";
+		$t_end_string = $t_filter[FILTER_PROPERTY_END_YEAR] . "-" . $t_filter[FILTER_PROPERTY_END_MONTH] . "-" . $t_filter[FILTER_PROPERTY_END_DAY] . " 23:59:59";
+
+		$t_where_params[] = strtotime( $t_start_string );
+		$t_where_params[] = strtotime( $t_end_string );
+		array_push( $t_project_where_clauses, "($t_bug_table.date_submitted BETWEEN " . db_param() . " AND " . db_param() . " )" );
 	}
 
 	# view state
@@ -1618,17 +1629,6 @@ function filter_get_bug_rows( &$p_page_number, &$p_per_page, &$p_page_count, &$p
 		}
 	}
 
-	# date filter
-	if(( 'on' == $t_filter[FILTER_PROPERTY_FILTER_BY_DATE] ) && is_numeric( $t_filter[FILTER_PROPERTY_START_MONTH] ) && is_numeric( $t_filter[FILTER_PROPERTY_START_DAY] ) && is_numeric( $t_filter[FILTER_PROPERTY_START_YEAR] ) && is_numeric( $t_filter[FILTER_PROPERTY_END_MONTH] ) && is_numeric( $t_filter[FILTER_PROPERTY_END_DAY] ) && is_numeric( $t_filter[FILTER_PROPERTY_END_YEAR] ) ) {
-
-		$t_start_string = $t_filter[FILTER_PROPERTY_START_YEAR] . "-" . $t_filter[FILTER_PROPERTY_START_MONTH] . "-" . $t_filter[FILTER_PROPERTY_START_DAY] . " 00:00:00";
-		$t_end_string = $t_filter[FILTER_PROPERTY_END_YEAR] . "-" . $t_filter[FILTER_PROPERTY_END_MONTH] . "-" . $t_filter[FILTER_PROPERTY_END_DAY] . " 23:59:59";
-
-		$t_where_params[] = strtotime( $t_start_string );
-		$t_where_params[] = strtotime( $t_end_string );
-		array_push( $t_project_where_clauses, "($t_bug_table.date_submitted BETWEEN " . db_param() . " AND " . db_param() . " )" );
-	}
-
 	# fixed in version
 	if( !filter_field_is_any( $t_filter[FILTER_PROPERTY_FIXED_IN_VERSION] ) ) {
 		$t_clauses = array();
@@ -2004,13 +2004,13 @@ function filter_get_bug_rows( &$p_page_number, &$p_per_page, &$p_page_count, &$p
 	}
 
 	# End text search
-	
+
 	# Determine join operator
 	if ( $t_filter[FILTER_PROPERTY_MATCH_TYPE] == FILTER_MATCH_ANY )
 		$t_join_operator = ' OR ';
 	else
 		$t_join_operator = ' AND ';
-	
+
 	log_event(LOG_FILTERING, 'Join operator : ' . $t_join_operator);
 
 	$t_from_clauses[] = $t_project_table;
@@ -2046,8 +2046,8 @@ function filter_get_bug_rows( &$p_page_number, &$p_per_page, &$p_page_count, &$p
 		$t_where_string .= implode( $t_join_operator, $t_query_clauses['where'] );
 		$t_where_string .= ' ) ';
 	}
-	
-	
+
+
 	$t_result = db_query_bound( "$t_select_string $t_from_string $t_join_string $t_where_string $t_order_string", $t_query_clauses['where_values'], $p_per_page, $t_offset );
 	$t_row_count = db_num_rows( $t_result );
 
@@ -2192,7 +2192,7 @@ function filter_draw_selection_area2( $p_page_number, $p_for_screen = true, $p_e
 		$t_show_build = $t_show_product_version && ( config_get( 'enable_product_build' ) == ON );
 
 		# overload handler_id setting if user isn't supposed to see them (ref #6189)
-		if( !access_has_project_level( config_get( 'view_handler_threshold' ), $t_project_id ) ) {
+		if( !access_has_any_project( config_get( 'view_handler_threshold' ) ) ) {
 			$t_filter[FILTER_PROPERTY_HANDLER_ID] = array(
 				META_FILTER_ANY,
 			);
@@ -3393,14 +3393,18 @@ function filter_draw_selection_area2( $p_page_number, $p_for_screen = true, $p_e
 		<tr class="row-1">
 			<td class="small-caption" valign="top"><a href="<?php echo $t_filters_url . FILTER_PROPERTY_MATCH_TYPE;?>" id="match_type_filter"><?php echo lang_get( 'filter_match_type' )?>:</a></td>
 			<td class="small-caption" valign="top" id="match_type_filter_target">
-			<?php 
-				if ( $t_filter[FILTER_PROPERTY_MATCH_TYPE] == FILTER_MATCH_ANY ) {
-					echo lang_get ('filter_match_any');
-				} else if ( $t_filter[FILTER_PROPERTY_MATCH_TYPE] == FILTER_MATCH_ALL ) {
-					echo lang_get ('filter_match_all');
+			<?php
+				switch( $t_filter[FILTER_PROPERTY_MATCH_TYPE] ) {
+					case FILTER_MATCH_ANY:
+						echo lang_get ('filter_match_any');
+						break;
+					case FILTER_MATCH_ALL:
+					default:
+						echo lang_get ('filter_match_all');
+						break;
 				}
 			?>
-			<input type="hidden" name="match_type" value="<?php echo $t_filter[FILTER_PROPERTY_MATCH_TYPE]?>"/>
+			<input type="hidden" name="match_type" value="<?php echo $t_filter[FILTER_PROPERTY_MATCH_TYPE] ?>"/>
 			</td>
 			<td colspan="6">&#160;</td>
 		</tr>
@@ -3879,7 +3883,14 @@ function print_filter_do_filter_by_date( $p_hide_checkbox = false ) {
 		</td></tr>
 		<?php
 	}
-	$t_menu_disabled = ( 'on' == $t_filter[FILTER_PROPERTY_FILTER_BY_DATE] ) ? '' : ' disabled ';
+
+	# Make sure the date selection controls are enabled by default
+	# if we do not use javascript
+	$t_menu_disabled =
+		   !config_get( 'use_javascript' )
+		|| 'on' == $t_filter[FILTER_PROPERTY_FILTER_BY_DATE]
+		? ''
+		: ' disabled ';
 	?>
 
 		<!-- Start date -->
@@ -4203,6 +4214,8 @@ function print_filter_custom_field_date( $p_field_num, $p_field_id ) {
 		array_multisort( $t_accessible_custom_fields_values[$p_field_num], SORT_NUMERIC, SORT_ASC );
 	}
 
+	$t_sel_start_year = null;
+	$t_sel_end_year = null;
 	if( isset( $t_accessible_custom_fields_values[$p_field_num][0] ) ) {
 		$t_sel_start_year = date( 'Y', $t_accessible_custom_fields_values[$p_field_num][0] );
 	}
@@ -4228,41 +4241,47 @@ function print_filter_custom_field_date( $p_field_num, $p_field_id ) {
 		$t_end_time = 0;
 	}
 
-	$t_start_disable = true;
-	$t_end_disable = true;
+	if( OFF == config_get( 'use_javascript' ) ) {
+		$t_start_disable = false;
+		$t_end_disable = false;
+	} else {
+		$t_start_disable = true;
+		$t_end_disable = true;
 
-	// if $t_filter['custom_fields'][$p_field_id][0] is not set (ie no filter), we will drop through the
-	// following switch and use the default values above, so no need to check if stuff is set or not.
-	switch( $t_filter['custom_fields'][$p_field_id][0] ) {
-		case CUSTOM_FIELD_DATE_ANY:
-		case CUSTOM_FIELD_DATE_NONE:
-			break;
-		case CUSTOM_FIELD_DATE_BETWEEN:
-			$t_start_disable = false;
-			$t_end_disable = false;
-			$t_start = $t_start_time;
-			$t_end = $t_end_time;
-			break;
-		case CUSTOM_FIELD_DATE_ONORBEFORE:
-			$t_start_disable = false;
-			$t_start = $t_end_time;
-			break;
-		case CUSTOM_FIELD_DATE_BEFORE:
-			$t_start_disable = false;
-			$t_start = $t_end_time;
-			break;
-		case CUSTOM_FIELD_DATE_ON:
-			$t_start_disable = false;
-			$t_start = $t_start_time;
-			break;
-		case CUSTOM_FIELD_DATE_AFTER:
-			$t_start_disable = false;
-			$t_start = $t_start_time;
-			break;
-		case CUSTOM_FIELD_DATE_ONORAFTER:
-			$t_start_disable = false;
-			$t_start = $t_start_time;
-			break;
+		# if $t_filter['custom_fields'][$p_field_id][0] is not set (ie no filter),
+		# we will drop through the following switch and use the default values
+		# above, so no need to check if stuff is set or not.
+		switch( $t_filter['custom_fields'][$p_field_id][0] ) {
+			case CUSTOM_FIELD_DATE_ANY:
+			case CUSTOM_FIELD_DATE_NONE:
+				break;
+			case CUSTOM_FIELD_DATE_BETWEEN:
+				$t_start_disable = false;
+				$t_end_disable = false;
+				$t_start = $t_start_time;
+				$t_end = $t_end_time;
+				break;
+			case CUSTOM_FIELD_DATE_ONORBEFORE:
+				$t_start_disable = false;
+				$t_start = $t_end_time;
+				break;
+			case CUSTOM_FIELD_DATE_BEFORE:
+				$t_start_disable = false;
+				$t_start = $t_end_time;
+				break;
+			case CUSTOM_FIELD_DATE_ON:
+				$t_start_disable = false;
+				$t_start = $t_start_time;
+				break;
+			case CUSTOM_FIELD_DATE_AFTER:
+				$t_start_disable = false;
+				$t_start = $t_start_time;
+				break;
+			case CUSTOM_FIELD_DATE_ONORAFTER:
+				$t_start_disable = false;
+				$t_start = $t_start_time;
+				break;
+		}
 	}
 
 	echo "\n<table cellspacing=\"0\" cellpadding=\"0\"><tr><td>\n";

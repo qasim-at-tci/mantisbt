@@ -18,7 +18,7 @@
  * Access Api
  *
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2012  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  * @package CoreAPI
  * @subpackage AccessAPI
@@ -641,6 +641,10 @@ function access_get_status_threshold( $p_status, $p_project_id = ALL_PROJECTS ) 
 	if( isset( $t_thresh_array[(int)$p_status] ) ) {
 		return (int)$t_thresh_array[(int)$p_status];
 	} else {
-		return config_get( 'update_bug_status_threshold', null, null, $p_project_id );
+		if( $p_status == config_get( 'bug_submit_status', null, null, $p_project_id ) ) {
+			return config_get( 'report_bug_threshold', null, null, $p_project_id );
+		} else {
+			return config_get( 'update_bug_status_threshold', null, null, $p_project_id );
+		}
 	}
 }

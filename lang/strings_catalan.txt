@@ -31,6 +31,7 @@
  * @author Martorell
  * @author Paucabot
  * @author Pitort
+ * @author Ricard.nacher.roig
  * @author SMP
  * @author Solde
  * @author Ssola
@@ -305,7 +306,7 @@ $s_priority_enum_string = '10:cap,20:baixa,30:normal,40:alta,50:urgent,60:immedi
 $s_severity_enum_string = '10:funcionalitat,20:trivial,30:text,40:ajust,50:menor,60:major,70:penjat,80:bloqueig';
 $s_reproducibility_enum_string = '10:sempre,30:de vegades,50:aleatori,70:no s\'ha intentat,90:no és possible duplicar,100:desconegut';
 $s_status_enum_string = '10:nou,20:es necessiten més dades,30:aceptat,40:confirmat,50:assignat,80:resolt,90:tancat';
-$s_resolution_enum_string = '10:obert,20:arreglat,30:reobert,40:no es pot reproduir,50:no es pot corregir,60:duplicat,70:no es requereixen canvis80:suspès,90:no s\'arreglarà';
+$s_resolution_enum_string = '10:obert,20:arreglat,30:reobert,40:no es pot reproduir,50:no es pot corregir,60:duplicat,70:no es requereixen canvis,80:suspès,90:no s\'arreglarà';
 $s_projection_enum_string = '10:cap,30:ajust,50:canvi menor,70:canvi important,90:redisseny';
 $s_eta_enum_string = '10:cap,20:< 1 dia,30:2-3 dies,40:< 1 setmana,50:< 1 mes,60:> 1 mes';
 $s_sponsorship_enum_string = '0:Impagat,1:Requerit,2:Pagat';
@@ -489,7 +490,9 @@ $s_from = 'De';
 $s_to = 'Per a';
 $s_sent_you_this_reminder_about = 'li ha enviat aquest recordatori sobre';
 $s_bug_reminder = 'Envia un recordatori';
-$s_reminder_sent_to = 'Recordatori enviat a:';
+$s_reminder_sent_to = 'Recordatori enviat a';
+$s_reminder_sent_none = 'Cap recordatori ha pogut ser enviat';
+$s_reminder_list_truncated = 'la llista de destinataris està truncada, mireu l\'historial de problemes per tenir una llista completa';
 $s_bug_send_button = 'Envia';
 $s_reminder = 'Recordatori';
 $s_reminder_explain = 'Aquesta nota serà enviada als destinataris que han sol·licitat més informació sobre aquesta incidència.';
@@ -602,6 +605,7 @@ $s_protected = 'Protegit';
 $s_create_user_button = 'Crea usuari';
 $s_hide_disabled = 'Amaga desactivats';
 $s_filter_button = 'Filtra';
+$s_default_filter = 'Filtre predeterminat';
 $s_create_filter_link = 'Crea Permalink';
 $s_create_short_link = 'Crea Enllaç Curt';
 $s_filter_permalink = 'El següent és un enllaç permanent al filtre configurat actualment:';
@@ -1116,7 +1120,7 @@ $s_delete_attachments = 'Elimina adjunts';
 $s_delete_attachment_button = 'Elimina';
 $s_delete_attachment_sure_msg = 'Està segur que vol esborrar aquest adjunt?';
 $s_upload_issue_attachments = 'Penja adjunts a la incidència';
-$s_filters = 'filtres';
+$s_filters = 'Filtres';
 $s_save_filters = 'Desa filtres';
 $s_save_filters_as_shared = 'Desa filtres com a compartits';
 $s_use_saved_filters = 'Usa filtres desats';

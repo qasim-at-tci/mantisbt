@@ -28,6 +28,7 @@
  * @author Crt
  * @author Jani Reinikainen, devel@reinikainen.net
  * @author Juha, jomustaj@iki.fi
+ * @author Lliehu
  * @author Nike
  * @author Silvonen
  * @author Str4nd
@@ -465,6 +466,7 @@ $s_unmonitor_bug_button = 'Lopeta tapahtuman seuranta';
 $s_file_upload_msg = 'Tiedoston lähetys onnistui';
 $s_upload_file = 'Lähetä tiedosto';
 $s_select_file = 'Valitse tiedosto';
+$s_select_files = 'Valitse tiedostot';
 $s_upload_file_button = 'Lähetä tiedosto';
 $s_max_file_size = 'Enimmäiskoko';
 $s_bug_reopened_msg = 'Tapahtuma on uudelleenavattu...';
@@ -492,7 +494,7 @@ $s_bug_updated_msg = 'Tapahtuma on onnistuneesti päivitetty...';
 $s_back_to_bug_link = 'Takaisin tapahtumaan';
 $s_update_simple_link = 'Yksinkertainen päivitys';
 $s_updating_bug_advanced_title = 'Päivitetään tapahtuman tietoja';
-$s_id = 'ID';
+$s_id = 'Tunniste';
 $s_category = 'Kategoria';
 $s_severity = 'Vakavuusaste';
 $s_reproducibility = 'Toistettavuus';
@@ -960,6 +962,7 @@ $s_update_bug_button = 'Muokkaa';
 $s_bug_assign_to_button = 'Osoita henkilölle:';
 $s_bug_status_to_button = 'Muuta tilaksi:';
 $s_reopen_bug_button = 'Avaa uudelleen';
+$s_close_bug_button = 'Sulje';
 $s_move_bug_button = 'Siirrä';
 $s_attached_files = 'Liitetiedostot';
 $s_publish = 'Julkaise';
@@ -1094,7 +1097,7 @@ $s_delete_attachments = 'Poista liitetiedostoja';
 $s_delete_attachment_button = 'Poista';
 $s_delete_attachment_sure_msg = 'Oletko varma, että haluat poistaa tämän liitetiedoston?';
 $s_upload_issue_attachments = 'Päivitä tapahtuman liitetiedostoja';
-$s_filters = 'suotimet';
+$s_filters = 'Suotimet';
 $s_save_filters = 'Tallenna suotimet';
 $s_save_filters_as_shared = 'Tallenna suotimet jaettuina';
 $s_use_saved_filters = 'Käytä talletettuja suotimia';
@@ -1167,7 +1170,7 @@ $s_tag_related_issues = 'Jaetut tapahtumat (%1$s)';
 $s_tag_stats_attached = 'Liitetyt tapahtumat: %1$s';
 $s_tag_create = 'Luo tägi';
 $s_show_all_tags = 'Kaikki';
-$s_time_tracking_billing_link = 'Laskutus';
+$s_time_tracking_billing_link = 'Ajanseuranta';
 $s_time_tracking = 'Ajanseuranta';
 $s_time_tracking_get_info_button = 'Nouda ajanseurantatietoa';
 $s_time_tracking_cost_per_hour = 'Kustannus / tunti';

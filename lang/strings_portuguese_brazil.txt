@@ -30,6 +30,7 @@
  * @author Felipe Tonioli, tonioli@easyline.com.br
  * @author Fernando Machado, fm-nospam@fmachado.com
  * @author Giro720
+ * @author Gusta
  * @author Jeferson Oliveira, jefersonfoliveira@gmail.com
  * @author Jefersonfoliveira
  * @author Juliano F. Ravasi, dev at juliano info
@@ -493,7 +494,8 @@ $s_from = 'De';
 $s_to = 'Para';
 $s_sent_you_this_reminder_about = 'lhe enviou este lembrete sobre';
 $s_bug_reminder = 'Enviar um lembrete';
-$s_reminder_sent_to = 'Lembrete enviado para:';
+$s_reminder_sent_to = 'Lembrete mandado para';
+$s_reminder_sent_none = 'Nenhum lembrete pôde ser mandado';
 $s_bug_send_button = 'Enviar';
 $s_reminder = 'Lembrete';
 $s_reminder_explain = 'Esta anotação será enviada aos destinatários listados, solicitando retorno sobre este caso.';
@@ -606,6 +608,7 @@ $s_protected = 'Protegido';
 $s_create_user_button = 'Criar Usuário';
 $s_hide_disabled = 'Ocultar Desabilitados';
 $s_filter_button = 'Aplicar Filtro';
+$s_default_filter = 'Filtro padrão';
 $s_create_filter_link = 'Criar Link Permanente';
 $s_create_short_link = 'Criar Link Reduzido';
 $s_filter_permalink = 'O endereço a seguir é um link permanente para o filtro atualmente configurado:';
@@ -1117,7 +1120,7 @@ $s_delete_attachments = 'Apagar anexos';
 $s_delete_attachment_button = 'Apagar';
 $s_delete_attachment_sure_msg = 'Você tem certeza que deseja apagar este anexo?';
 $s_upload_issue_attachments = 'Carregar (upload) anexos aos casos';
-$s_filters = 'filtros';
+$s_filters = 'Filtros';
 $s_save_filters = 'Salvar filtros';
 $s_save_filters_as_shared = 'Salvar filtros como compartilhados';
 $s_use_saved_filters = 'Usar filtros salvos';

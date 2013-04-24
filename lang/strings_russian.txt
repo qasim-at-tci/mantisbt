@@ -37,6 +37,7 @@
  * @author KPu3uC B Poccuu
  * @author Kirill
  * @author Mikhail Oleynik (MiTo Team), m.oleynik@gmail.com
+ * @author Ole Yves
  * @author Oleg Gashev gashev@zahav.net.il
  * @author Prima klasy4na
  * @author Sabbah
@@ -45,12 +46,12 @@
  * @author Александр Сигачёв
  */
 
-$s_actiongroup_menu_move = 'переместить';
-$s_actiongroup_menu_copy = 'копировать';
-$s_actiongroup_menu_assign = 'назначить';
-$s_actiongroup_menu_close = 'закрыть';
-$s_actiongroup_menu_delete = 'удалить';
-$s_actiongroup_menu_resolve = 'отработать';
+$s_actiongroup_menu_move = 'Переименовать';
+$s_actiongroup_menu_copy = 'Копировать';
+$s_actiongroup_menu_assign = 'Назначить';
+$s_actiongroup_menu_close = 'Закрыть';
+$s_actiongroup_menu_delete = 'Удалить';
+$s_actiongroup_menu_resolve = 'Отработать';
 $s_actiongroup_menu_update_priority = 'изменить приоритет';
 $s_actiongroup_menu_update_status = 'изменить состояние';
 $s_actiongroup_menu_update_severity = 'Настройка Серьезности';
@@ -608,6 +609,7 @@ $s_protected = 'Защищена';
 $s_create_user_button = 'Создать';
 $s_hide_disabled = 'скрыть заблокированные';
 $s_filter_button = 'Фильтровать';
+$s_default_filter = 'Фильтр по умолчанию';
 $s_create_filter_link = 'Создать постоянную ссылку';
 $s_create_short_link = 'Создать короткую ссылку (TinyURL)';
 $s_filter_permalink = 'Постоянная ссылка на сконфигурированный Вами фильтр:';
@@ -1121,7 +1123,7 @@ $s_delete_attachments = 'Удаление вложений';
 $s_delete_attachment_button = 'Удалить';
 $s_delete_attachment_sure_msg = 'Вы уверены, что хотите удалить это вложение?';
 $s_upload_issue_attachments = 'Добавление вложения к инциденту';
-$s_filters = 'ФИЛЬТРЫ';
+$s_filters = 'Фильтры';
 $s_save_filters = 'Сохранение фильтров';
 $s_save_filters_as_shared = 'Сохранение фильтров в качестве общих';
 $s_use_saved_filters = 'Использование сохраненных фильтров';

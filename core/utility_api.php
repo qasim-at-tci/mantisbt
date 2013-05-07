@@ -56,6 +56,15 @@ function terminate_directory_path( $p_path ) {
 }
 
 /**
+ * Return true if running from command-line
+ * @return bool
+ * @access public
+ */
+function is_cli() {
+	return PHP_SAPI == 'cli';
+}
+
+/**
  * Return true if the parameter is an empty string or a string
  * containing only whitespace, false otherwise
  * @param string $p_var string to test
@@ -265,16 +274,16 @@ function get_font_path() {
 }
 
 function finfo_get_if_available() {
-	
+
 	if ( class_exists( 'finfo' ) ) {
 		$t_info_file = config_get( 'fileinfo_magic_db_file' );
-	
+
 		if ( is_blank( $t_info_file ) ) {
 			$finfo = new finfo( FILEINFO_MIME );
 		} else {
 			$finfo = new finfo( FILEINFO_MIME, $t_info_file );
 		}
-	
+
 		if ( $finfo ) {
 			return $finfo;
 		}

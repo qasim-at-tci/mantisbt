@@ -80,14 +80,20 @@ function error_handler( $p_type, $p_error, $p_file, $p_line, $p_context ) {
 	}
 
 	$t_short_file = basename( $p_file );
-	$t_method_array = config_get_global( 'display_errors' );
-	if( isset( $t_method_array[$p_type] ) ) {
-		$t_method = $t_method_array[$p_type];
+
+	# Error display method
+	if( is_cli() ) {
+		$t_method = PHP_SAPI;
 	} else {
-		if( isset( $t_method_array[E_ALL] ) ) {
-			$t_method = $t_method_array[E_ALL];
+		$t_method_array = config_get_global( 'display_errors' );
+		if( isset( $t_method_array[$p_type] ) ) {
+			$t_method = $t_method_array[$p_type];
 		} else {
-			$t_method = 'none';
+			if( isset( $t_method_array[E_ALL] ) ) {
+				$t_method = $t_method_array[E_ALL];
+			} else {
+				$t_method = 'none';
+			}
 		}
 	}
 
@@ -202,6 +208,10 @@ function error_handler( $p_type, $p_error, $p_file, $p_line, $p_context ) {
 			echo '<p style="color:red">', $t_error_type, ': ', $t_error_description, '</p>';
 			$g_error_handled = true;
 			break;
+		case 'cli':
+			echo "$t_error_type: $t_error_description\n";
+			error_print_stack_trace();
+			break;
 		default:
 			# do nothing - note we treat this as we've not handled an error, so any redirects go through.
 		}
@@ -281,14 +291,34 @@ function error_print_context( $p_context ) {
 	echo '</table>';
 }
 
+function error_print_stack_trace_element( $p_elem, $p_htmlent = false ) {
+	if( isset( $p_elem ) ) {
+		if( !is_cli() && $p_htmlent ) {
+			return htmlentities( $t_frame['file'], ENT_COMPAT, 'UTF-8' );
+		} else {
+			return $p_elem;
+		}
+	} else {
+		return '-';
+	}
+}
+
 /**
  * Print out a stack trace
  * @return null
  * @uses error_alternate_class
  */
 function error_print_stack_trace() {
-	echo '<center><table class="width75">';
-	echo '<tr><th>Filename</th><th>Line</th><th></th><th></th><th>Function</th><th>Args</th></tr>';
+	if( is_cli() ) {
+		$t_fmt_tr = '';
+		$t_fmt_tr_end = '';
+	} else {
+		echo '<center><table class="width75">';
+		echo '<tr><th>Filename</th><th>Line</th><th></th><th></th><th>Function</th><th>Args</th></tr>';
+		$t_fmt_tr = '<tr %s>';
+		$t_fmt_td = '<td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>';
+		$t_fmt_tr_end = '</tr>';
+	}
 
 	$t_stack = debug_backtrace();
 

@@ -41,12 +41,15 @@ function installer_db_now() {
 # Special handling for Oracle (oci8):
 # - Field cannot be null with oci because empty string equals NULL
 # - Oci uses a different date literal syntax
+# - Default BLOBs to empty_blob() function
 if( db_is_oracle() ) {
 	$t_notnull = "";
 	$t_timestamp = "timestamp" . installer_db_now();
+	$t_blob_default = 'DEFAULT " empty_blob() "';
 } else {
 	$t_notnull = 'NOTNULL';
 	$t_timestamp = "'" . installer_db_now() . "'";
+	$t_blob_default = '';
 }
 
 /**
@@ -72,7 +75,7 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_bug_file_table'),
   filesize 		 I NOTNULL DEFAULT '0',
   file_type 		C(250) NOTNULL DEFAULT \" '' \",
   date_added 		T NOTNULL DEFAULT '" . db_null_date() . "',
-  content 		B NOTNULL
+  content 		B NOTNULL $t_blob_default
   ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 $upgrade[] = Array('CreateIndexSQL',Array('idx_bug_file_bug_id',db_get_table('mantis_bug_file_table'),'bug_id'));
 $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_bug_history_table'),"
@@ -235,7 +238,7 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_file_tabl
   filesize 		 I NOTNULL DEFAULT '0',
   file_type 		C(250) NOTNULL DEFAULT \" '' \",
   date_added 		T NOTNULL DEFAULT '" . db_null_date() . "',
-  content 		B NOTNULL
+  content 		B NOTNULL $t_blob_default
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
 /**

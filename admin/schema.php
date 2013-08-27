@@ -41,15 +41,12 @@ function installer_db_now() {
 # Special handling for Oracle (oci8):
 # - Field cannot be null with oci because empty string equals NULL
 # - Oci uses a different date literal syntax
-switch( $GLOBALS['g_db_type'] ) {
-	case 'oci8':
-		$t_notnull = "";
-		$t_timestamp = "timestamp" . installer_db_now();
-		break;
-	default:
-		$t_notnull = 'NOTNULL';
-		$t_timestamp = "'" . installer_db_now() . "'";
-		break;
+if( db_is_oracle() ) {
+	$t_notnull = "";
+	$t_timestamp = "timestamp" . installer_db_now();
+} else {
+	$t_notnull = 'NOTNULL';
+	$t_timestamp = "'" . installer_db_now() . "'";
 }
 
 /**
@@ -262,11 +259,11 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_project_table'),"
 ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
 # Index autocreated when oci used
-if( 'oci8' != $GLOBALS['g_db_type'] ) {
-	$upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id'));
-} else {
+if( db_is_oracle() ) {
 	# No-op - required to ensure schema version consistency
 	$upgrade[] = NULL;
+} else {
+	$upgrade[] = Array('CreateIndexSQL',Array('idx_project_id',db_get_table('mantis_project_table'),'id'));
 }
 
 $upgrade[] = Array('CreateIndexSQL',Array('idx_project_name',db_get_table('mantis_project_table'),'name',Array('UNIQUE')));
@@ -403,13 +400,12 @@ $upgrade[] = Array('CreateTableSQL',Array(db_get_table('mantis_email_table'),"
   ",Array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')));
 
 # Index autocreated when oci used
-if( 'oci8' != $GLOBALS['g_db_type'] ) {
-	$upgrade[] = Array('CreateIndexSQL',Array('idx_email_id',db_get_table('mantis_email_table'),'email_id'));
-} else {
+if( db_is_oracle() ) {
 	# No-op - required to ensure schema version consistency
 	$upgrade[] = NULL;
+} else {
+	$upgrade[] = Array('CreateIndexSQL',Array('idx_email_id',db_get_table('mantis_email_table'),'email_id'));
 }
-
 
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bug_table'), "target_version C(64) NOTNULL DEFAULT \" '' \""));
 $upgrade[] = Array('AddColumnSQL',Array(db_get_table('mantis_bugnote_table'), "time_tracking I UNSIGNED NOTNULL DEFAULT \" 0 \""));
@@ -718,10 +714,10 @@ $upgrade[] = Array( 'DropColumnSQL', Array( db_get_table( 'mantis_user_pref_tabl
 $upgrade[] = Array( 'CreateIndexSQL', Array( 'idx_project_hierarchy_child_id', db_get_table( 'mantis_project_hierarchy_table' ), 'child_id' ) );
 
 # Decrease index name length for oci8 (30 chars max)
-if( 'oci8' != $GLOBALS['g_db_type'] ) {
-	$t_index_name = 'idx_project_hierarchy_parent_id';
-} else {
+if( db_is_oracle() ) {
 	$t_index_name = 'idx_prj_hier_parent_id';
+} else {
+	$t_index_name = 'idx_project_hierarchy_parent_id';
 }
 $upgrade[] = Array( 'CreateIndexSQL', Array( $t_index_name, db_get_table( 'mantis_project_hierarchy_table' ), 'parent_id' ) );
 

@@ -807,7 +807,7 @@ function create_category_summary() {
 			$t_metrics[$t_cat_name] = $t_metrics[$t_cat_name] + db_result( $t_result2, 0, 0 );
 		} else {
 			if( db_result( $t_result2, 0, 0 ) > 0 ) {
-			    $t_metrics[$t_cat_name] = db_result( $t_result2, 0, 0 );
+				$t_metrics[$t_cat_name] = db_result( $t_result2, 0, 0 );
 			}
 		}
 	}

@@ -223,6 +223,8 @@ span.switch-view:after
 #content { clear: both; position: relative; top: 0; margin: 0; padding: .5em; }
 .recently-visited { position: relative; text-align: right; font-size: x-small; }
 
+img.menu-icon	{ padding-right: 3px; }
+
 br { clear:both; }
 
 .field-default { color: #999; }

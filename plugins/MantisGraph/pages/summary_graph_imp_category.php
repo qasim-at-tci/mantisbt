@@ -30,9 +30,9 @@ plugin_require_api( 'core/graph_api.php' );
 access_ensure_project_level( config_get( 'view_summary_threshold' ) );
 
 html_page_top();
-print_summary_menu( 'summary_page.php' );
 
 echo '<br />';
+print_summary_menu( 'summary_page.php' );
 print_summary_submenu();
 
 $t_width = plugin_config_get( 'window_width' );

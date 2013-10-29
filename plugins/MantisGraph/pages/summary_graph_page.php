@@ -31,7 +31,7 @@ html_page_top();
 <br />
 <?php
 
-print_summary_menu( 'summary_jpgraph_page.php' );
+print_summary_menu( 'summary_graph_page.php' );
 
 $t_graphs = array( 'summary_graph_cumulative_bydate', 'summary_graph_bydeveloper', 'summary_graph_byreporter',
 		'summary_graph_byseverity', 'summary_graph_bystatus', 'summary_graph_byresolution',

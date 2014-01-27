@@ -135,8 +135,12 @@ function graph_bar( array $p_metrics, $p_title = '', $p_graph_width = 350, $p_gr
 		$t_graph->data[0] = new ezcGraphArrayDataSet( $p_metrics );
 		$t_graph->data[0]->color = '#FFFF00';
 
-		$t_graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
-		$t_graph->xAxis->axisLabelRenderer->angle = 45;
+		if( count( $p_metrics ) > 8 ) {
+			$t_graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
+			$t_graph->xAxis->axisLabelRenderer->angle = 45;
+			$t_graph->xAxis->axisSpace = 0.15;
+		}
+		$t_graph->yAxis->min = 0;
 
 		$t_graph->driver = new ezcGraphGdDriver();
 		# $t_graph->driver->options->supersampling = 1;
@@ -230,8 +234,12 @@ function graph_group( array $p_metrics, $p_title = '', $p_graph_width = 350, $p_
 		# $t_graph->data['total']->displayType = ezcGraph::LINE;
 		# $t_graph->data['total']->barMargin = -20;
 		$t_graph->options->fillLines = 210;
-		$t_graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
-		$t_graph->xAxis->axisLabelRenderer->angle = 45;
+
+		if( count( $p_metrics ) > 4 ) {
+			$t_graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
+			$t_graph->xAxis->axisLabelRenderer->angle = 45;
+			$t_graph->xAxis->axisSpace = 0.15;
+		}
 
 		$t_graph->driver = new ezcGraphGdDriver();
 		# $t_graph->driver->options->supersampling = 1;
@@ -419,8 +427,11 @@ function graph_cumulative_bydate( array $p_metrics, $p_graph_width = 300, $p_gra
 		$t_graph->data[2]->yAxis = $t_n_axis;
 
 		$t_graph->xAxis->labelCallback =  'graph_date_format';
-		$t_graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
-		$t_graph->xAxis->axisLabelRenderer->angle = -45;
+		if( count( $p_metrics ) > 0 ) {
+			$t_graph->xAxis->axisLabelRenderer = new ezcGraphAxisRotatedLabelRenderer();
+			$t_graph->xAxis->axisLabelRenderer->angle = 0;
+			$t_graph->xAxis->axisSpace = 0.25;
+		}
 
 		$t_graph->legend->position      = ezcGraph::BOTTOM;
 		$t_graph->legend->background    = '#FFFFFF80';

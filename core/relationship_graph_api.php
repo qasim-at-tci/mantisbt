@@ -523,9 +523,10 @@ function relgraph_add_bug_to_graph( Graph &$p_graph, $p_bug_id, BugData $p_bug, 
 		$t_node_attributes['URL'] = $p_url;
 	}
 
+	$t_category = category_full_name( $p_bug->category_id, false );
 	$t_summary = string_display_line_links( $p_bug->summary );
 	$t_status = get_enum_element( 'status', $p_bug->status );
-	$t_node_attributes['tooltip'] = '[' . $t_status . '] ' . $t_summary;
+	$t_node_attributes['tooltip'] = "[$t_status] $t_summary - $t_category";
 
 	$p_graph->add_node( $p_bug_id, $t_node_attributes );
 }

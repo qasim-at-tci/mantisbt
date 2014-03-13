@@ -34,11 +34,14 @@ $g_current_font_selected = array(
 	'verdana' => false,
 	'trebuchet' => false,
 	'verasans' => false,
+	'dejavusans' => false,
 	'times' => false,
 	'georgia' => false,
 	'veraserif' => false,
+	'dejavuserif' => false,
 	'courier' => false,
 	'veramono' => false,
+	'dejavumono' => false,
 );
 
 $t_current_font = plugin_config_get( 'font' );
@@ -115,13 +118,16 @@ function print_font_checked( $p_font_name ) {
 					<label><input type="radio" name="font" value="verdana"<?php echo print_font_checked( 'verdana' )?>/>Verdana</label><br />
 					<label><input type="radio" name="font" value="trebuchet"<?php echo print_font_checked( 'trebuchet' )?>/>Trebuchet</label><br />
 					<label><input type="radio" name="font" value="verasans"<?php echo print_font_checked( 'verasans' )?>/>Vera Sans</label>
+					<label><input type="radio" name="font" value="dejavusans"<?php echo print_font_checked( 'dejavusans' )?>/>DejaVu Sans</label>
 					Serif:<br />
 					<label><input type="radio" name="font" value="times"<?php echo print_font_checked( 'times' )?>/>Times</label><br />
 					<label><input type="radio" name="font" value="georgia"<?php echo print_font_checked( 'georgia' )?>/>Georgia</label><br />
 					<label><input type="radio" name="font" value="veraserif"<?php echo print_font_checked( 'veraserif' )?>/>Vera Serif</label><br />
+					<label><input type="radio" name="font" value="dejavusans"<?php echo print_font_checked( 'dejavusans' )?>/>DejaVu Sans</label>
 					<br />Monospace:<br />
 					<label><input type="radio" name="font" value="courier"<?php echo print_font_checked( 'courier' )?>/>Courier</label><br />
 					<label><input type="radio" name="font" value="veramono"<?php echo print_font_checked( 'veramono' )?>/>Vera Mono</label>
+					<label><input type="radio" name="font" value="dejavumono"<?php echo print_font_checked( 'dejavumono' )?>/>DejaVu Mono</label>
 				</span>
 				<span class="label-style"></span>
 			</div>

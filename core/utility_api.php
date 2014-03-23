@@ -272,28 +272,28 @@ function getClassProperties( $p_classname, $p_type = 'public', $p_return_object 
  * @return string representing system path to font location
  */
 function get_font_path() {
-		$t_font_path = config_get_global( 'system_font_folder' );
-		if( $t_font_path == '' ) {
-			if( is_windows_server() ) {
-				$t_system_root = $_SERVER['SystemRoot'];
-				if( empty( $t_system_root ) ) {
-					return '';
-				} else {
-					$t_font_path = $t_system_root . '/fonts/';
-				}
+	$t_font_path = config_get_global( 'system_font_folder' );
+	if( $t_font_path == '' ) {
+		if( is_windows_server() ) {
+			$t_system_root = $_SERVER['SystemRoot'];
+			if( empty($t_system_root) ) {
+				return '';
 			} else {
-				if( file_exists( '/usr/share/fonts/corefonts/' ) ) {
-					$t_font_path = '/usr/share/fonts/corefonts/';
-				} else if( file_exists( '/usr/share/fonts/truetype/msttcorefonts/' ) ) {
-					$t_font_path = '/usr/share/fonts/truetype/msttcorefonts/';
-				} else if( file_exists( '/usr/share/fonts/msttcorefonts/' ) ) {
-					$t_font_path = '/usr/share/fonts/msttcorefonts/';
-				} else {
-					$t_font_path = '/usr/share/fonts/truetype/';
-				}
+				$t_font_path = $t_system_root . '/fonts/';
+			}
+		} else {
+			if( file_exists( '/usr/share/fonts/corefonts/' ) ) {
+				$t_font_path = '/usr/share/fonts/corefonts/';
+			} else if( file_exists( '/usr/share/fonts/truetype/msttcorefonts/' ) ) {
+				$t_font_path = '/usr/share/fonts/truetype/msttcorefonts/';
+			} else if( file_exists( '/usr/share/fonts/msttcorefonts/' ) ) {
+				$t_font_path = '/usr/share/fonts/msttcorefonts/';
+			} else {
+				$t_font_path = '/usr/share/fonts/truetype/';
 			}
 		}
-		return $t_font_path;
+	}
+	return $t_font_path;
 }
 
 /**

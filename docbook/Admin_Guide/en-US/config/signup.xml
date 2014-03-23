@@ -58,13 +58,6 @@
 		</varlistentry>
 
 		<varlistentry>
-			<term>$g_system_font_folder</term>
-			<listitem>
-				<para>TODO</para>
-			</listitem>
-		</varlistentry>
-
-		<varlistentry>
 			<term>$g_lost_password_feature</term>
 			<listitem>
 				<para>TODO</para>

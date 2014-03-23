@@ -105,7 +105,7 @@ config_obsolete( 'use_bcc', '' );
 config_obsolete( 'port', 'hostname' );
 
 # changes in 0.19.3
-config_obsolete( 'relationship_graph_fontpath', 'system_font_folder' );
+config_obsolete( 'relationship_graph_fontpath', 'system_font_path' );
 
 # changes in 1.1.0rc1
 config_obsolete( 'show_notices', 'display_errors' );
@@ -192,3 +192,4 @@ config_obsolete( 'use_javascript' );
 config_obsolete( 'recently_visited', 'recently_visited_count' );
 config_obsolete( 'email_set_category' );
 config_obsolete( 'font_per_captcha' );
+config_obsolete( 'system_font_folder', 'system_font_path' );

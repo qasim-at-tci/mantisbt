@@ -236,9 +236,9 @@ $g_short_path = $t_path;
 /**
  * Absolute path to TrueType-Font files. Requires trailing / or \
  * Used by the Graph plugin and for drawing the Relationship Graphs
- * @global string $g_system_font_folder
+ * @global string $g_system_font_path
  */
-$g_system_font_folder	= '';
+$g_system_font_path = '';
 
 /**
  * Used to link to manual for User Documentation.

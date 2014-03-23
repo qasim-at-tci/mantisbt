@@ -268,7 +268,7 @@ function getClassProperties( $p_classname, $p_type = 'public', $p_return_object 
 
 /**
  * return string of system font path
- * If {@see $g_system_font_folder} is not defined, on Linux systems the api
+ * If {@see $g_system_font_path} is not defined, on Linux systems the api
  * attempts to find a fonts directory by checking for existence of several
  * directories below the base fonts path (basically trying to match
  * /usr/share/fonts/[truetype/|corefonts/][msttcorefonts/|dejavu/]);
@@ -277,7 +277,7 @@ function getClassProperties( $p_classname, $p_type = 'public', $p_return_object 
  * @return string representing system path to font location
  */
 function get_font_path() {
-	$t_font_path = config_get_global( 'system_font_folder' );
+	$t_font_path = config_get_global( 'system_font_path' );
 	if( $t_font_path == '' ) {
 		if( is_windows_server() ) {
 			$t_system_root = $_SERVER['SystemRoot'];

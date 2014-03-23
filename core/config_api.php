@@ -704,7 +704,7 @@ function config_is_private( $p_config_var ) {
 		case 'session_handler':
 		case 'session_validation':
 		case 'global_settings':
-		case 'system_font_folder':
+		case 'system_font_path':
 		case 'phpMailer_method':
 		case 'attachments_file_permissions':
 		case 'file_upload_method':

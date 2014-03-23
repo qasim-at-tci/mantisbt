@@ -89,6 +89,12 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term>$g_system_font_folder</term>
+			<listitem>
+				<para>TODO</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term>$g_manual_url</term>
 			<listitem>
 				<para>This is the url to the MantisBT online manual.  Requires trailing '/' character.

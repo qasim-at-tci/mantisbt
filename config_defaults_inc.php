@@ -349,25 +349,18 @@ $g_notify_new_user_created_threshold_min = ADMINISTRATOR;
 $g_send_reset_password	= ON;
 
 /**
- * use captcha image to validate subscription it requires GD library installed
+ * use captcha image to validate subscription
  * @global integer $g_signup_use_captcha
  */
 $g_signup_use_captcha	= ON;
 
 /**
- * absolute path (with trailing slash!) to folder which contains your
- * TrueType-Font files used to create the captcha image and since 0.19.3 for
- * the Relationship Graphs
+ * Absolute path (with trailing slash!) to folder which contains your
+ * TrueType-Font files used by the Graph plugin and for drawing the
+ * Relationship Graphs
  * @global string $g_system_font_folder
  */
 $g_system_font_folder	= '';
-
-/**
- * font name used to create the captcha image. i.e. arial.ttf
- * (the font file has to exist in the system_font_folder)
- * @global string $g_font_per_captcha
- */
-$g_font_per_captcha	= 'arial.ttf';
 
 /**
  * Setting to disable the 'lost your password' feature.

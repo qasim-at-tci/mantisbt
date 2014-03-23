@@ -234,6 +234,13 @@ $g_icon_path = '%path%images/';
 $g_short_path = $t_path;
 
 /**
+ * Absolute path to TrueType-Font files. Requires trailing / or \
+ * Used by the Graph plugin and for drawing the Relationship Graphs
+ * @global string $g_system_font_folder
+ */
+$g_system_font_folder	= '';
+
+/**
  * Used to link to manual for User Documentation.
  * This can be either a full URL or a relative path to the MantisBT root.
  * If a relative path does not exist, the link will fall back to the online
@@ -353,14 +360,6 @@ $g_send_reset_password	= ON;
  * @global integer $g_signup_use_captcha
  */
 $g_signup_use_captcha	= ON;
-
-/**
- * Absolute path (with trailing slash!) to folder which contains your
- * TrueType-Font files used by the Graph plugin and for drawing the
- * Relationship Graphs
- * @global string $g_system_font_folder
- */
-$g_system_font_folder	= '';
 
 /**
  * Setting to disable the 'lost your password' feature.

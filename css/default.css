@@ -576,6 +576,15 @@ div.form-container > table > tr:nth-child(even),
 #custom-field-link-project
 	{ background-color: #d8d8d8; }
 
+fieldset > .spacer,
+div.form-container div.spacer
+{
+	height: 5px;
+	width: 100%;
+	float: left;
+	padding: 0em;
+}
+
 form > table > tr:last-child,
 div.table-container > table > tbody > tr > td.buttons,
 div.table-container > table > tbody > tr > td.right {

@@ -17,7 +17,7 @@
 /**
  * Bug API
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2014  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  * @package CoreAPI
  * @subpackage BugAPI
@@ -253,7 +253,7 @@ class BugData {
 		$query = "SELECT COUNT(*)
 					  FROM $t_bugnote_table
 					  WHERE bug_id =" . db_param() . " $t_restriction";
-		$result = db_query_bound( $query, Array( $this->bug_id ) );
+		$result = db_query_bound( $query, Array( $this->id ) );
 
 		return db_result( $result );
 	}

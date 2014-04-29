@@ -51,7 +51,7 @@
  * @package CoreAPI
  * @subpackage HTMLAPI
  * @copyright Copyright (C) 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
- * @copyright Copyright (C) 2002 - 2013  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @copyright Copyright (C) 2002 - 2014  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
  * @uses lang_api.php
  */
@@ -616,8 +616,8 @@ function html_footer( $p_file = null ) {
 		$t_mantis_href = '<a href="http://www.mantisbt.org/" title="Free Web-Based Bug Tracker"';
 		echo
 			"\t", '<span class="timer">',
-			"<a $t_mantis_href>MantisBT $t_mantis_version</a> ",
-			"[<a $t_mantis_href ", 'target="_blank">^</a>]',
+			"$t_mantis_href>MantisBT $t_mantis_version</a> ",
+			"[$t_mantis_href ", 'target="_blank">^</a>]',
 			"</span>\n";
 	}
 	echo "\t<address>Copyright &copy; 2000 - ", date( 'Y' ), " MantisBT Team</address>\n";

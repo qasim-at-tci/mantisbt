@@ -25,6 +25,7 @@
  * @ingroup Language
  * @file
  *
+ * @author HanV
  * @author Hans van Zijst, hzi@syncera.nl
  * @author Jan-Bart de Vreede, jvreede@outdare.nl
  * @author Jeroen Latour, jlatour@calaquendi.net
@@ -167,7 +168,7 @@ $s_printing_options_link = 'Afdrukopties';
 $s_bugnote_title = 'Reactie behandelaar';
 $s_bugnote_date = 'Datum reactie';
 $s_bugnote_description = 'Beschrijving reactie';
-$s_error_no_proceed = 'Gebruik alstublieft de knop "Terug" in uw webbrowser om terug te keren naar de vorige pagina. Daar kunt u de in deze foutmelding aangegeven problemen oplossen of een andere handeling selecteren. U kunt ook een optie in de menubalk selecteren om direct naar een nieuwe sectie te gaan.';
+$s_error_no_proceed = 'Gebruik de knop "Terug" in uw webbrowser om terug te keren naar de vorige pagina. Daar kunt u de in deze foutmelding aangegeven problemen oplossen of een andere handeling selecteren. U kunt ook een optie in de menubalk selecteren om direct naar een nieuwe sectie te gaan.';
 $MANTIS_ERROR[ERROR_GENERIC] = 'Tijdens het uitvoeren van deze handeling is een fout opgetreden. Meld dit aan uw systeembeheerder.';
 $MANTIS_ERROR[ERROR_SQL] = 'Er is een SQL-fout opgetreden.';
 $MANTIS_ERROR[ERROR_REPORT] = 'Er is een fout opgetreden tijdens het aanmaken van uw rapport.';
@@ -175,7 +176,7 @@ $MANTIS_ERROR[ERROR_NO_FILE_SPECIFIED] = 'Geen bestand opgegeven.';
 $MANTIS_ERROR[ERROR_FILE_DISALLOWED] = 'Het bestandstype is niet toegestaan.';
 $MANTIS_ERROR[ERROR_NO_DIRECTORY] = 'De map bestaat niet. Controleer de projectinstellingen.';
 $MANTIS_ERROR[ERROR_DUPLICATE_PROJECT] = 'Dit project bestaat al.';
-$MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Een verplicht veld ("%1$s") is niet ingevuld. Controleer alstublieft uw invoer.';
+$MANTIS_ERROR[ERROR_EMPTY_FIELD] = 'Een verplicht veld ("%1$s") is niet ingevuld. Controleer uw invoer.';
 $MANTIS_ERROR[ERROR_PROTECTED_ACCOUNT] = 'Deze gebruiker is beschermd. U hebt hier geen toegang totdat de bescherming is opgeheven.';
 $MANTIS_ERROR[ERROR_ACCESS_DENIED] = 'Toegang geweigerd.';
 $MANTIS_ERROR[ERROR_UPLOAD_FAILURE] = 'Toevoegen bestand mislukt omdat het niet door MantisBT gelezen kon worden. Controleer de projectinstellingen.';
@@ -203,7 +204,7 @@ $MANTIS_ERROR[ERROR_GPC_ARRAY_UNEXPECTED] = 'Verwachtte een string, maar ontving
 $MANTIS_ERROR[ERROR_GPC_NOT_NUMBER] = 'Verwachtte een getal voor %1$s.';
 $MANTIS_ERROR[ERROR_BUG_NOT_FOUND] = 'Melding %1$d niet gevonden.';
 $MANTIS_ERROR[ERROR_FILTER_NOT_FOUND] = 'Filter %1$s niet gevonden.';
-$MANTIS_ERROR[ERROR_FILTER_TOO_OLD] = 'De filter die u probeert te gebruiken is te oud om bijgewerkt te worden. Maak hem alstublieft opnieuw aan.';
+$MANTIS_ERROR[ERROR_FILTER_TOO_OLD] = 'De filter die u probeert te gebruiken is te oud om bijgewerkt te worden. Maak hem opnieuw aan.';
 $MANTIS_ERROR[ERROR_EMAIL_INVALID] = 'Ongeldig e-mailadres.';
 $MANTIS_ERROR[ERROR_EMAIL_DISPOSABLE] = 'Het is niet toegestaan om wegwerp-e-mailadressen te gebruiken.';
 $MANTIS_ERROR[ERROR_USER_PROFILE_NOT_FOUND] = 'Profiel niet gevonden.';
@@ -273,6 +274,7 @@ $MANTIS_ERROR[ERROR_PLUGIN_ALREADY_INSTALLED] = 'De uitbreiding is al geïnstall
 $MANTIS_ERROR[ERROR_PLUGIN_PAGE_NOT_FOUND] = 'De pagina voor de uitbreiding is niet aangetroffen.';
 $MANTIS_ERROR[ERROR_PLUGIN_INSTALL_FAILED] = 'Het installeren van de plugin is mislukt: %1$s.';
 $MANTIS_ERROR[ERROR_PLUGIN_UPGRADE_FAILED] = 'Het bijwerken van het uitbreidingsschema is mislukt in blok #%1$s.';
+$MANTIS_ERROR[ERROR_PLUGIN_UPGRADE_NEEDED] = 'De plugin "%1$s" moet bijgewerkt worden voordat u deze pagina kunt openen.';
 $MANTIS_ERROR[ERROR_PLUGIN_GENERIC] = 'Er is een onbekende fout opgetreden ("%1$s") bij het uitvoeren van de uitbreiding "%2$s".';
 $MANTIS_ERROR[ERROR_COLUMNS_DUPLICATE] = 'Het veld "%1$s" bevat een dubbele kolom "%2$s".';
 $MANTIS_ERROR[ERROR_COLUMNS_INVALID] = 'Het veld "%1$s" bevat een ongeldig veld "%2$s".';
@@ -489,13 +491,13 @@ $s_sent_you_this_reminder_about = 'stuurde u deze herinnering over';
 $s_bug_reminder = 'Herinnering verzenden';
 $s_reminder_sent_to = 'Herinnering verstuurd aan';
 $s_reminder_sent_none = 'Herinneringen konden niet verzonden worden';
-$s_reminder_list_truncated = 'de lijst met ontvanger is afgebroken. Bekijk een volledige lijst in de Meldinggeschiedenis';
+$s_reminder_list_truncated = 'de lijst met ontvangers is ingekort';
 $s_bug_send_button = 'Verzenden';
 $s_reminder = 'Herinnering';
 $s_reminder_explain = 'Deze herinnering wordt verzonden naar de ontvangers die terugkoppeling willen over deze melding.';
 $s_reminder_monitor = 'Deze ontvangers volgen deze melding automatisch. Met de knop "Volgen stoppen" wordt dit uitgeschakeld.';
 $s_reminder_store = 'Deze herinnering wordt opgeslagen bij de melding.';
-$s_confirm_sponsorship = 'Bevestig alstublieft dat u melding %1$d wilt sponsoren voor %2$s.';
+$s_confirm_sponsorship = 'Bevestig dat u melding %1$d wilt sponsoren voor %2$s.';
 $s_stick_bug_button = 'Sticky';
 $s_unstick_bug_button = 'Sticky uit';
 $s_bug_updated_msg = 'De melding is aangepast.';
@@ -557,13 +559,13 @@ $s_show_content = 'Inhoud weergeven';
 $s_total_queries_executed = '%1$d zoekopdrachten uitgevoerd (totaal).';
 $s_unique_queries_executed = '%1$d zoekopdrachten uitgevoerd (uniek).';
 $s_memory_usage_in_kb = 'geheugengebruik: %1$s KB';
-$s_please_report = 'Rapporteer dit alstublieft aan de %1$s.';
+$s_please_report = 'Rapporteer dit aan de %1$s.';
 $s_click_to_login = 'Aanmelden';
 $s_warning_plain_password_authentication = '<strong>Waarschuwing:</strong> Wachtwoorden worden als platte tekst opgeslagen. Dit maakt de wachtwoorden zichtbaar voor beheerders.';
 $s_warning_default_administrator_account_present = '<strong>Waarschuwing:</strong> Schakel de standaard gebruiker \'administrator\' uit of wijzig het wachtwoord.';
 $s_warning_admin_directory_present = '<strong>Waarschuwing:</strong> De map admin/ kan het beste verwijderd worden.';
-$s_error_database_version_out_of_date_1 = '<strong>Fout:</strong> De databasestructuur lijkt verouderd te zijn (config(databaseversion) is 0 en er bestaan oude upgradetabellen). In versie 1.x van MantisBT is een nieuwe bijwerkprocedure toegevoegd. het lijkt alsof u bijwerkt van een 0.XX Release. Werk alstublieft bij naar 1.0.8 of 1.1.x, en daarna pas naar 1.2.';
-$s_error_database_no_schema_version = '<strong>Fout:</strong> De databasestructuur lijkt verouderd te zijn (config(databaseversion) is 0 en er bestaan geen oude upgradetabellen). Controleer alstublieft of de databaseserver actief is. De versie van het databaseschema kan niet achterhaald worden. Config Table gaf geen geldige versie van het databaseschema terug. Vraag advies op de mailinglijst mantis-help als dat nodig is.';
+$s_error_database_version_out_of_date_1 = '<strong>Fout:</strong> De databasestructuur lijkt verouderd te zijn (config(databaseversion) is 0 en er bestaan oude upgradetabellen). In versie 1.x van MantisBT is een nieuwe bijwerkprocedure toegevoegd. het lijkt alsof u bijwerkt van een 0.XX Release. Werk bij naar 1.0.8 of 1.1.x, en daarna pas naar 1.2.';
+$s_error_database_no_schema_version = '<strong>Fout:</strong> De databasestructuur lijkt verouderd te zijn (config(databaseversion) is 0 en er bestaan geen oude upgradetabellen). Controleer of de databaseserver actief is. De versie van het databaseschema kan niet achterhaald worden. Config Table gaf geen geldige versie van het databaseschema terug. Vraag advies op de mailinglijst mantis-help als dat nodig is.';
 $s_error_database_version_out_of_date_2 = '<strong>Waarschuwing:</strong> De databasestructuur is mogelijk verouderd. U moet deze <a href="admin/install.php">bijwerken</a> voordat u aanmeldt.';
 $s_error_code_version_out_of_date = '<strong>Waarschuwing:</strong> De databasestructuur is nieuwer dan de geïnstalleerde programmacode. Werk de code bij.';
 $s_login_page_info = 'Welkom bij het meldingvolgsysteem.';
@@ -880,10 +882,10 @@ $s_report_stay = 'Doorgaan met aanmelden';
 $s_selected_project = 'Geselecteerd project';
 $s_valid_project_msg = 'U moet een geldig project kiezen';
 $s_signup_done_title = 'Gebruikersregistratie verwerkt.';
-$s_password_emailed_msg = 'Gefeliciteerd. Uw registratie is succesvol verwerkt. U ontvangt nu een bevestigingse-mail om uw e-mailadres te controleren. In dit bericht vindt u instructies om uw account te activeren.';
+$s_password_emailed_msg = 'Gefeliciteerd. Uw registratie is succesvol verwerkt. U ontvangt nu een e-mail om uw e-mailadres te controleren. In dit bericht vindt u instructies om uw account te activeren.';
 $s_no_reponse_msg = 'U hebt zeven dagen om het registratieproces af te ronden. Wanneer u dit niet doet binnen deze tijd, kan de nieuwe gebruiker verwijderd worden.';
 $s_signup_captcha_request = 'Vul de code in zoals deze rechts in beeld weergegeven wordt.';
-$s_signup_info = 'Wanneer dit formulier is ingevuld en opgestuurd, wordt een bevestigingse-mail naar het door u opgegeven e-mailadres verzonden.<br />Door de instructies in deze e-mail te volgen, kunt u uw gebruiker activeren. U hebt zeven dagen om de registratie af te ronden. Wanneer u dit niet doet binnen deze tijd, kan de nieuwe gebruiker verwijderd worden.<br />U moet een geldig e-mailadres opgeven om de bevestiging te kunnen ontvangen.';
+$s_signup_info = 'Wanneer dit formulier is ingevuld en opgestuurd, wordt een bevestiging naar het door u opgegeven e-mailadres verzonden.<br />Door de instructies in deze e-mail te volgen, kunt u uw gebruiker activeren. U hebt zeven dagen de tijd om de registratie af te ronden. Wanneer u dit niet doet, kan de nieuwe gebruiker verwijderd worden.<br />U moet een geldig e-mailadres opgeven om de bevestiging te kunnen ontvangen.';
 $s_signup_title = 'Registreren';
 $s_signup_button = 'Registreren';
 $s_no_password_request = 'Uw wachtwoord wordt door een ander systeem beheerd. Neem contact op met de systeembeheerder.';
@@ -1040,7 +1042,7 @@ $s_simple_filters = 'Eenvoudige filters';
 $s_monitored_by = 'Gevolgd door';
 $s_attachments = 'bijlage(n)';
 $s_bytes = 'bytes';
-$s_attachment_missing = 'De bijlage mist';
+$s_attachment_missing = 'De bijlage ontbreekt';
 $s_attachment_count = 'Aantal toegevoegde bestanden';
 $s_view_attachments_for_issue = '%1$d bestand(en) bekijken voor melding #%2$d';
 $s_phpmailer_language = 'nl';

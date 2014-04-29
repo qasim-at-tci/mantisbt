@@ -55,6 +55,27 @@ $g_cache_project = array();
 $g_cache_project_missing = array();
 $g_cache_project_all = false;
 
+/**
+ * Checks if there are no projects defined.
+ * @return bool true if there are no projects defined, false otherwise.
+ * @access public
+ */
+function project_table_empty() {
+	global $g_cache_project;
+
+	# If projects already cached, use the cache.
+	if ( isset( $g_cache_project ) && count( $g_cache_project ) > 0 ) {
+		return false;
+	}
+
+	# Otherwise, check if the projects table contains at least one project.
+	$t_project_table = db_get_table( 'mantis_project_table' );
+	$query = "SELECT * FROM $t_project_table";
+	$result = db_query_bound( $query, array(), /* limit */ 1 );
+
+	return db_num_rows( $result ) == 0;
+}
+
 # --------------------
 # Cache a project row if necessary and return the cached copy
 #  If the second parameter is true (default), trigger an error
@@ -650,6 +671,30 @@ function project_get_all_user_rows( $p_project_id = ALL_PROJECTS, $p_access_leve
 	return array_values( $t_users );
 }
 
+/**
+ * Returns the upload path for the specified project, empty string if
+ * file_upload_method is DATABASE
+ * @param int $p_project_id
+ * @return string upload path
+ */
+function project_get_upload_path( $p_project_id ) {
+
+	if( DATABASE == config_get( 'file_upload_method', null, ALL_USERS, $p_project_id ) ) {
+		return '';
+	}
+
+	if( $p_project_id == ALL_PROJECTS ) {
+		$t_path = config_get( 'absolute_path_default_upload_folder', '', ALL_USERS, ALL_PROJECTS );
+	} else {
+		$t_path = project_get_field( $p_project_id, 'file_path' );
+		if( is_blank( $t_path ) ) {
+			$t_path = config_get( 'absolute_path_default_upload_folder', '', ALL_USERS, $p_project_id );
+		}
+	}
+
+	return $t_path;
+}
+
 # ===================================
 # Data Modification
 # ===================================
@@ -805,22 +850,4 @@ function project_delete_all_files( $p_project_id ) {
 function project_format_id( $p_project_id ) {
 	$t_padding = config_get( 'display_project_padding' );
 	return( utf8_str_pad( $p_project_id, $t_padding, '0', STR_PAD_LEFT ) );
-}
-
-
-# Return true if the file name identifier is unique, false otherwise
-function project_file_is_name_unique( $p_name ) {
-	$t_file_table = db_get_table( 'mantis_project_file_table' );
-
-	$query = "SELECT COUNT(*)
-				  FROM $t_file_table
-				  WHERE filename=" . db_param();
-	$result = db_query_bound( $query, Array( $p_name ) );
-	$t_count = db_result( $result );
-
-	if( $t_count > 0 ) {
-		return false;
-	} else {
-		return true;
-	}
 }

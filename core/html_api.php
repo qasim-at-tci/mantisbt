@@ -553,9 +553,12 @@ function html_login_info() {
 				current_user_set_default_project( $t_project_id );
 			}
 
-			# Force reload of current page
+			# Force reload of current page, except if we got here after
+			# creating the first project
 			$t_redirect_url = str_replace( config_get( 'short_path' ), '', $_SERVER['REQUEST_URI'] );
-			html_meta_redirect( $t_redirect_url, 0, false );
+			if( 'manage_proj_create.php' != $t_redirect_url ) {
+				html_meta_redirect( $t_redirect_url, 0, false );
+			}
 		}
 	}
 
@@ -742,7 +745,9 @@ function print_menu() {
 		$t_menu_options = array();
 
 		# Main Page
-		$t_menu_options[] = '<a href="' . helper_mantis_url( 'main_page.php' ) . '">' . lang_get( 'main_link' ) . '</a>';
+		if ( config_get( 'news_enabled' ) == ON ) {
+			$t_menu_options[] = '<a href="' . helper_mantis_url( 'main_page.php' ) . '">' . lang_get( 'main_link' ) . '</a>';
+		}
 
 		# Plugin / Event added options
 		$t_event_menu_options = event_signal( 'EVENT_MENU_MAIN_FRONT' );
@@ -1392,8 +1397,8 @@ function html_button_bug_update( $p_bug_id ) {
 function html_button_bug_change_status( $p_bug ) {
 	$t_current_access = access_get_project_level( $p_bug->project_id );
 
-	# User must have updater access to use the change status button
-	if( !access_has_bug_level( config_get( 'update_bug_threshold' ), $p_bug->id ) ) {
+	# User must have rights to change status to use this button
+	if( !access_has_bug_level( config_get( 'update_bug_status_threshold' ), $p_bug->id ) ) {
 		return;
 	}
 

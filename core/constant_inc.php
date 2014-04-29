@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-define( 'MANTIS_VERSION', '1.2.15' );
+define( 'MANTIS_VERSION', '1.2.16' );
 
 # --- constants -------------------
 # magic numbers
@@ -373,6 +373,7 @@ define( 'ERROR_PLUGIN_ALREADY_INSTALLED', 2501 );
 define( 'ERROR_PLUGIN_PAGE_NOT_FOUND', 2502 );
 define( 'ERROR_PLUGIN_UPGRADE_FAILED', 2503 );
 define( 'ERROR_PLUGIN_INSTALL_FAILED', 2504 );
+define( 'ERROR_PLUGIN_UPGRADE_NEEDED', 2505 );
 define( 'ERROR_PLUGIN_GENERIC', 2599 );
 
 # ERROR_COLUMNS_*

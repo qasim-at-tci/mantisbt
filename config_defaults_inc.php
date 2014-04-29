@@ -69,9 +69,18 @@
 	$g_db_schema			= '';
 
 	/**
-	 * Defines the database type. The supported default is 'mysql'.
-	 * Supported types: 'mysql' or 'mysqli' for MySQL, 'pgsql' for PostgreSQL,
-	 * 'odbc_mssql', 'mssql' for MS SQL Server, 'oci8' for Oracle, and 'db2' for DB2.
+	 * Defines the database type. Supported types are listed below;
+	 * the corresponding PHP extension must be enabled.
+	 *
+	 * RDBMS           db_type       PHP ext   Comments
+	 * -----           -------       -------   --------
+	 * MySQL           mysql         mysql     default
+	 *                 mysqli        mysqli
+	 * PostgreSQL      pgsql         pgsql
+	 * MS SQL Server   mssqlnative   sqlsrv    experimental
+	 * Oracle          oci8          oci8      experimental
+	 * DB2             db2           ibm-db2   experimental
+	 *
 	 * @global string $g_db_type
 	 */
 	$g_db_type				= 'mysql';
@@ -3971,4 +3980,7 @@
 	 * - 'http://MyOwnMantisTouch.com/'
 	 * - ''
 	 */
-	$g_mantistouch_url = '';
+	$g_mantistouch_url = file_exists( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . "m" ) ? $g_path . 'm/' : '';
+
+	# Temporary variables should not remain defined in global scope
+	unset( $t_protocol, $t_host, $t_hosts, $t_port, $t_self, $t_path, $t_use_iis );

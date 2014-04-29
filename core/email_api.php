@@ -76,7 +76,7 @@ function email_regex_simple() {
 		$t_subdomain = "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)";
 		$t_domain    = "(${t_subdomain}(?:\.${t_subdomain})*)";
 
-		$s_email_regex = "/${t_recipient}\@${t_domain}/";
+		$s_email_regex = "/${t_recipient}\@${t_domain}/i";
 	}
 	return $s_email_regex;
 }
@@ -496,7 +496,7 @@ function email_send_confirm_hash_url( $p_user_id, $p_confirm_hash ) {
 	# or else users won't be able to receive their reset pws
 	if( !is_blank( $t_email ) ) {
 		email_store( $t_email, $t_subject, $t_message );
-		log_event( LOG_EMAIL, sprintf( 'Password reset for email = %s', $t_email ) );
+		log_event( LOG_EMAIL, sprintf( 'Password reset for user @U%d sent to %s', $p_user_id, $t_email ) );
 
 		if( OFF == config_get( 'email_send_using_cronjob' ) ) {
 			email_send_all();
@@ -1070,10 +1070,16 @@ function email_build_subject( $p_bug_id ) {
 	# grab the subject (summary)
 	$p_subject = bug_get_field( $p_bug_id, 'summary' );
 
-	# padd the bug id with zeros
-	$p_bug_id = bug_format_id( $p_bug_id );
+	# pad the bug id with zeros
+	$t_bug_id = bug_format_id( $p_bug_id );
 
-	return '[' . $p_project_name . ' ' . $p_bug_id . ']: ' . $p_subject;
+	# build standard subject string
+	$t_email_subject = "[$p_project_name $t_bug_id]: $p_subject";
+
+	# update subject as defined by plugins
+	$t_email_subject = event_signal( 'EVENT_DISPLAY_EMAIL_BUILD_SUBJECT', $t_email_subject, array( 'bug_id' => $p_bug_id ) );
+
+	return $t_email_subject;
 }
 
 /**
@@ -1186,7 +1192,7 @@ function email_bug_info_to_one_user( $p_visible_bug_data, $p_message_id, $p_proj
 	}
 
 	# build subject
-	$t_subject = '[' . $p_visible_bug_data['email_project'] . ' ' . bug_format_id( $p_visible_bug_data['email_bug'] ) . ']: ' . $p_visible_bug_data['email_summary'];
+	$t_subject = email_build_subject($p_visible_bug_data['email_bug']);
 
 	# build message
 

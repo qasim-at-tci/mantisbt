@@ -32,6 +32,8 @@ $t_class_path = config_get_global( 'class_path' );
  */
 require_once( $t_class_path . 'MantisPlugin.class.php' );
 
+unset( $t_class_path );
+
 # Cache variables #####
 
 $g_plugin_cache = array();
@@ -157,7 +159,7 @@ function plugin_file_include( $p_filename, $p_basename = null ) {
 	}
 
 	if ( $t_content_type )
-		header('Content-Type: ' . $t_content_type );
+    	header('Content-Type: ' . $t_content_type );
 
 	readfile( $t_file_path );
 }

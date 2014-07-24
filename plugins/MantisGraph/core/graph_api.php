@@ -569,7 +569,7 @@ function graph_bydate( array $p_metrics, array $p_labels, $p_title, $p_graph_wid
 		$t_graph->renderToOutput( $p_graph_width, $p_graph_height );
 	} else {
 		$t_graph = new Graph( $p_graph_width, $p_graph_height );
-		$t_graph->img->SetMargin( 40, 140, 40, 100 );
+		$t_graph->img->SetMargin( 60, 140, 40, 100 );
 		if( ON == plugin_config_get( 'jpgraph_antialias' ) ) {
 			$t_graph->img->SetAntiAliasing();
 		}

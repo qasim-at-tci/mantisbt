@@ -25,8 +25,8 @@
 
 require_once( 'core.php' );
 
-plugin_require_api( 'core/Period.php' );
 plugin_require_api( 'core/graph_api.php' );
+plugin_require_api( 'core/Period.php' );
 
 access_ensure_project_level( config_get( 'view_summary_threshold' ) );
 

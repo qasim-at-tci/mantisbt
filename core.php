@@ -109,13 +109,21 @@ function require_api( $p_api_name ) {
  * Define an API inclusion function to replace require_once
  *
  * @param string $p_library_name A library file name.
+ * @param string $p_library_path Optional path to the library, defaults to $g_library_path
+ * @global $g_library_path
  * @return void
  */
-function require_lib( $p_library_name ) {
+function require_lib( $p_library_name, $p_library_path = null ) {
 	static $s_libraries_included;
 	global $g_library_path;
 	if( !isset( $s_libraries_included[$p_library_name] ) ) {
-		$t_library_file_path = $g_library_path . $p_library_name;
+		if( is_null( $p_library_path ) ) {
+			$t_library_file_path = $g_library_path;
+		} else {
+			$t_library_file_path = $p_library_path;
+		}
+		$t_library_file_path .= $p_library_name;
+
 		if( !file_exists( $t_library_file_path ) ) {
 			echo 'External library \'' . $t_library_file_path . '\' not found.';
 			exit;

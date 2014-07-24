@@ -31,12 +31,14 @@ if( OFF == plugin_config_get( 'eczlibrary' ) ) {
 	}
 	$t_jpgraph_path = plugin_config_get( 'jpgraph_path', '' );
 	if( $t_jpgraph_path !== '' ) {
-		require_once( $t_jpgraph_path . 'jpgraph.php' );
-		require_once( $t_jpgraph_path . 'jpgraph_line.php' );
-		require_once( $t_jpgraph_path . 'jpgraph_bar.php' );
-		require_once( $t_jpgraph_path . 'jpgraph_pie.php' );
-		require_once( $t_jpgraph_path . 'jpgraph_pie3d.php' );
-		require_once( $t_jpgraph_path . 'jpgraph_canvas.php' );
+		# Make sure the jpgraph path has a trailing '/'
+		$t_jpgraph_path = rtrim( $t_jpgraph_path, DIRECTORY_SEPARATOR) . '/';
+		require_lib( 'jpgraph.php', $t_jpgraph_path );
+		require_lib( 'jpgraph_line.php', $t_jpgraph_path );
+		require_lib( 'jpgraph_bar.php', $t_jpgraph_path );
+		require_lib( 'jpgraph_pie.php', $t_jpgraph_path );
+		require_lib( 'jpgraph_pie3d.php', $t_jpgraph_path );
+		require_lib( 'jpgraph_canvas.php', $t_jpgraph_path );
 	} else {
 		require_lib( 'jpgraph/jpgraph.php' );
 		require_lib( 'jpgraph/jpgraph_line.php' );

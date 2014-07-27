@@ -115,19 +115,23 @@ function xmlhttprequest_os_build_get_with_prefix() {
 }
 
 /**
- * Echos a serialized list of Users starting with the prefix specified in the $_POST
- * @return null
+ * Outputs a serialized list of Usernames matching the string specified in the $_POST
+ * @return void
  * @access public
  */
 function xmlhttprequest_username_get_with_prefix() {
 	$f_username = gpc_get_string( 'username' );
 
-	$t_users = user_cache_all();
-	foreach( $t_users AS $t_user ) {
-		$t_unique_entries[] = $t_user['username'];
+	$t_usernames = session_get( 'usernames_list', null );
+	if( is_null( $t_usernames ) ) {
+		$t_users = user_get_all();
+		foreach( user_get_all() as $t_user ) {
+			$t_usernames[] = $t_user['username'];
+		}
+		session_set( 'usernames_list', $t_usernames );
 	}
 
-	$t_matching_entries = xmlhttprequest_filter_match( $t_unique_entries, $f_username );
+	$t_matching_entries = xmlhttprequest_filter_match( $t_usernames, $f_username );
 
 	echo json_encode( $t_matching_entries );
 }

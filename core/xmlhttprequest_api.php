@@ -115,19 +115,24 @@ function xmlhttprequest_os_build_get_with_prefix() {
 }
 
 /**
- * Echos a serialized list of Users starting with the prefix specified in the $_POST
- * @return null
+ * Outputs a serialized list of Usernames matching the string specified in the $_POST
+ * @return void
  * @access public
  */
 function xmlhttprequest_username_get_with_prefix() {
 	$f_username = gpc_get_string( 'username' );
+	$t_search_pattern = '%' . utf8_strtolower( $f_username ) . '%';
 
-	$t_users = user_cache_all();
-	foreach( $t_users AS $t_user ) {
-		$t_unique_entries[] = $t_user['username'];
+	$t_user_table = db_get_table( 'user' );
+	$t_query = "SELECT username
+		FROM $t_user_table
+		WHERE lower(username) LIKE " . db_param() . "
+		ORDER BY username";
+	$t_result = db_query_bound( $t_query, array( $t_search_pattern ) );
+
+	while( $t_row = db_fetch_array( $t_result ) ) {
+		$t_usernames[] = $t_row['username'];
 	}
 
-	$t_matching_entries = xmlhttprequest_filter_match( $t_unique_entries, $f_username );
-
-	echo json_encode( $t_matching_entries );
+	echo json_encode( $t_usernames );
 }

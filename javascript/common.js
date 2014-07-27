@@ -48,6 +48,7 @@ $(document).ready( function() {
 		ToggleDiv( t_div );
 	});
 
+	// Autocomplete behavior for input text fields
 	$('input[type=text].autocomplete').autocomplete({
 		source: function(request, callback) {
 			var fieldName = $(this).attr('element').attr('id');
@@ -66,6 +67,8 @@ $(document).ready( function() {
 			});
 		}
 	});
+	// For performance reasons, don't autocomplete Username with less than 2 chars
+	$('#username.autocomplete').autocomplete('option', { minLength: 2 });
 
 	$('a.dynamic-filter-expander').click(function(event) {
 		event.preventDefault();

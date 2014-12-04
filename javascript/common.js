@@ -48,6 +48,21 @@ $(document).ready( function() {
 		ToggleDiv( t_div );
 	});
 
+	$('#edit-reporter-btn').click( function(event) {
+		event.preventDefault();
+		$('#view-reporter').hide();
+		$('#edit-reporter').show();
+		
+/*		$.ajax({
+			url: 'xxx',
+			type: 'post',
+			data: '',
+			success: function(html) {
+				$(this).html(html);
+			}
+		});
+*/	});
+
 	$('input[type=text].autocomplete').autocomplete({
 		source: function(request, callback) {
 			var fieldName = $(this).attr('element').attr('id');

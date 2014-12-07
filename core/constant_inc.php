@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
-define( 'MANTIS_VERSION', '1.2.17' );
+define( 'MANTIS_VERSION', '1.2.18' );
 
 # --- constants -------------------
 # magic numbers
@@ -541,3 +541,5 @@ define( 'DB_FIELD_SIZE_PASSWORD', 32);
 define( 'PASSWORD_MAX_SIZE_BEFORE_HASH', 1024 );
 
 define( 'SECONDS_PER_DAY', 86400 );
+
+define( 'CAPTCHA_KEY', 'captcha_key' );

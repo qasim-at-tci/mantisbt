@@ -94,6 +94,11 @@
 		$t_bug_data->target_version = gpc_get_string( 'target_version', '' );
 	}
 
+	# Prevent unauthorized users setting handler when reporting issue
+	if( $t_bug_data->handler_id > 0 ) {
+		access_ensure_project_level( config_get( 'update_bug_assign_threshold' ) );
+	}
+
 	# if a profile was selected then let's use that information
 	if ( 0 != $t_bug_data->profile_id ) {
 		if ( profile_is_global( $t_bug_data->profile_id ) ) {
@@ -147,10 +152,12 @@
 	last_visited_issue( $t_bug_id );
 
 	# Handle the file upload
-	$t_files = helper_array_transpose( $f_files );
-	foreach( $t_files as $t_file ) {
-		if( !empty( $t_file['name'] ) ) {
-			file_add( $t_bug_id, $t_file, 'bug' );
+	if( !is_null( $f_files ) ) {
+		$t_files = helper_array_transpose( $f_files );
+		foreach( $t_files as $t_file ) {
+			if( !empty( $t_file['name'] ) ) {
+				file_add( $t_bug_id, $t_file, 'bug' );
+			}
 		}
 	}
 
@@ -199,16 +206,16 @@
 		# copy notes from parent
 		if ( $f_copy_notes_from_parent ) {
 
-		    $t_parent_bugnotes = bugnote_get_all_bugnotes( $f_master_bug_id );
+			$t_parent_bugnotes = bugnote_get_all_bugnotes( $f_master_bug_id );
 
-		    foreach ( $t_parent_bugnotes as $t_parent_bugnote ) {
+			foreach ( $t_parent_bugnotes as $t_parent_bugnote ) {
 
-		        $t_private = $t_parent_bugnote->view_state == VS_PRIVATE;
+				$t_private = $t_parent_bugnote->view_state == VS_PRIVATE;
 
-		        bugnote_add( $t_bug_id, $t_parent_bugnote->note, $t_parent_bugnote->time_tracking,
-		            $t_private, $t_parent_bugnote->note_type, $t_parent_bugnote->note_attr,
-		            $t_parent_bugnote->reporter_id, /* send_email */ FALSE , /* log history */ FALSE);
-		    }
+				bugnote_add( $t_bug_id, $t_parent_bugnote->note, $t_parent_bugnote->time_tracking,
+					$t_private, $t_parent_bugnote->note_type, $t_parent_bugnote->note_attr,
+					$t_parent_bugnote->reporter_id, /* send_email */ FALSE , /* log history */ FALSE);
+			}
 		}
 
 		# copy attachments from parent

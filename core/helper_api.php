@@ -232,13 +232,13 @@ function helper_get_current_project() {
 			$t_project_id = $t_pref->default_project;
 		} else {
 			$t_project_id = explode( ';', $t_project_id );
-			$t_project_id = $t_project_id[count( $t_project_id ) - 1];
+			$t_project_id = (int)$t_project_id[count( $t_project_id ) - 1];
 		}
 
 		if( !project_exists( $t_project_id ) || ( 0 == project_get_field( $t_project_id, 'enabled' ) ) || !access_has_project_level( VIEWER, $t_project_id ) ) {
 			$t_project_id = ALL_PROJECTS;
 		}
-		$g_cache_current_project = (int) $t_project_id;
+		$g_cache_current_project = $t_project_id;
 	}
 	return $g_cache_current_project;
 }
@@ -272,6 +272,9 @@ function helper_get_current_project_trace() {
 
 	} else {
 		$t_project_id = explode( ';', $t_project_id );
+		foreach( $t_project_id as $t_key => $t_id ) {
+			$t_project_id[$t_key] = (int)$t_id;
+		}
 		$t_bottom = $t_project_id[count( $t_project_id ) - 1];
 	}
 
@@ -385,7 +388,7 @@ function helper_project_specific_where( $p_project_id, $p_user_id = null ) {
 	if( 0 == count( $t_project_ids ) ) {
 		$t_project_filter = ' 1<>1';
 	} else if( 1 == count( $t_project_ids ) ) {
-		$t_project_filter = ' project_id=' . $t_project_ids[0];
+		$t_project_filter = ' project_id=' . reset( $t_project_ids );
 	} else {
 		$t_project_filter = ' project_id IN (' . join( ',', $t_project_ids ) . ')';
 	}

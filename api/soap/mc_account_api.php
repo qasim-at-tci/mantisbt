@@ -42,7 +42,8 @@ function mci_account_get_array_by_id( $p_user_id ) {
 		# this deviates from the behaviour of view_user_page.php, but it is more intuitive
 		$t_is_same_user = $t_current_user_id === $p_user_id;
 
-		$t_can_see_realname = access_has_project_level( config_get( 'show_user_realname_threshold' ) );
+		$t_can_see_realname = access_has_project_level( config_get( 'show_realname' ) ) ||
+			access_has_project_level( config_get( 'show_user_realname_threshold' ) );
 		$t_can_see_email = access_has_project_level( config_get( 'show_user_email_threshold' ) );
 
 		$t_result['name'] = user_get_field( $p_user_id, 'username' );

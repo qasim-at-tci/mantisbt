@@ -547,8 +547,9 @@ $g_limit_email_domains = array();
 $g_show_user_email_threshold = NOBODY;
 
 /**
- * This specifies the access level that is needed to see realnames on user view
- * page
+ * Access required to see realnames on User Information page
+ * This setting is only useful when $g_show_realname = OFF.
+ * @see $g_show_realname
  * @global integer $g_show_user_realname_threshold
  */
 $g_show_user_realname_threshold = NOBODY;
@@ -1001,7 +1002,12 @@ $g_show_product_version = AUTO;
 $g_show_version_dates_threshold = NOBODY;
 
 /**
- * show users with their real name or not
+ * Show users' real names
+ * When ON, users' real names will be displayed throughout the application.
+ * When OFF, usernames will be used instead, in which case
+ * $g_show_user_realname_threshold can be used to grant visibility to the
+ * real names (in the User Information page) to a specific access level.
+ * @see $g_show_user_realname_threshold
  * @global integer $g_show_realname
  */
 $g_show_realname = OFF;

@@ -63,7 +63,8 @@ extract( $t_row, EXTR_PREFIX_ALL, 'u' );
 
 $t_can_manage = access_has_global_level( config_get( 'manage_user_threshold' ) ) &&
 	access_has_global_level( $u_access_level );
-$t_can_see_realname = access_has_project_level( config_get( 'show_user_realname_threshold' ) );
+$t_can_see_realname = access_has_project_level( config_get( 'show_realname' ) ) ||
+	access_has_project_level( config_get( 'show_user_realname_threshold' ) );
 $t_can_see_email = access_has_project_level( config_get( 'show_user_email_threshold' ) );
 
 # In case we're using LDAP to get the email address... this will pull out

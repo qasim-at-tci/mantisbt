@@ -55,21 +55,21 @@ $t_extensions_required = array(
 
 foreach( $t_extensions_required as $t_extension ) {
 	check_print_test_row(
-		$t_extension . ' PHP extension is available',
+		'<em>' . $t_extension . '</em> PHP extension is available',
 		extension_loaded( $t_extension ),
 		array( false => 'MantisBT requires the ' . $t_extension . ' extension to either be compiled into PHP or loaded as an extension.' )
 	);
 }
 
 check_print_test_warn_row(
-	'<a href="http://en.wikipedia.org/wiki/Xdebug">Xdebug</a> extension is not loaded',
+	'<em><a href="http://en.wikipedia.org/wiki/Xdebug">Xdebug</a></em> extension is not loaded',
 	!extension_loaded( 'xdebug' ),
 	array( false => 'For security reasons this extension should not be loaded on production and Internet facing servers.' )
 );
 
 $t_variables_order = ini_get( 'variables_order' );
 check_print_test_row(
-	'variables_order php.ini directive contains GPCS',
+	'<em>variables_order</em> php.ini directive contains GPCS',
 	stripos( $t_variables_order, 'G' ) !== false &&
 		stripos( $t_variables_order, 'P' ) !== false &&
 		stripos( $t_variables_order, 'C' ) !== false &&
@@ -78,49 +78,49 @@ check_print_test_row(
 );
 
 check_print_test_row(
-	'magic_quotes_gpc php.ini directive is disabled',
+	'<em>magic_quotes_gpc</em> php.ini directive is disabled',
 	!( function_exists( 'get_magic_quotes_gpc' ) && @get_magic_quotes_gpc() ),
 	array( false => 'PHP\'s magic quotes feature is <a href="http://www.php.net/manual/en/security.magicquotes.whynot.php">deprecated in PHP 5.3.0</a> and should not be used.' )
 );
 
 check_print_test_row(
-	'magic_quotes_runtime php.ini directive is disabled',
+	'<em>magic_quotes_runtime</em> php.ini directive is disabled',
 	!( function_exists( 'get_magic_quotes_runtime' ) && @get_magic_quotes_runtime() ),
 	array( false => 'PHP\'s magic quotes feature is <a href="http://www.php.net/manual/en/security.magicquotes.whynot.php">deprecated in PHP 5.3.0</a> and should not be used.' )
 );
 
 check_print_test_row(
-	'register_globals php.ini directive is disabled',
+	'<em>register_globals</em> php.ini directive is disabled',
 	!ini_get_bool( 'register_globals' ),
 	array( false => 'PHP\'s register globals feature is <a href="http://php.net/manual/en/security.globals.php">deprecated in PHP 5.3.0</a> and should not be used.' )
 );
 
 check_print_test_warn_row(
-	'register_argc_argv php.ini directive is disabled',
+	'<em>register_argc_argv</em> php.ini directive is disabled',
 	!ini_get_bool( 'register_argc_argv' ),
 	array( false => 'This directive should be disabled to increase performance (it only affects PHP in CLI mode).' )
 );
 
 check_print_test_warn_row(
-	'register_long_arrays php.ini directive is disabled',
+	'<em>register_long_arrays</em> php.ini directive is disabled',
 	!ini_get_bool( 'register_long_arrays' ),
 	array( false => 'This directive is deprecated in PHP 5.3.0 and should be disabled for performance reasons.' )
 );
 
 check_print_test_warn_row(
-	'auto_globals_jit php.ini directive is enabled',
+	'<em>auto_globals_jit</em> php.ini directive is enabled',
 	ini_get_bool( 'auto_globals_jit' ),
 	array( false => 'This directive is currently disabled: enable it for a performance gain.' )
 );
 
 check_print_test_warn_row(
-	'display_errors php.ini directive is disabled',
+	'<em>display_errors</em> php.ini directive is disabled',
 	!ini_get_bool( 'display_errors' ),
 	array( false => 'For security reasons this directive should be disabled on all production and Internet facing servers.' )
 );
 
 check_print_test_warn_row(
-	'display_startup_errors php.ini directive is disabled',
+	'<em>display_startup_errors</em> php.ini directive is disabled',
 	!ini_get_bool( 'display_startup_errors' ),
 	array( false => 'For security reasons this directive should be disabled on all production and Internet facing servers.' )
 );
@@ -132,17 +132,17 @@ check_print_test_warn_row(
 );
 
 check_print_info_row(
-	'php.ini directive: memory_limit',
+	'php.ini directive: <em>memory_limit</em>',
 	htmlentities( ini_get_number( 'memory_limit' ) ) . ' bytes'
 );
 
 check_print_info_row(
-	'php.ini directive: post_max_size',
+	'php.ini directive: <em>post_max_size</em>',
 	htmlentities( ini_get_number( 'post_max_size' ) ) . ' bytes'
 );
 
 check_print_test_row(
-	'memory_limit php.ini directive is at least equal to the post_max_size directive',
+	'<em>memory_limit</em> php.ini directive is at least equal to the post_max_size directive',
 	ini_get_number( 'memory_limit' ) >= ini_get_number( 'post_max_size' ),
 	array( false => 'The current value of the memory_limit directive is ' . htmlentities( ini_get_number( 'memory_limit' ) ) . ' bytes. This value needs to be at least equal to the post_max_size directive value of ' . htmlentities( ini_get_number( 'post_max_size' ) ) . ' bytes.' )
 );

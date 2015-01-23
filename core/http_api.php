@@ -164,7 +164,7 @@ function http_security_headers() {
 
 		# Relaxing policy for roadmap page to allow inline styles
 		# This is a workaround to fix the broken progress bars (see #19501)
-		if( 'roadmap_page.php' == basename( $_SERVER['SCRIPT_NAME'] ) ) {
+		if( strstr( basename( $_SERVER['SCRIPT_NAME'] ), 'roadmap_page' ) ) {
 			$t_csp[] = "style-src 'self' 'unsafe-inline'";
 		}
 

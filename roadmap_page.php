@@ -66,109 +66,20 @@ require_api( 'string_api.php' );
 require_api( 'user_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
+require_api( 'roadmap_changelog_api.php' );
 
-/**
- * Print header for the specified project version.
- * @param array $p_version_row Array containing project version data.
- * @return void
- */
-function print_version_header( array $p_version_row ) {
-	$t_project_id   = $p_version_row['project_id'];
-	$t_version_id   = $p_version_row['id'];
-	$t_version_name = $p_version_row['version'];
-	$t_project_name = project_get_field( $t_project_id, 'name' );
-
-	$t_release_title = '<a href="roadmap_page.php?project_id=' . $t_project_id . '">' . string_display_line( $t_project_name ) . '</a> - <a href="roadmap_page.php?version_id=' . $t_version_id . '">' . string_display_line( $t_version_name ) . '</a>';
-
-	if( config_get( 'show_roadmap_dates' ) ) {
-		$t_version_timestamp = $p_version_row['date_order'];
-
-		$t_scheduled_release_date = ' (' . lang_get( 'scheduled_release' ) . ' ' . string_display_line( date( config_get( 'short_date_format' ), $t_version_timestamp ) ) . ')';
-	} else {
-		$t_scheduled_release_date = '';
-	}
-
-	echo '<tt>';
-	echo '<br />', $t_release_title, $t_scheduled_release_date, lang_get( 'word_separator' );
-	print_bracket_link( 'view_all_set.php?type=1&amp;temporary=y&amp;' . FILTER_PROPERTY_PROJECT_ID . '=' . $t_project_id . '&amp;' . filter_encode_field_and_value( FILTER_PROPERTY_TARGET_VERSION, $t_version_name ), lang_get( 'view_bugs_link' ) );
-	echo '<br />';
-
-	$t_release_title_without_hyperlinks = $t_project_name . ' - ' . $t_version_name . $t_scheduled_release_date;
-	echo utf8_str_pad( '', utf8_strlen( $t_release_title_without_hyperlinks ), '=' ), '<br />';
-}
-
-/**
- * print project header
- * @param string $p_project_name Project name.
- * @return void
- */
-function print_project_header_roadmap( $p_project_name ) {
-	echo '<br /><span class="pagetitle">', string_display( $p_project_name ), ' - ', lang_get( 'roadmap' ), '</span><br />';
-}
 
 $t_issues_found = false;
-
 $t_user_id = auth_get_current_user_id();
 
-$f_project = gpc_get_string( 'project', '' );
-if( is_blank( $f_project ) ) {
-	$f_project_id = gpc_get_int( 'project_id', -1 );
-} else {
-	$f_project_id = project_get_id_by_name( $f_project );
+# -------------------------------------------------------
 
-	if( $f_project_id === 0 ) {
-		error_parameters( $f_project );
-		trigger_error( ERROR_PROJECT_NOT_FOUND, ERROR );
-	}
-}
+# Initialize the roadmap
+$t_roadmap = new RoadmapClass();
+$t_project_ids = $t_roadmap->projects_list;
 
-$f_version = gpc_get_string( 'version', '' );
-
-if( is_blank( $f_version ) ) {
-	$f_version_id = gpc_get_int( 'version_id', -1 );
-
-	# If both version_id and project_id parameters are supplied, then version_id take precedence.
-	if( $f_version_id == -1 ) {
-		if( $f_project_id == -1 ) {
-			$t_project_id = helper_get_current_project();
-		} else {
-			$t_project_id = $f_project_id;
-		}
-	} else {
-		$t_project_id = version_get_field( $f_version_id, 'project_id' );
-	}
-} else {
-	if( $f_project_id == -1 ) {
-		$t_project_id = helper_get_current_project();
-	} else {
-		$t_project_id = $f_project_id;
-	}
-
-	$f_version_id = version_get_id( $f_version, $t_project_id );
-
-	if( $f_version_id === false ) {
-		error_parameters( $f_version );
-		trigger_error( ERROR_VERSION_NOT_FOUND, ERROR );
-	}
-}
-
-if( ALL_PROJECTS == $t_project_id ) {
-	$t_project_ids_to_check = user_get_all_accessible_projects( $t_user_id, ALL_PROJECTS );
-	$t_project_ids = array();
-
-	foreach ( $t_project_ids_to_check as $t_project_id ) {
-		$t_roadmap_view_access_level = config_get( 'roadmap_view_threshold', null, null, $t_project_id );
-		if( access_has_project_level( $t_roadmap_view_access_level, $t_project_id ) ) {
-			$t_project_ids[] = $t_project_id;
-		}
-	}
-} else {
-	access_ensure_project_level( config_get( 'roadmap_view_threshold' ), $t_project_id );
-	$t_project_ids = user_get_all_accessible_subprojects( $t_user_id, $t_project_id );
-	array_unshift( $t_project_ids, $t_project_id );
-}
-
-$t_project_id_for_access_check = $t_project_id;
+# @TODO for refactoring only
+$t_version_id = $t_roadmap->version_id;
 
 html_page_top( lang_get( 'roadmap' ) );
 
@@ -197,7 +108,7 @@ foreach( $t_project_ids as $t_project_id ) {
 		}
 
 		# Skip all versions except the specified one (if any).
-		if( $f_version_id != -1 && $f_version_id != $t_version_row['id'] ) {
+		if( $t_version_id != -1 && $t_version_id != $t_version_row['id'] ) {
 			continue;
 		}
 
@@ -276,12 +187,12 @@ foreach( $t_project_ids as $t_project_id ) {
 			$t_progress = (integer)( $t_issues_resolved * 100 / $t_issues_planned );
 
 			if( !$t_project_header_printed ) {
-				print_project_header_roadmap( $t_project_name );
+				$t_roadmap->print_project_header( $t_project_name );
 				$t_project_header_printed = true;
 			}
 
 			if( !$t_version_header_printed ) {
-				print_version_header( $t_version_row );
+				$t_roadmap->print_version_header( $t_version_row );
 				$t_version_header_printed = true;
 			}
 
@@ -359,14 +270,9 @@ foreach( $t_project_ids as $t_project_id ) {
 	}
 }
 
-if( !$t_issues_found ) {
-	if( access_has_project_level( config_get( 'manage_project_threshold' ), $t_project_id_for_access_check ) ) {
-		$t_string = 'roadmap_empty_manager';
-	} else {
-		$t_string = 'roadmap_empty';
-	}
 
-	echo '<p>' . lang_get( $t_string ) . '</p>';
+if( !$t_issues_found ) {
+	$t_roadmap->print_empty();
 }
 
 html_page_bottom();

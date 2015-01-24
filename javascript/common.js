@@ -290,6 +290,15 @@ $(document).ready( function() {
 	$('a.click-url').bind("click", function() {
 		$(this).attr("href", $(this).attr("url"));
 	});
+
+	/* Roadmap progress bar */
+	$('.roadmap-progress').each( function() {
+		var progress = $(this).data('progress');
+		$(this)
+			.progressbar({ value: progress })
+			.children('div')
+			.html(progress + '%');
+	});
 });
 
 function setBugLabel() {

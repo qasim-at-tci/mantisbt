@@ -244,6 +244,15 @@ class RoadmapClass extends RoadmapChangelogClass {
 	 */
 	const SHOW_DATES = 'show_roadmap_dates';
 
+	/**
+	 * Print the progress bar
+	 * @param int $p_progress Percent complete
+	 * @return void
+	 */
+	public function print_progress_bar( $p_progress ) {
+		# Progress bar handled with jQueryUI widget
+		echo '<div class="roadmap-progress" data-progress="' . $p_progress . '"></div>';
+	}
 
 	protected function threshold() {
 		return 'roadmap_view_threshold';

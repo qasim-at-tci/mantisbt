@@ -179,8 +179,6 @@ foreach( $t_project_ids as $t_project_id ) {
 
 		user_cache_array_rows( array_unique( $t_issue_handlers ) );
 
-		$t_progress = $t_issues_planned > 0 ? ( (integer)( $t_issues_resolved * 100 / $t_issues_planned ) ) : 0;
-
 		if( $t_issues_planned > 0 ) {
 			$t_progress = (integer)( $t_issues_resolved * 100 / $t_issues_planned );
 
@@ -194,10 +192,9 @@ foreach( $t_project_ids as $t_project_id ) {
 				$t_version_header_printed = true;
 			}
 
-			# show progress bar
-			echo '<div class="progress400">';
-			echo '  <span class="bar" style="width: ' . $t_progress . '%;">' . $t_progress . '%</span>';
-			echo '</div>';
+			$t_roadmap->print_progress_bar( $t_progress );
+		} else {
+			$t_progress = 0;
 		}
 
 		$t_issue_set_ids = array();

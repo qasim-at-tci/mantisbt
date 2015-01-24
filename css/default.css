@@ -334,6 +334,7 @@ div.quick-summary-right	{ width: 49%; padding: 2px; text-align: right; float: ri
 	border-radius: 5px;
 }
 
+/* @TODO these 2 can be deleted, now using jQuery widget  */
 .progress400				{ position: relative; width: 400px; border: 1px solid #d7d7d7; margin-top: 1em; margin-bottom: 1em; padding: 1px; }
 .progress400 .bar			{ display: block; position: relative; background: #6bba70; text-align: center; font-weight: normal; color: #333; height: 2em; line-height: 2em; }
 
@@ -795,3 +796,20 @@ div.timeline * div.action { padding-top: 3px; }
 /* bug_view_inc bug action buttons */
 .details-footer      { padding: 3px 10px 2px 0; }
 .details-buttons     { float: left;  width: auto; }
+
+/* Roadmap progress bar */
+.roadmap-progress { width: 500px; max-width: 100%; margin-bottom: 1em; }
+.ui-progressbar {
+	position: relative;
+	padding: 2px;
+	height: inherit !important; /* clearing jQueryUI's default of 2em */
+}
+.ui-progressbar div.ui-progressbar-value {
+	border: none;
+	background-color: #6bba70;
+	text-align: center;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 10pt;
+	font-weight: inherit;
+	color: #333;
+}

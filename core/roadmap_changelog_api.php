@@ -158,7 +158,7 @@ class RoadmapChangelogClass {
 		$t_project_id   = $p_version_row['project_id'];
 		$t_version_id   = $p_version_row['id'];
 		$t_version_name = $p_version_row['version'];
-		$t_project_name = project_get_field( $t_project_id, 'name' );
+		$t_description  = $p_version_row['description'];
 
 		$t_release_title = '<a href="roadmap_page.php?project_id=' . $t_project_id . '">'
 			. string_display_line( $this->project_name )
@@ -189,6 +189,11 @@ class RoadmapChangelogClass {
 		echo '<h2>' . $t_release_title . $t_scheduled_release_date . lang_get( 'word_separator' );
 		print_bracket_link( $t_link, lang_get( 'view_bugs_link' ) );
 		echo '</h2>';
+
+		# Print version description
+		if( !is_blank( $t_description ) ) {
+			echo '<p>' . string_display( $t_description ) . '</p>';
+		}
 
 # @TODO this tag should be removed eventually
 		echo '<tt>';

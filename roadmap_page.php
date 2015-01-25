@@ -125,8 +125,6 @@ foreach( $t_project_ids as $t_project_id ) {
 					LEFT JOIN {bug} dbt ON dbt.id={bug_relationship}.source_bug_id
 					WHERE sbt.project_id=' . db_param() . ' AND sbt.target_version=' . db_param() . ' ORDER BY sbt.status ASC, sbt.last_updated DESC';
 
-		$t_description = $t_version_row['description'];
-
 		$t_first_entry = true;
 
 		$t_result = db_query( $t_query, array( $t_project_id, $t_version ) );
@@ -194,10 +192,6 @@ foreach( $t_project_ids as $t_project_id ) {
 			if( !$t_version_header_printed ) {
 				$t_roadmap->print_version_header( $t_version_row );
 				$t_version_header_printed = true;
-			}
-
-			if( !is_blank( $t_description ) ) {
-				echo string_display( '<br />' .$t_description . '<br />' );
 			}
 
 			# show progress bar

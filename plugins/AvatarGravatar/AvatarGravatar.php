@@ -132,7 +132,7 @@ class AvatarGravatarPlugin extends AvatarPlugin {
 			if( !empty( $t_avatar ) ) {
 				printf(
 					'<a rel="nofollow" href="%s"><img class="avatar" src="%s" alt="User avatar" width="%s" height="%s" /></a>',
-					$this->gravatar_url(),
+					$this->gravatar_url() . $this->gravatar_hash( $p_user_id ),
 					htmlspecialchars( $t_avatar[0] ), # Avatar URL
 					$t_avatar[1], # width
 					$t_avatar[2]  # height

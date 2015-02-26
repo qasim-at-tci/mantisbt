@@ -47,6 +47,11 @@ class AvatarGravatarPlugin extends AvatarPlugin {
 		$this->description = plugin_lang_get( 'description' );
 //		$this->page = 'config';
 
+/* config, TODO
+- link to profile / gravatar ?
+- CSS class
+*/
+
 		$this->version = '0.1';
 		$this->requires = array(
 			'MantisCore' => '1.3.0',

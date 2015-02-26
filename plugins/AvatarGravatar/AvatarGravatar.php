@@ -58,6 +58,37 @@ class AvatarGravatarPlugin extends AvatarPlugin {
 	}
 
 	/**
+	 * Gets the correct Gravatar URL based on protocol
+	 * @return Gravatar URL
+	 */
+	static function gravatar_url() {
+		static $s_url = null;
+
+		if( is_null( $s_url ) ) {
+			$s_url = http_is_protocol_https()
+				? self::GRAVATAR_URL_SECURE
+				: self::GRAVATAR_URL;
+		}
+
+		return $s_url;
+	}
+
+	/**
+	 * Gets the Gravatar hash
+	 * @param int $p_user_id
+	 * @return Gravatar hash for the given user's e-mail address
+	 */
+	static function gravatar_hash( $p_user_id ) {
+		static $s_email_hash = array();
+
+		if( !isset( $s_email_hash[$p_user_id] ) ) {
+			$s_email_hash[$p_user_id] = md5( strtolower( trim( user_get_email( $p_user_id ) ) ) );
+		}
+
+		return $s_email_hash[$p_user_id];
+	}
+
+	/**
 	 * Retrieves the URL to the user's avatar
 	 */
 	function get_url( $p_event, $p_user_id, $p_size = 80 ) {
@@ -75,17 +106,8 @@ class AvatarGravatarPlugin extends AvatarPlugin {
 		}
 		$t_default_avatar = urlencode( $t_default_avatar );
 
-		$t_email_hash = md5( strtolower( trim( user_get_email( $p_user_id ) ) ) );
-
-		# Build Gravatar URL
-		if( http_is_protocol_https() ) {
-			$t_avatar_url = self::GRAVATAR_URL_SECURE;
-		} else {
-			$t_avatar_url = self::GRAVATAR_URL;
-		}
-
-		$t_avatar_url = $t_avatar_url . 'avatar/'
-			. $t_email_hash . '?'
+		$t_avatar_url = $this->gravatar_url() . 'avatar/'
+			. $this->gravatar_hash( $p_user_id ) . '?'
 			. http_build_query( array(
 				'd' => $t_default_avatar,
 				'r' => self::GRAVATAR_RATING_G,
@@ -110,7 +132,7 @@ class AvatarGravatarPlugin extends AvatarPlugin {
 			if( !empty( $t_avatar ) ) {
 				printf(
 					'<a rel="nofollow" href="%s"><img class="avatar" src="%s" alt="User avatar" width="%s" height="%s" /></a>',
-					'http://site.gravatar.com',
+					$this->gravatar_url(),
 					htmlspecialchars( $t_avatar[0] ), # Avatar URL
 					$t_avatar[1], # width
 					$t_avatar[2]  # height

@@ -799,7 +799,7 @@ div.timeline * span.username { font-weight:bold; }
 div.timeline p { margin-bottom: 3px; }
 
 /* timeline avatar */
-div.timeline div.no-avatar { display: none; }
+div.timeline div.no-avatar { display: none; float: left; margin-right: 13px; }
 div.timeline div.avatar { float: left; padding-top: 2px; margin-right: 13px; }
 div.timeline * img.avatar { float: left; margin-right: 0; }
 

@@ -72,7 +72,7 @@ class TimelineEvent {
 	 * @return string
 	 */
 	public function html_start() {
-		$t_avatar = user_get_avatar( $this->user_id, 32 );
+		$t_avatar = event_signal( 'EVENT_GET_AVATAR', array( $this->user_id, 32 ) );
 
 		# Avatar div
 		if( !empty( $t_avatar ) ) {

@@ -888,12 +888,18 @@ function user_get_name( $p_user_id ) {
 
 /**
  * Retrieves the URL to the user's avatar
+ * This function is deprecated, and provided for backwards-compatibility.
  *
  * @param integer $p_user_id A valid user identifier
  * @param integer $p_size    Number of pixels for the image
  * @return array (URL, width, height) or empty array if given user has no avatar
  */
 function user_get_avatar( $p_user_id, $p_size = 80 ) {
+	error_parameters(
+		__FUNCTION__, "event_signal( 'EVENT_GET_AVATAR', array( user_id, size ) )"
+	);
+	trigger_error( ERROR_DEPRECATED_SUPERSEDED, DEPRECATED );
+
 	return $t_avatar = event_signal( 'EVENT_GET_AVATAR', array( $p_user_id, 32 ) );
 }
 

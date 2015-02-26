@@ -180,12 +180,18 @@ function print_successful_redirect( $p_redirect_to ) {
 
 /**
  * Print avatar image for the given user ID
+ * This function is deprecated, and provided for backwards-compatibility.
  *
  * @param integer $p_user_id A user identifier.
  * @param integer $p_size    Image pixel size.
  * @return void
  */
 function print_avatar( $p_user_id, $p_size = 80 ) {
+	error_parameters(
+		__FUNCTION__, "event_signal( 'EVENT_DISPLAY_AVATAR', array( user_id, size ) )"
+	);
+	trigger_error( ERROR_DEPRECATED_SUPERSEDED, DEPRECATED );
+
 	event_signal( 'EVENT_DISPLAY_AVATAR', array( $p_user_id, $p_size ) );
 }
 

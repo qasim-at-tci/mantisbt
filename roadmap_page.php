@@ -76,18 +76,13 @@ $t_user_id = auth_get_current_user_id();
 
 # Initialize the roadmap
 $t_roadmap = new RoadmapClass();
-$t_project_ids = $t_roadmap->projects_list;
 
 # @TODO for refactoring only
 $t_version_id = $t_roadmap->version_id;
 
 html_page_top( lang_get( 'roadmap' ) );
 
-version_cache_array_rows( $t_project_ids );
-category_cache_array_rows_by_project( $t_project_ids );
-
-foreach( $t_project_ids as $t_project_id ) {
-	$t_project_name = project_get_field( $t_project_id, 'name' );
+while( $t_project_id = $t_roadmap->get_next_project() ) {
 	$t_can_view_private = access_has_project_level( config_get( 'private_bug_threshold' ), $t_project_id );
 
 	$t_limit_reporters = config_get( 'limit_reporters' );
@@ -183,7 +178,7 @@ foreach( $t_project_ids as $t_project_id ) {
 			$t_progress = (integer)( $t_issues_resolved * 100 / $t_issues_planned );
 
 			if( !$t_project_header_printed ) {
-				$t_roadmap->print_project_header( $t_project_name );
+				$t_roadmap->print_project_header();
 				$t_project_header_printed = true;
 			}
 

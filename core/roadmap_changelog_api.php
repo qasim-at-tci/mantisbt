@@ -40,8 +40,10 @@ class RoadmapChangelogClass {
 	# @TODO These should be protected, leave them as public for now to help debugging
 	public $project_id;
 	public $version_id;
-	public $projects_list;
 
+	protected $projects_list;
+	protected $project_index = -1;
+	protected $project_header_printed;
 	protected $project_name;
 
 	/**
@@ -53,7 +55,26 @@ class RoadmapChangelogClass {
 		$this->set_version_id();
 		$this->set_projects_list();
 
-		$this->project_name = project_get_field( $this->project_id, 'name' );
+		version_cache_array_rows( $this->projects_list );
+		category_cache_array_rows_by_project( $this->projects_list );
+	}
+
+	/**
+	 * Gets the next project to process
+	 * @return int|boolean Project ID, false if there are no more projects to process
+	 */
+	public function get_next_project() {
+		$this->project_index += 1;
+		if( !array_key_exists( $this->project_index, $this->projects_list ) ) {
+			return false;
+		}
+
+		# Set project data
+		$t_project_id = $this->projects_list[$this->project_index];
+		$this->project_name = project_get_field( $t_project_id, 'name' );
+		$this->project_header_printed = false;
+
+		return $t_project_id;
 	}
 
 	/**
@@ -140,7 +161,6 @@ class RoadmapChangelogClass {
 
 	/**
 	 * Prints the project header
-	 * @param string $p_project_name Project name
 	 * @return void
 	 */
 	public function print_project_header() {

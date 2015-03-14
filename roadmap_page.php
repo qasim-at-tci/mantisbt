@@ -90,28 +90,13 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 
 	$t_resolved = config_get( 'bug_resolved_status_threshold' );
 
-	$t_version_rows = array_reverse( version_get_all_rows( $t_project_id ) );
-
 	# cache category info, but ignore the results for now
 	category_get_all_rows( $t_project_id );
 
-	$t_project_header_printed = false;
-
-	foreach( $t_version_rows as $t_version_row ) {
-		if( $t_version_row['released'] == 1 ) {
-			continue;
-		}
-
-		# Skip all versions except the specified one (if any).
-		if( $t_version_id != -1 && $t_version_id != $t_version_row['id'] ) {
-			continue;
-		}
-
+	while( $t_version_row = $t_roadmap->get_next_version() ) {
 		$t_issues_planned = 0;
 		$t_issues_resolved = 0;
 		$t_issues_counted = array();
-
-		$t_version_header_printed = false;
 
 		$t_version = $t_version_row['version'];
 
@@ -177,16 +162,8 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 		if( $t_issues_planned > 0 ) {
 			$t_progress = (integer)( $t_issues_resolved * 100 / $t_issues_planned );
 
-			if( !$t_project_header_printed ) {
-				$t_roadmap->print_project_header();
-				$t_project_header_printed = true;
-			}
-
-			if( !$t_version_header_printed ) {
-				$t_roadmap->print_version_header( $t_version_row );
-				$t_version_header_printed = true;
-			}
-
+			$t_roadmap->print_project_header();
+			$t_roadmap->print_version_header( $t_version_row );
 			$t_roadmap->print_progress_bar( $t_progress );
 		} else {
 			$t_progress = 0;

@@ -46,6 +46,10 @@ class RoadmapChangelogClass {
 	protected $project_header_printed;
 	protected $project_name;
 
+	protected $version_rows;
+	protected $version_index;
+	protected $version_header_printed;
+
 	/**
 	 * Initialize the roadmap/changelog object from GPC parameters
 	 * @return void
@@ -74,7 +78,39 @@ class RoadmapChangelogClass {
 		$this->project_name = project_get_field( $t_project_id, 'name' );
 		$this->project_header_printed = false;
 
+		# Initialize version data
+		$this->version_rows = array_reverse( version_get_all_rows( $t_project_id ) );
+		$this->version_index = -1;
+
 		return $t_project_id;
+	}
+
+	/*
+	 * Gets the next version to process
+	 * @return array|boolean Version row, false if there are no more versions to process
+	 */
+	public function get_next_version() {
+		if( $this->version_id != -1 ) {
+			if( $this->version_index == -1 ) {
+				foreach( $this->version_rows as $t_version ) {
+					if( $t_version['id'] == $this->version_id ) {
+						break;
+					}
+				}
+				$this->version_index = 0;
+				return $t_version;
+			}
+			return false;
+		}
+		$this->version_index += 1;
+		if( !array_key_exists( $this->version_index, $this->version_rows ) ) {
+			return false;
+		}
+
+		$t_version = $this->version_rows[$this->version_index];
+		$this->version_header_printed = false;
+
+		return $t_version;
 	}
 
 	/**
@@ -164,9 +200,15 @@ class RoadmapChangelogClass {
 	 * @return void
 	 */
 	public function print_project_header() {
+		if( $this->project_header_printed ) {
+			return;
+		}
+
 		echo '<h1>'
 			. string_display( $this->project_name ) . ' - ' . lang_get( $this::TYPE )
 			. '</h1>';
+		$this->project_header_printed = true;
+		$this->version_header_printed = false;
 	}
 
 	/**
@@ -175,6 +217,10 @@ class RoadmapChangelogClass {
 	 * @return void
 	 */
 	public function print_version_header( array $p_version_row ) {
+		if( $this->version_header_printed ) {
+			return;
+		}
+
 		$t_project_id   = $p_version_row['project_id'];
 		$t_version_id   = $p_version_row['id'];
 		$t_version_name = $p_version_row['version'];
@@ -217,6 +263,8 @@ class RoadmapChangelogClass {
 
 # @TODO this tag should be removed eventually
 		echo '<tt>';
+
+		$this->version_header_printed = true;
 	}
 
 
@@ -263,6 +311,17 @@ class RoadmapClass extends RoadmapChangelogClass {
 	 * name of the config to show the dates
 	 */
 	const SHOW_DATES = 'show_roadmap_dates';
+
+	/*
+	 * Gets the next version to process
+	 * Roadmap excludes released versions
+	 * @return int|boolean Version ID, false if there are no more versions to process
+	 */
+	public function get_next_version() {
+		while( ( $t_version = parent::get_next_version() ) && $t_version['released'] ) {
+		}
+		return $t_version;
+	}
 
 	/**
 	 * Print the progress bar

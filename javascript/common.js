@@ -297,7 +297,8 @@ $(document).ready( function() {
 		$(this)
 			.progressbar({ value: progress })
 			.children('div')
-			.html(progress + '%');
+			.html(progress + '%')
+			.css('display', 'block');
 	});
 });
 

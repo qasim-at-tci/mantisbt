@@ -100,20 +100,11 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 
 		$t_version = $t_version_row['version'];
 
-		$t_query = 'SELECT sbt.*, {bug_relationship}.source_bug_id, dbt.target_version as parent_version FROM {bug} sbt
-					LEFT JOIN {bug_relationship} ON sbt.id={bug_relationship}.destination_bug_id AND {bug_relationship}.relationship_type=2
-					LEFT JOIN {bug} dbt ON dbt.id={bug_relationship}.source_bug_id
-					WHERE sbt.project_id=' . db_param() . ' AND sbt.target_version=' . db_param() . ' ORDER BY sbt.status ASC, sbt.last_updated DESC';
-
-		$t_first_entry = true;
-
-		$t_result = db_query( $t_query, array( $t_project_id, $t_version ) );
-
 		$t_issue_ids = array();
 		$t_issue_parents = array();
 		$t_issue_handlers = array();
 
-		while( $t_row = db_fetch_array( $t_result ) ) {
+		while( $t_row = db_fetch_array( $t_roadmap->issues ) ) {
 			# hide private bugs if user doesn't have access to view them.
 			if( !$t_can_view_private && ( $t_row['view_state'] == VS_PRIVATE ) ) {
 				continue;

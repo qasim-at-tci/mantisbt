@@ -53,6 +53,13 @@ class RoadmapChangelogClass {
 	protected $version_header_printed;
 
 	/**
+	 * Query result set listing issues for the current project and version
+	 * @TODO should be protected
+	 */
+	public $issues;
+	protected $issues_query;
+
+	/**
 	 * Initialize the roadmap/changelog object from GPC parameters
 	 * @return void
 	 */
@@ -333,15 +340,43 @@ class RoadmapClass extends RoadmapChangelogClass {
 	 */
 	const SHOW_DATES = 'show_roadmap_dates';
 
+	/**
+	 * Counters to calculate the progress bar
+	 */
+	protected $issues_planned;
+	protected $issues_resolved;
+	protected $issues_counted;
+
+	public function __construct() {
+		parent::__construct();
+
+		$this->issues_query = 'SELECT sbt.*, brt.source_bug_id, dbt.target_version AS parent_version
+			FROM {bug} sbt
+			LEFT JOIN {bug_relationship} brt
+				ON sbt.id=brt.destination_bug_id AND brt.relationship_type=' . BUG_DEPENDANT . '
+			LEFT JOIN {bug} dbt
+				ON dbt.id=brt.source_bug_id
+			WHERE sbt.project_id=' . db_param() . ' AND sbt.target_version=' . db_param() . '
+			ORDER BY sbt.status ASC, sbt.last_updated DESC';
+	}
+
 	/*
 	 * Gets the next version to process
 	 * Roadmap excludes released versions
-	 * @return int|boolean Version ID, false if there are no more versions to process
+	 * @return int|boolean Version row, false if there are no more versions to process
 	 */
 	public function get_next_version() {
-		while( ( $t_version = parent::get_next_version() ) && $t_version['released'] ) {
+		while( parent::get_next_version() && $this->version['released'] ) {
 		}
-		return $t_version;
+
+		$this->issues_planned = 0;
+		$this->issues_resolved = 0;
+		$this->issues_counted = array();
+
+		$t_param = array( $this->project, $this->version['version'] );
+		$this->issues = db_query( $this->issues_query, $t_param );
+
+		return $this->version;
 	}
 
 	/**

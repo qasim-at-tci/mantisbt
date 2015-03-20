@@ -41,11 +41,13 @@ class RoadmapChangelogClass {
 	public $project_id;
 	public $version_id;
 
+	protected $project;
 	protected $projects_list;
 	protected $project_index = -1;
 	protected $project_header_printed;
 	protected $project_name;
 
+	protected $version;
 	protected $version_rows;
 	protected $version_index;
 	protected $version_header_printed;
@@ -69,20 +71,30 @@ class RoadmapChangelogClass {
 	 */
 	public function get_next_project() {
 		$this->project_index += 1;
+
 		if( !array_key_exists( $this->project_index, $this->projects_list ) ) {
+			$this->project = false;
 			return false;
 		}
+		$this->project = $this->projects_list[$this->project_index];
 
 		# Set project data
-		$t_project_id = $this->projects_list[$this->project_index];
-		$this->project_name = project_get_field( $t_project_id, 'name' );
+		$this->project_name = project_get_field( $this->project, 'name' );
 		$this->project_header_printed = false;
 
 		# Initialize version data
-		$this->version_rows = array_reverse( version_get_all_rows( $t_project_id ) );
+		$this->version_rows = array_reverse( version_get_all_rows( $this->project ) );
 		$this->version_index = -1;
 
-		return $t_project_id;
+		return $this->project;
+	}
+
+	/**
+	 * Gets the project being processed
+	 * @return int|boolean Project ID, false if not set
+	 */
+	public function get_current_project() {
+		return $this->project;
 	}
 
 	/*
@@ -90,6 +102,7 @@ class RoadmapChangelogClass {
 	 * @return array|boolean Version row, false if there are no more versions to process
 	 */
 	public function get_next_version() {
+		$this->version = false;
 		if( $this->version_id != -1 ) {
 			if( $this->version_index == -1 ) {
 				foreach( $this->version_rows as $t_version ) {
@@ -98,7 +111,7 @@ class RoadmapChangelogClass {
 					}
 				}
 				$this->version_index = 0;
-				return $t_version;
+				return $this->version = $t_version;
 			}
 			return false;
 		}
@@ -107,10 +120,18 @@ class RoadmapChangelogClass {
 			return false;
 		}
 
-		$t_version = $this->version_rows[$this->version_index];
+		$this->version = $this->version_rows[$this->version_index];
 		$this->version_header_printed = false;
 
-		return $t_version;
+		return $this->version;
+	}
+
+	/**
+	 * Gets the version row being processed
+	 * @return int|boolean Version row, false if not set
+	 */
+	public function get_current_version() {
+		return $this->version;
 	}
 
 	/**

@@ -77,9 +77,6 @@ $t_user_id = auth_get_current_user_id();
 # Initialize the roadmap
 $t_roadmap = new RoadmapClass();
 
-# @TODO for refactoring only
-$t_version_id = $t_roadmap->version_id;
-
 html_page_top( lang_get( 'roadmap' ) );
 
 while( $t_project_id = $t_roadmap->get_next_project() ) {
@@ -94,70 +91,10 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 	category_get_all_rows( $t_project_id );
 
 	while( $t_version_row = $t_roadmap->get_next_version() ) {
-		$t_issues_planned = 0;
-		$t_issues_resolved = 0;
-		$t_issues_counted = array();
-
-		$t_version = $t_version_row['version'];
-
-		$t_issue_ids = array();
-		$t_issue_parents = array();
-		$t_issue_handlers = array();
-
-		while( $t_row = db_fetch_array( $t_roadmap->issues ) ) {
-			# hide private bugs if user doesn't have access to view them.
-			if( !$t_can_view_private && ( $t_row['view_state'] == VS_PRIVATE ) ) {
-				continue;
-			}
-
-			bug_cache_database_result( $t_row );
-
-			# check limit_Reporter (Issue #4770)
-			# reporters can view just issues they reported
-			if( ON === $t_limit_reporters && $t_user_access_level_is_reporter &&
-				 !bug_is_user_reporter( $t_row['id'], $t_user_id )) {
-				continue;
-			}
-
-			$t_issue_id = $t_row['id'];
-			$t_issue_parent = $t_row['source_bug_id'];
-			$t_parent_version = $t_row['parent_version'];
-
-			if( !helper_call_custom_function( 'roadmap_include_issue', array( $t_issue_id ) ) ) {
-				continue;
-			}
-
-			if( !isset( $t_issues_counted[$t_issue_id] ) ) {
-				$t_issues_planned++;
-
-				if( bug_is_resolved( $t_issue_id ) ) {
-					$t_issues_resolved++;
-				}
-
-				$t_issues_counted[$t_issue_id] = true;
-			}
-
-			if( 0 === strcasecmp( $t_parent_version, $t_version ) ) {
-				$t_issue_ids[] = $t_issue_id;
-				$t_issue_parents[] = $t_issue_parent;
-			} else if( !in_array( $t_issue_id, $t_issue_ids ) ) {
-				$t_issue_ids[] = $t_issue_id;
-				$t_issue_parents[] = null;
-			}
-
-			$t_issue_handlers[] = $t_row['handler_id'];
-		}
-
-		user_cache_array_rows( array_unique( $t_issue_handlers ) );
-
-		if( $t_issues_planned > 0 ) {
-			$t_progress = (integer)( $t_issues_resolved * 100 / $t_issues_planned );
-
+		if( $t_roadmap->get_issues() ) {
 			$t_roadmap->print_project_header();
 			$t_roadmap->print_version_header( $t_version_row );
-			$t_roadmap->print_progress_bar( $t_progress );
-		} else {
-			$t_progress = 0;
+			$t_roadmap->print_progress_bar();
 		}
 
 		$t_issue_set_ids = array();
@@ -167,9 +104,9 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 		$t_cycle = false;
 		$t_cycle_ids = array();
 
-		while( 0 < count( $t_issue_ids ) ) {
-			$t_issue_id = $t_issue_ids[$k];
-			$t_issue_parent = $t_issue_parents[$k];
+		while( 0 < count( $t_roadmap->issues ) ) {
+			$t_issue_id = $t_roadmap->issues[$k];
+			$t_issue_parent = $t_roadmap->issues_parents[$k];
 
 			if( in_array( $t_issue_id, $t_cycle_ids ) && in_array( $t_issue_parent, $t_cycle_ids ) ) {
 				$t_cycle = true;
@@ -178,7 +115,7 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 				$t_cycle_ids[] = $t_issue_id;
 			}
 
-			if( $t_cycle || !in_array( $t_issue_parent, $t_issue_ids ) ) {
+			if( $t_cycle || !in_array( $t_issue_parent, $t_roadmap->issues ) ) {
 				$l = array_search( $t_issue_parent, $t_issue_set_ids );
 				if( $l !== false ) {
 					for( $m = $l+1; $m < count( $t_issue_set_ids ) && $t_issue_set_levels[$m] > $t_issue_set_levels[$l]; $m++ ) {
@@ -194,14 +131,14 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 					$t_issue_set_ids[] = $t_issue_id;
 					$t_issue_set_levels[] = 0;
 				}
-				array_splice( $t_issue_ids, $k, 1 );
-				array_splice( $t_issue_parents, $k, 1 );
+				array_splice( $t_roadmap->issues, $k, 1 );
+				array_splice( $t_roadmap->issues_parents, $k, 1 );
 
 				$t_cycle_ids = array();
 			} else {
 				$k++;
 			}
-			if( count( $t_issue_ids ) <= $k ) {
+			if( count( $t_roadmap->issues ) <= $k ) {
 				$k = 0;
 			}
 		}

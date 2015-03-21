@@ -73,8 +73,11 @@ class RoadmapChangelogClass {
 	/**
 	 * Issues data (SQL query, list, list of parent issues, count)
 	 */
-	public $issues;
 	protected $issues_query;
+	# @TODO temporarily set to public
+	public $issues;
+	public $issues_parents;
+	protected $issues_count;
 
 	/**
 	 * Constructor
@@ -172,6 +175,84 @@ class RoadmapChangelogClass {
 	 */
 	public function get_current_version() {
 		return $this->version;
+	}
+
+	/**
+	 * Populates the list of issues for the current project / version
+	 * Caches the corresponding issue handlers
+	 * @return boolean True if there are issues to process
+	 */
+	public function get_issues() {
+		$this->issues = array();
+		$this->issues_parents = array();
+		$t_issue_handlers = array();
+
+		# Retrieve list of issues from DB
+		$t_result = db_query(
+			$this->issues_query,
+			array(
+				$this->project,
+				$this->version['version'],
+			)
+		);
+
+		while( $t_row = $this->get_next_issue( $t_result ) ) {
+			$t_issue_id = $t_row['id'];
+
+			if( 0 === strcasecmp( $t_row['parent_version'], $this->version['version'] ) ) {
+				$this->issues[] = $t_issue_id;
+				$this->issues_parents[] = $t_row['source_bug_id'];
+			} elseif( !in_array( $t_issue_id, $this->issues ) ) {
+				$this->issues[] = $t_issue_id;
+				$this->issues_parents[] = null;
+			}
+
+			$t_issue_handlers[] = $t_row['handler_id'];
+		}
+
+		# Cache issue handlers to reduce number of DB queries executed
+		user_cache_array_rows( array_unique( $t_issue_handlers ) );
+
+		return !empty( $this->issues );
+	}
+
+	/*
+	 * Gets the next issue to process
+	 * Skips
+	 * - private issues if user can't see them
+	 * - issues not opened by the reporter if limit_reporter is ON
+	 * - issues excluded by the Changelog/Roadmap "include" custom function
+	 * @param object $p_issues ADOdb result set as returned by db_query()
+	 * @return array|boolean Issue row, false if there are no more to process
+	 */
+	protected function get_next_issue( $p_issues ) {
+
+		while( $t_row = db_fetch_array( $p_issues ) ) {
+			bug_cache_database_result( $t_row );
+			$t_issue_id = $t_row['id'];
+
+			# hide private bugs if user doesn't have access to view them.
+			if( !$this->can_view_private && $t_row['view_state'] == VS_PRIVATE ) {
+				continue;
+			}
+
+			# check limit_reporter (Issue #4770)
+			# reporters can view just issues they reported
+			if(    ON == $this->limit_reporters
+				&& $this->user_is_reporter
+				&& !bug_is_user_reporter( $t_issue_id, $this->user_id )
+			) {
+				continue;
+			}
+
+			if( !helper_call_custom_function( $this::FUNCTION_INCLUDE_ISSUE, array( $t_issue_id ) ) ) {
+				continue;
+			}
+
+			return $t_row;
+		}
+
+		return false;
 	}
 
 	/**
@@ -372,11 +453,16 @@ class RoadmapClass extends RoadmapChangelogClass {
 	const SHOW_DATES = 'show_roadmap_dates';
 
 	/**
+	 * Custom functions names
+	 */
+	const FUNCTION_INCLUDE_ISSUE = 'roadmap_include_issue';
+	const FUNCTION_PRINT_ISSUE = 'roadmap_print_issue';
+
+	/**
 	 * Counters to calculate the progress bar
 	 */
-	protected $issues_planned;
+	protected $issues_processed;
 	protected $issues_resolved;
-	protected $issues_counted;
 
 	/**
 	 * Constructor
@@ -404,24 +490,65 @@ class RoadmapClass extends RoadmapChangelogClass {
 		while( parent::get_next_version() && $this->version['released'] ) {
 		}
 
-		$this->issues_planned = 0;
-		$this->issues_resolved = 0;
-		$this->issues_counted = array();
-
-		$t_param = array( $this->project, $this->version['version'] );
-		$this->issues = db_query( $this->issues_query, $t_param );
-
 		return $this->version;
 	}
 
 	/**
+	 * Populates the list of issues for the current project / version
+	 * Roadmap overload resets the progress bar counters
+	 * @return boolean True if there are issues to process
+	 */
+	public function get_issues() {
+		$this->issues_processed = array();
+		$this->issues_count = 0;
+		$this->issues_resolved = 0;
+
+		return parent::get_issues();
+	}
+
+	/**
+	 * Gets the next issue to process
+	 * Roadmap overload counts planned and resolved issues for the progress bar
+	 * @param object $p_issues ADOdb result set as returned by db_query()
+	 * @return array|boolean Issue row, false if there are no more to process
+	 */
+	protected function get_next_issue( $p_issues ) {
+		$t_row = parent::get_next_issue( $p_issues );
+		$t_issue_id = $t_row['id'];
+
+		# Update counters, making sure we only process issues once
+		if( $t_issue_id && !isset( $this->issues_processed[$t_issue_id] ) ) {
+			$this->issues_count++;
+
+			if( bug_is_resolved( $t_issue_id ) ) {
+				$this->issues_resolved++;
+			}
+
+			$this->issues_processed[$t_issue_id] = true;
+		}
+
+		return $t_row;
+	}
+
+	/**
+	 * Calculate the progress percentage
+	 * Note: we assume that this method is not called when there are no issues
+	 * in the roadmap (i.e. we don't check for division by zero)
+	 * @return integer
+	 */
+	protected function progress_percent() {
+		return (integer)( $this->issues_resolved * 100 / $this->issues_count );
+	}
+
+	/**
 	 * Print the progress bar
-	 * @param int $p_progress Percent complete
 	 * @return void
 	 */
-	public function print_progress_bar( $p_progress ) {
+	public function print_progress_bar() {
 		# Progress bar handled with jQueryUI widget
-		echo '<div class="roadmap-progress" data-progress="' . $p_progress . '"></div>';
+		echo '<div class="roadmap-progress" data-progress="'
+			. $this->progress_percent()
+			. '"></div>';
 	}
 
 	protected function threshold() {
@@ -448,6 +575,12 @@ class ChangelogClass extends RoadmapChangelogClass {
 	 * name of the config to show the dates
 	 */
 	const SHOW_DATES = 'show_changelog_dates';
+
+	/**
+	 * Custom functions names
+	 */
+	const FUNCTION_INCLUDE_ISSUE = 'changelog_include_issue';
+	const FUNCTION_PRINT_ISSUE = 'changelog_print_issue';
 
 	protected function empty_string( $p_manager ) {
 		return $p_manager ? 'changelog_empty_manager' : 'changelog_empty';

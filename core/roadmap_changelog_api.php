@@ -45,6 +45,15 @@ class RoadmapChangelogClass {
 	protected $version_id;
 
 	/**
+	 * Storing user id and access level information avoid repeated calls to
+	 * API functions
+	 */
+	protected $user_id;
+	protected $can_view_private;
+	protected $limit_reporters;
+	protected $user_is_reporter;
+
+	/**
 	 * Project data (id, list, index, name)
 	 */
 	protected $project;
@@ -73,12 +82,15 @@ class RoadmapChangelogClass {
 	 * @return void
 	 */
 	public function __construct() {
+		$this->user_id = auth_get_current_user_id();
 		$this->set_project_id();
 		$this->set_version_id();
 		$this->set_projects_list();
 
 		version_cache_array_rows( $this->projects_list );
 		category_cache_array_rows_by_project( $this->projects_list );
+
+		$t_limit_reporters = config_get( 'limit_reporters' );
 	}
 
 	/**
@@ -101,6 +113,18 @@ class RoadmapChangelogClass {
 		# Initialize version data
 		$this->version_rows = array_reverse( version_get_all_rows( $this->project ) );
 		$this->version_index = -1;
+
+		# Set access levels
+		$this->can_view_private = access_has_project_level(
+			config_get( 'private_bug_threshold', null, null, $this->project ),
+			$this->project
+		);
+		$this->limit_reporters = config_get( 'limit_reporters', null, null, $this->project );
+		$t_report_bug_threshold = config_get( 'report_bug_threshold', null, null, $this->project );
+		$this->user_is_reporter = $t_report_bug_threshold == access_get_project_level( $this->project );
+
+		# Cache category info to reduce number of DB queries executed
+		category_get_all_rows( $this->project );
 
 		return $this->project;
 	}
@@ -211,10 +235,8 @@ class RoadmapChangelogClass {
 	 * @return void
 	 */
 	private function set_projects_list() {
-		$t_user_id = auth_get_current_user_id();
-
 		if( ALL_PROJECTS == $this->project_id ) {
-			$t_project_ids_to_check = user_get_all_accessible_projects( $t_user_id, ALL_PROJECTS );
+			$t_project_ids_to_check = user_get_all_accessible_projects( $this->user_id, ALL_PROJECTS );
 			$t_projects_list = array();
 
 			foreach( $t_project_ids_to_check as $t_project_id ) {
@@ -225,7 +247,7 @@ class RoadmapChangelogClass {
 			}
 		} else {
 			access_ensure_project_level( config_get( $this::THRESHOLD ), $this->project_id );
-			$t_projects_list = user_get_all_accessible_subprojects( $t_user_id, $this->project_id );
+			$t_projects_list = user_get_all_accessible_subprojects( $this->user_id, $this->project_id );
 			array_unshift( $t_projects_list, $this->project_id );
 		}
 

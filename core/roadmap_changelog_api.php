@@ -38,29 +38,37 @@ require_api( 'version_api.php' );
 
 class RoadmapChangelogClass {
 
-	# @TODO These should be protected, leave them as public for now to help debugging
-	public $project_id;
-	public $version_id;
+	/**
+	 * Project and version id from GPC
+	 */
+	protected $project_id;
+	protected $version_id;
 
+	/**
+	 * Project data (id, list, index, name)
+	 */
 	protected $project;
 	protected $projects_list;
 	protected $project_index = -1;
 	protected $project_header_printed;
 	protected $project_name;
 
+	/**
+	 * Version data (name, list, index)
+	 */
 	protected $version;
 	protected $version_rows;
 	protected $version_index;
 	protected $version_header_printed;
 
 	/**
-	 * Query result set listing issues for the current project and version
-	 * @TODO should be protected
+	 * Issues data (SQL query, list, list of parent issues, count)
 	 */
 	public $issues;
 	protected $issues_query;
 
 	/**
+	 * Constructor
 	 * Initialize the roadmap/changelog object from GPC parameters
 	 * @return void
 	 */
@@ -348,6 +356,9 @@ class RoadmapClass extends RoadmapChangelogClass {
 	protected $issues_resolved;
 	protected $issues_counted;
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		parent::__construct();
 
@@ -361,12 +372,13 @@ class RoadmapClass extends RoadmapChangelogClass {
 			ORDER BY sbt.status ASC, sbt.last_updated DESC';
 	}
 
-	/*
+	/**
 	 * Gets the next version to process
 	 * Roadmap excludes released versions
 	 * @return int|boolean Version row, false if there are no more versions to process
 	 */
 	public function get_next_version() {
+		# Skip released versions
 		while( parent::get_next_version() && $this->version['released'] ) {
 		}
 

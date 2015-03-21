@@ -20,6 +20,7 @@
  * @package CoreAPI
  * @subpackage RoadmapChangelogAPI
  * @copyright Copyright 2015  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @author Damien Regad
  * @link http://www.mantisbt.org
  *
  * @uses gpc_api.php

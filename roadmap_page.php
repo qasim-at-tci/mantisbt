@@ -153,11 +153,7 @@ while( $t_project_id = $t_roadmap->get_next_project() ) {
 			$t_issues_found = true;
 		}
 
-		if( $t_issues_planned > 0 ) {
-			echo '<br />';
-			echo sprintf( lang_get( 'resolved_progress' ), $t_issues_resolved, $t_issues_planned, $t_progress );
-			echo '<br /></tt>';
-		}
+		$t_roadmap->print_version_footer();
 	}
 }
 

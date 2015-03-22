@@ -407,6 +407,16 @@ class RoadmapChangelogClass {
 		$this->version_header_printed = true;
 	}
 
+	/**
+	 * Print version footer
+	 * Footer includes a count of issues
+	 */
+	public function print_version_footer() {
+		echo '<br />['
+			. $this->issues_count . ' '
+			. lang_get( $this->issues_count == 1 ? 'bug' : 'bugs' )
+			. ']<br />';
+	}
 
 	/**
 	 * Prints access-level-specific message when roadmap/changelog is empty
@@ -549,6 +559,25 @@ class RoadmapClass extends RoadmapChangelogClass {
 		echo '<div class="roadmap-progress" data-progress="'
 			. $this->progress_percent()
 			. '"></div>';
+	}
+
+	/**
+	 * Print version footer
+	 * Footer includes a count of resolved issues vs total and the percentage
+	 */
+	public function print_version_footer() {
+		if( $this->issues_count == 0 ) {
+			return;
+		}
+
+		echo '<br />';
+		printf(
+			lang_get( 'resolved_progress' ),
+			$this->issues_resolved,
+			$this->issues_count,
+			$this->progress_percent()
+		);
+		echo '</tt>';
 	}
 
 	protected function threshold() {

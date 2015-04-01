@@ -286,10 +286,6 @@ $(document).ready( function() {
 		}
 		$(this).val(0);
 	});
-
-	$('a.click-url').bind("click", function() {
-		$(this).attr("href", $(this).attr("url"));
-	});
 });
 
 function setBugLabel() {

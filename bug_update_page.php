@@ -286,7 +286,7 @@ if( $t_show_reporter ) {
 		if( ON == config_get( 'limit_reporters' )
 		&&  !access_has_project_level( config_get( 'report_bug_threshold', null, null, $t_bug->project_id ) + 1, $t_bug->project_id )
 		) {
-			echo string_attribute( user_get_name( $t_bug->reporter_id ) );
+			echo prepare_user_name( $t_bug->reporter_id );
 		} else {
 			echo '<div id="edit-reporter" style="display: none; float: left">';
 			echo '<select ' . helper_get_tab_index() . ' id="reporter_id" name="reporter_id">';

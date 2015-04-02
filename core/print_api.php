@@ -1373,11 +1373,9 @@ function print_button( $p_action_page, $p_label, array $p_args_to_post = null, $
 }
 
 function print_ajax_button( $p_name, $p_label ) {
-	printf( '<input id="%s" name="%s" type="button" value="%s" />',
-		"ajax-$p_name-btn",
-		$p_name,
-		$p_label
-	);
+	$t_html = '<input id="%s" name="%s" type="button" value="%s" '
+		. helper_get_tab_index() . ' />';
+	printf( $t_html, "ajax-$p_name-btn", $p_name, $p_label );
 }
 
 

@@ -40,6 +40,7 @@ compress_enable();
 
 $f_field  = gpc_get_string( 'field' );
 $f_bug_id = gpc_get_int( 'bug_id' );
+$f_tabindex = gpc_get_int( 'tabindex', 0 );
 
 $t_bug = bug_get( $f_bug_id, true );
 
@@ -52,6 +53,6 @@ switch( $f_field ) {
 		return;
 }
 
-echo '<select ' . helper_get_tab_index() . ' id="' . $f_field . '" name="' . $f_field . '">';
+echo '<select id="' . $f_field . '" name="' . $f_field . '" tabindex="' . $f_tabindex . '">';
 call_user_func_array( $t_function, array( $t_bug->reporter_id, $t_bug->project_id ) );
 echo '</select>';

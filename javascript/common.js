@@ -56,7 +56,8 @@ $(document).ready( function() {
 			url: 'ajax_selection_list.php',
 			data: {
 				field:    $(this).attr('name'),
-				bug_id:   $(targetID).data('bug_id')
+				bug_id:   $(targetID).data('bug_id'),
+				tabindex: $(this).attr('tabindex')
 			},
 			success: function(html) {
 				$(targetID).html(html);

@@ -289,8 +289,8 @@ if( $t_show_reporter ) {
 			echo prepare_user_name( $t_bug->reporter_id );
 		} else {
 			echo '<div id="edit-reporter" data-bug_id="' . $f_bug_id . '">';
-			echo prepare_user_name( $t_bug->reporter_id );
-			echo '&nbsp;<input id="edit-reporter-btn" name="1" type="button" value="' . lang_get( 'edit_link' ) . '" />';
+			echo prepare_user_name( $t_bug->reporter_id ) . '&nbsp;';
+			print_ajax_button( 'reporter_id', lang_get( 'edit_link' ) );
 			echo '</div>';
 		}
 		echo '</td>';

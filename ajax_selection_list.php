@@ -15,7 +15,8 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Reporter list AJAX
+ * Selection list AJAX
+ * Prints a selection list for the specified field and bug id
  *
  * @package MantisBT
  * @copyright Copyright 2015  MantisBT Team - mantisbt-dev@lists.sourceforge.net
@@ -23,20 +24,34 @@
   * @link http://www.mantisbt.org
  *
  * @uses core.php
+ * @uses compress_api.php
+ * @uses gpc_api.php
+ * @uses bug_api.php
  * @uses print_api.php
  */
 
 require_once( 'core.php' );
+require_api( 'compress_api.php' );
 require_api( 'gpc_api.php' );
 require_api( 'bug_api.php' );
 require_api( 'print_api.php' );
 
 compress_enable();
 
+$f_field  = gpc_get_string( 'field' );
 $f_bug_id = gpc_get_int( 'bug_id' );
 
 $t_bug = bug_get( $f_bug_id, true );
 
-echo '<select ' . helper_get_tab_index() . ' id="reporter_id" name="reporter_id">';
-print_reporter_option_list( $t_bug->reporter_id, $t_bug->project_id );
+switch( $f_field ) {
+	case 'reporter_id':
+		$t_function = 'print_reporter_option_list';
+		break;
+	default:
+		trigger_error( ERROR_GENERIC, ERROR );
+		return;
+}
+
+echo '<select ' . helper_get_tab_index() . ' id="' . $f_field . '" name="' . $f_field . '">';
+call_user_func_array( $t_function, array( $t_bug->reporter_id, $t_bug->project_id ) );
 echo '</select>';

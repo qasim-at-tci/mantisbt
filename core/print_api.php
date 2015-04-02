@@ -1372,6 +1372,15 @@ function print_button( $p_action_page, $p_label, array $p_args_to_post = null, $
 	echo '</form>';
 }
 
+function print_ajax_button( $p_name, $p_label ) {
+	printf( '<input id="%s" name="%s" type="button" value="%s" />',
+		"ajax-$p_name-btn",
+		$p_name,
+		$p_label
+	);
+}
+
+
 /**
  * print brackets around a pre-prepared link (i.e. '<a href' html tag).
  * @param string $p_link The URL to link to.

@@ -48,14 +48,13 @@ $(document).ready( function() {
 		ToggleDiv( t_div );
 	});
 
-	$('#edit-reporter-btn').click( function(event) {
+	$('#ajax-reporter_id-btn').click( function(event) {
 		event.preventDefault();
-		targetID = '#edit-reporter'
-		$(targetID).show();
+		var targetID = '#' + $(this).parent().attr('id')
 		printLoading(targetID);
 		$.ajax({
-			url: 'ajax_reporter_list.php',
-			data: 'bug_id=' + $(targetID).data('bug_id'),
+			url: 'ajax_selection_list.php',
+			data: 'field=' + $(this).attr('name') + '&bug_id=' + $(targetID).data('bug_id'),
 			success: function(html) {
 				$(targetID).html(html);
 			}

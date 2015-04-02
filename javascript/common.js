@@ -54,7 +54,10 @@ $(document).ready( function() {
 		printLoading(targetID);
 		$.ajax({
 			url: 'ajax_selection_list.php',
-			data: 'field=' + $(this).attr('name') + '&bug_id=' + $(targetID).data('bug_id'),
+			data: {
+				field:    $(this).attr('name'),
+				bug_id:   $(targetID).data('bug_id')
+			},
 			success: function(html) {
 				$(targetID).html(html);
 			}
@@ -88,7 +91,10 @@ $(document).ready( function() {
 		printLoading(targetID);
 		$.ajax({
 			url: 'return_dynamic_filters.php',
-			data: 'view_type=' + viewType + '&filter_target=' + fieldID,
+			data: {
+				view_type:     viewType,
+				filter_target: fieldID
+			},
 			cache: false,
 			context: $(targetID),
 			success: function(html) {

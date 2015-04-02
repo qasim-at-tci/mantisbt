@@ -50,18 +50,17 @@ $(document).ready( function() {
 
 	$('#edit-reporter-btn').click( function(event) {
 		event.preventDefault();
-		$('#view-reporter').hide();
-		$('#edit-reporter').show();
-		
-/*		$.ajax({
-			url: 'xxx',
-			type: 'post',
-			data: '',
+		targetID = '#edit-reporter'
+		$(targetID).show();
+		printLoading(targetID);
+		$.ajax({
+			url: 'ajax_reporter_list.php',
+			data: 'bug_id=' + $(targetID).data('bug_id'),
 			success: function(html) {
-				$(this).html(html);
+				$(targetID).html(html);
 			}
 		});
-*/	});
+	});
 
 	$('input[type=text].autocomplete').autocomplete({
 		source: function(request, callback) {
@@ -85,14 +84,14 @@ $(document).ready( function() {
 	$('a.dynamic-filter-expander').click(function(event) {
 		event.preventDefault();
 		var fieldID = $(this).attr('id');
-		var targetID = fieldID + '_target';
+		var targetID = '#' + fieldID + '_target';
 		var viewType = $('#filters_form_open input[name=view_type]').val();
-		$('#' + targetID).html('<span class="dynamic-filter-loading">' + translations['loading'] + "</span>");
+		printLoading(targetID);
 		$.ajax({
 			url: 'return_dynamic_filters.php',
 			data: 'view_type=' + viewType + '&filter_target=' + fieldID,
 			cache: false,
-			context: $('#' + targetID),
+			context: $(targetID),
 			success: function(html) {
 				$(this).html(html);
 			}
@@ -414,4 +413,9 @@ function setDisplay(idTag, state)
 function toggleDisplay(idTag)
 {
 	setDisplay( idTag, (document.getElementById(idTag).style.display == 'none')?1:0 );
+}
+
+function printLoading(targetID)
+{
+	$(targetID).html('<span class="dynamic-filter-loading">' + translations['loading'] + "</span>");
 }

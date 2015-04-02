@@ -288,12 +288,7 @@ if( $t_show_reporter ) {
 		) {
 			echo prepare_user_name( $t_bug->reporter_id );
 		} else {
-			echo '<div id="edit-reporter" style="display: none; float: left">';
-			echo '<select ' . helper_get_tab_index() . ' id="reporter_id" name="reporter_id">';
-			print_reporter_option_list( $t_bug->reporter_id, $t_bug->project_id );
-			echo '</select>';
-			echo '</div>';
-			echo '<div id="view-reporter">';
+			echo '<div id="edit-reporter" data-bug_id="' . $f_bug_id . '">';
 			echo prepare_user_name( $t_bug->reporter_id );
 			echo '&nbsp;<input id="edit-reporter-btn" name="1" type="button" value="' . lang_get( 'edit_link' ) . '" />';
 			echo '</div>';

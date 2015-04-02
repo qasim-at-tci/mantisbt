@@ -803,5 +803,4 @@ div.timeline * div.action { padding-top: 3px; }
 .details-footer      { padding: 3px 10px 2px 0; }
 .details-buttons     { float: left;  width: auto; }
 
-div#view-reporter { padding: 0 }
-div#edit-reporter { padding: 0; display: none; }
+div#edit-reporter { padding: 0 }

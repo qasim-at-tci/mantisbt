@@ -71,7 +71,7 @@ $g_cache_access_matrix_user_ids = array();
  * @return void
  */
 function access_denied() {
-	if( !auth_is_user_authenticated() ) {
+	if( !auth_is_user_authenticated() && !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
 		if( basename( $_SERVER['SCRIPT_NAME'] ) != 'login_page.php' ) {
 			$t_return_page = $_SERVER['SCRIPT_NAME'];
 			if( isset( $_SERVER['QUERY_STRING'] ) ) {
@@ -81,7 +81,7 @@ function access_denied() {
 			print_header_redirect( 'login_page.php?return=' . $t_return_page );
 		}
 	} else {
-		if( current_user_is_anonymous() ) {
+		if( !defined( 'MANTIS_MAINTENANCE_MODE' ) && current_user_is_anonymous() ) {
 			if( basename( $_SERVER['SCRIPT_NAME'] ) != 'login_page.php' ) {
 				$t_return_page = $_SERVER['SCRIPT_NAME'];
 				if( isset( $_SERVER['QUERY_STRING'] ) ) {

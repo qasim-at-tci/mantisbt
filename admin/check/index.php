@@ -42,6 +42,8 @@ define( 'COMPRESSION_DISABLED', true );
 
 require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/core.php' );
 
+access_ensure_global_level( config_get_global( 'admin_site_threshold' ) );
+
 require_once( 'check_api.php' );
 
 require_api( 'gpc_api.php' );

@@ -825,7 +825,9 @@ function auth_is_cookie_valid( $p_cookie_string ) {
 function auth_get_current_user_id() {
 	global $g_cache_current_user_id;
 
-	if( null !== $g_cache_current_user_id ) {
+	# Return the cached user ID if set, or if we're in maintenance mode
+	# (since we don't have a DB connection to check cookie in this case)
+	if( null !== $g_cache_current_user_id || defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
 		return $g_cache_current_user_id;
 	}
 

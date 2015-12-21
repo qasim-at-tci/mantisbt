@@ -438,3 +438,15 @@ function csv_format_due_date( BugData $p_bug ) {
 function csv_format_sponsorship_total( BugData $p_bug ) {
 	return csv_escape_string( $p_bug->sponsorship_total );
 }
+
+/**
+ * return the bugnote count for an issue
+ * @param BugData $p_bug A BugData object.
+ * @return string
+ * @access public
+ */
+function csv_format_bugnotes_count( BugData $p_bug ) {
+	$t_bugnote_stats = bug_get_bugnote_stats( $p_bug->id );
+
+	return csv_escape_string( $t_bugnote_stats['count'] );
+}

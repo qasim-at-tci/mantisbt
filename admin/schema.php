@@ -770,4 +770,6 @@ $g_upgrade[201] = array( 'CreateIndexSQL',
 
 # Release marker: 1.3.0-rc.1
 
+$g_upgrade[202] = array( 'UpdateFunction', 'gravatar_plugin', array() );
+
 # Release marker: 1.3.0

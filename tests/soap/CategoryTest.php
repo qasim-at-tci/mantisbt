@@ -105,6 +105,54 @@ class CategoryTest extends SoapBase {
 	}
 
 	/**
+	 * A test case that attempts to delete a protected category
+	 *
+	 * @expectedException SoapFault
+	 */
+	public function testDeleteDefaultCategory() {
+		$t_project_id = $this->getProjectId();
+
+		# The API currently does not allow retrieving a category's name by Id
+		# so we can only attempt to delete the default 'General' category.
+		# This could be a problem if not using a blank database for the tests
+
+		$t_default_category_id = $this->client->mc_config_get_string(
+			$this->userName,
+			$this->password,
+			'default_category_for_moves'
+		);
+
+		$t_save_default_category_id = $this->client->mc_config_get_string(
+			$this->userName,
+			$this->password,
+			'default_category_for_moves'
+		);
+
+		$t_category_list = $this->client->mc_project_get_categories(
+			$this->userName,
+			$this->password,
+			$t_project_id );
+fwrite(STDERR, $t_default_category_id );
+fwrite(STDERR, var_export($t_category_list, true));
+
+//		$this->assertContains( $t_category_new_name, $t_category_list );
+
+//		try {
+		$t_return_bool = $this->client->mc_project_delete_category(
+			$this->userName,
+			$this->password,
+			$t_project_id,
+			'xxx' );
+		fwrite(STDERR, $t_return_bool?'true':'false' );
+//		}
+//		catch (SoapFault $e) {
+
+//		}
+
+
+	}
+
+	/**
 	 * Tear Down: Remove categories created by tests
 	 * @return void
 	 */

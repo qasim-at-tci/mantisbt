@@ -321,18 +321,19 @@ function history_get_event_from_row( $p_result, $p_user_id = null, $p_check_acce
 			}
 		}
 
-		$t_event = array();
-		$t_event['bug_id'] = $v_bug_id;
-		$t_event['date'] = $v_date_modified;
-		$t_event['userid'] = $v_user_id;
+		$t_event = array(
+			'bug_id'    => $v_bug_id,
+			'date'      => $v_date_modified,
+			'userid'    => $v_user_id,
 
-		# user_get_name handles deleted users, and username vs realname
-		$t_event['username'] = user_get_name( $v_user_id );
+			# user_get_name handles deleted users, and username vs realname
+			'username'  => user_get_name( $v_user_id ),
 
-		$t_event['field'] = $v_field_name;
-		$t_event['type'] = $v_type;
-		$t_event['old_value'] = $v_old_value;
-		$t_event['new_value'] = $v_new_value;
+			'field'     => $v_field_name,
+			'type'      => $v_type,
+			'old_value' => $v_old_value,
+			'new_value' => $v_new_value,
+		);
 
 		return $t_event;
 	}

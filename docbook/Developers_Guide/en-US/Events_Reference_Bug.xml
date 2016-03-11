@@ -482,4 +482,37 @@
 
 	</section>
 
+	<section id="dev.eventref.bug.history">
+		<title>History Actions</title>
+
+		<blockquote id="dev.eventref.bug.history.filter">
+			<title>EVENT_HISTORY_FILTER (Chain)</title>
+
+			<blockquote>
+				<para>
+					This event allows a plugin to filter out bug history items,
+					as well as alter the raw history event data.
+					It is triggered after applying standard access level and
+					visibility checks, when retrieving the next history item.
+				</para>
+
+				<itemizedlist>
+					<title>Parameters</title>
+					<listitem><para>&lt;Array&gt;: Raw history data
+						(see <filename>core/history_api.php</filename>)
+					</para></listitem>
+				</itemizedlist>
+
+				<itemizedlist>
+					<title>Return Value</title>
+					<listitem><para>&lt;Array&gt; or <emphasis>false</emphasis>:
+						Updated history data.
+						If <emphasis>false</emphasis>, skip the history item
+						and proceed to the next one.
+					</para></listitem>
+				</itemizedlist>
+			</blockquote>
+		</blockquote>
+	</section>
+
 </section>

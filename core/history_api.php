@@ -33,6 +33,7 @@
  * @uses constant_inc.php
  * @uses custom_field_api.php
  * @uses database_api.php
+ * @uses event_api.php
  * @uses gpc_api.php
  * @uses helper_api.php
  * @uses lang_api.php
@@ -53,6 +54,7 @@ require_api( 'config_api.php' );
 require_api( 'constant_inc.php' );
 require_api( 'custom_field_api.php' );
 require_api( 'database_api.php' );
+require_api( 'event_api.php' );
 require_api( 'gpc_api.php' );
 require_api( 'helper_api.php' );
 require_api( 'lang_api.php' );
@@ -334,6 +336,11 @@ function history_get_event_from_row( $p_result, $p_user_id = null, $p_check_acce
 			'old_value' => $v_old_value,
 			'new_value' => $v_new_value,
 		);
+
+		$t_event = event_signal( 'EVENT_HISTORY_FILTER', array( $t_event ) );
+		if( false === $t_event ) {
+			continue;
+		}
 
 		return $t_event;
 	}

@@ -27,6 +27,8 @@
 
 $t_root_path = dirname( dirname( dirname( __FILE__ ) ) ) . DIRECTORY_SEPARATOR;
 
+require_once $t_root_path . 'tests/TestConfig.php';
+
 # MantisBT constants
 require_once ( $t_root_path . DIRECTORY_SEPARATOR . 'core/constant_inc.php' );
 

@@ -25,6 +25,10 @@
 
 require_once 'SoapBase.php';
 
+# MantisBT Core API
+require_mantis_core();
+
+
 /**
  * Test fixture for category webservice methods.
  *
@@ -111,6 +115,36 @@ class CategoryTest extends SoapBase {
 	 */
 	public function testDeleteDefaultCategory() {
 		$t_project_id = $this->getProjectId();
+global $g_db;
+fwrite(STDERR, var_export($g_db,true) );
+
+
+		# Create a new category and set it as default for moves
+		$t_category_name = $this->getOriginalNameCategory() . '_default';
+		$t_category_id = category_add( $t_project_id, $t_category_name );
+		$this->categoryNamesToDelete[] = $t_category_name;
+
+		$t_default_category_backup = config_get( 'default_category_for_moves', null, null, $t_project_id );
+fwrite(STDERR, config_get( 'default_category_for_moves' ) );
+fwrite(STDERR, $t_default_category_backup );
+		//config_set( 'default_category_for_moves', $t_category_id, NO_USER, $t_project_id );
+
+		# Restore old default category
+		//config_set( 'default_category_for_moves', $t_default_category_backup, NO_USER, $t_project_id );
+		$t_category_id = $this->client->mc_project_add_category(
+			$this->userName,
+			$this->password,
+			$t_project_id,
+			$t_category_name );
+
+
+
+
+		$t_category_id = $this->client->mc_project_add_category(
+			$this->userName,
+			$this->password,
+			$t_project_id,
+			$t_category_name );
 
 		# The API currently does not allow retrieving a category's name by Id
 		# so we can only attempt to delete the default 'General' category.
@@ -132,6 +166,7 @@ class CategoryTest extends SoapBase {
 			$this->userName,
 			$this->password,
 			$t_project_id );
+fwrite(STDERR, config_get( 'default_category_for_moves' ) );
 fwrite(STDERR, $t_default_category_id );
 fwrite(STDERR, var_export($t_category_list, true));
 

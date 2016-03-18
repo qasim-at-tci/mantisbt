@@ -42,6 +42,7 @@ require_lib( 'adodb' . DIRECTORY_SEPARATOR . 'adodb.inc.php' );
 
 # An array in which all executed queries are stored.  This is used for profiling
 # @global array $g_queries_array
+//global $g_queries_array;
 $g_queries_array = array();
 
 
@@ -113,6 +114,7 @@ class MantisDbParam {
 
 # Tracks the query parameter count
 # @global object $g_db_param
+//global $g_db_param;
 $g_db_param = new MantisDbParam();
 
 /**

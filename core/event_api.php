@@ -29,13 +29,15 @@
  * @uses plugin_api.php
  */
 
+# @global array $g_event_cache
+if(!isset($g_event_cache)) {
+	$g_event_cache = array();
+}
+
 require_api( 'constant_inc.php' );
 require_api( 'error_api.php' );
 require_api( 'events_inc.php' );
 require_api( 'plugin_api.php' );
-
-# @global array $g_event_cache
-$g_event_cache = array();
 
 /**
  * Declare an event of a given type.

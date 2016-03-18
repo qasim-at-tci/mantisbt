@@ -79,16 +79,17 @@ function require_mantis_core() {
 	parse_config_global_vars( 'config_defaults_inc.php', $t_var_list );
 	parse_config_global_vars( 'config/config_inc.php', $t_var_list );
 	parse_config_global_vars( 'core/database_api.php', $t_var_list );
+	parse_config_global_vars( 'core/event_api.php', $t_var_list );
 
 	# HTTP headers bypass
 	$t_bypass_headers = 'g_bypass_headers';
 	$t_var_list[] = $t_bypass_headers;
-
+fwrite(STDERR, var_export($t_var_list,true));
 	# Global declaration for all variables
 	$t_decl = '';
 	foreach( $t_var_list as $t_var ) {
 		global $$t_var;
-		$t_decl .= 'global ' . $t_var . ";\n";
+		$t_decl .= 'global $' . $t_var . ";\n";
 	}
 
 	$$t_bypass_headers = true;

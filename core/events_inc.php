@@ -143,3 +143,4 @@ event_declare_many( array(
 	# Logging (tracing) events
 	'EVENT_LOG' => EVENT_TYPE_EXECUTE,
 ) );
+

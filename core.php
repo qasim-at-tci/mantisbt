@@ -93,16 +93,43 @@ if( $t_config_inc_found ) {
  * @return void
  */
 function require_api( $p_api_name ) {
-	static $s_api_included;
+	static $s_api_included = array( 'constant_inc.php' => 1 );
 	global $g_core_path;
+if( php_sapi_name() == 'cli' ) $f = STDERR; else $f = fopen( '/tmp/my.log', 'a' );
 	if( !isset( $s_api_included[$p_api_name] ) ) {
+fwrite($f, "#### $p_api_name\n");
+static $x = false;
+		# Initialize local variables prior to calling get_defined_vars()
+		# to make sure they are not taken into account when processing the delta
+		# to set new global variables
+		$t_old_vars = $t_new_globals = null;
+		$t_old_vars = get_defined_vars();
 		require_once( $g_core_path . $p_api_name );
+if( !$x && isset($GLOBALS['g_event_cache'])) {$x=true; fwrite($f, '**** ' . $p_api_name /*. var_export($GLOBALS['g_event_cache'], true)*/ . "\n"); }
 		$t_new_globals = array_diff_key( get_defined_vars(), $GLOBALS, array( 't_new_globals' => 0 ) );
+		$t_new_globals2 = array_diff_key( get_defined_vars(), $t_old_vars );
+
+//~ if($p_api_name == 'events_inc.php')
+//~ fwrite($f, ''
+	//~ . 'old_vars: ' . var_export(array_keys($t_old_vars), true) . "\n"
+	//~ . 'defined_vars: ' . var_export(array_keys(get_defined_vars()), true) . "\n"
+	//~ . 'globals: ' . substr(var_export(@$GLOBALS['g_event_cache'], true),0,100) . "\n"
+	//~ . 'new_globals: ' . var_export(array_keys($t_new_globals), true) . "\n"
+	//~ . 'new_globals2: ' . var_export(array_keys($t_new_globals2), true) . "\n"
+//~ );
+
 		foreach ( $t_new_globals as $t_global_name => $t_global_value ) {
+//if($t_global_name == 'g_event_cache') fwrite($f, var_export($GLOBALS[$t_global_name], true));
+fprintf($f, "\$GLOBALS[$t_global_name] = ".var_export($t_global_value,true)."\n");
 			$GLOBALS[$t_global_name] = $t_global_value;
 		}
 		$s_api_included[$p_api_name] = 1;
 	}
+//~ else fwrite($f, "---- $p_api_name\n");
+fwrite($f, ''
+	. 'globals: ' . var_export($GLOBALS['g_event_cache'], true) . "\n"
+	);
+
 }
 
 /**
@@ -214,14 +241,12 @@ require_api( 'config_api.php' );
 
 if( !defined( 'MANTIS_MAINTENANCE_MODE' ) ) {
 	if( OFF == $g_use_persistent_connections ) {
-$x=		db_connect( config_get_global( 'dsn', false ), $g_hostname, $g_db_username, $g_db_password, $g_database_name, config_get_global( 'db_schema' ) );
+		db_connect( config_get_global( 'dsn', false ), $g_hostname, $g_db_username, $g_db_password, $g_database_name, config_get_global( 'db_schema' ) );
 	} else {
-$x=		db_connect( config_get_global( 'dsn', false ), $g_hostname, $g_db_username, $g_db_password, $g_database_name, config_get_global( 'db_schema' ), true );
+		db_connect( config_get_global( 'dsn', false ), $g_hostname, $g_db_username, $g_db_password, $g_database_name, config_get_global( 'db_schema' ), true );
 	}
 }
-$f=fopen('/tmp/xx.log','w');
-fwrite($f,var_export($x,true));
-fclose($f);
+
 # Register global shutdown function
 shutdown_functions_register();
 

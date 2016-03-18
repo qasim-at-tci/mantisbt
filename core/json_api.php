@@ -29,9 +29,9 @@
 /**
  * requires url_api
  */
-require_once( 'url_api.php' );
-require_once( 'database_api.php' );
-require_once( 'lang_api.php' );
+require_api( 'url_api.php' );
+require_api( 'database_api.php' );
+require_api( 'lang_api.php' );
 
 /**
  * Get a chunk of JSON from a given URL.

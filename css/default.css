@@ -820,5 +820,10 @@ div.timeline * div.action { padding-top: 3px; }
 .collapse-section-closed	{ display: none; }
 .collapse-link				{ display: none; padding-right: 0.3em; }
 
+/* Select Profile collapsible section in bug report page */
+.profile-select  { float: left; margin-right: 1em; }
+.profile-fill-in { padding-top: 0; }
+#profile_open .profile-fill-in { padding-bottom: 0.5em; }
+
 span.important-msg { color: red }
 span.api-token { font-size: 20pt; font-weight: bold; }

@@ -339,27 +339,32 @@ if( $t_show_attachments ) {
 				</span>
 				<span class="label-style"></span>
 			</div>
-		<?php } ?>
-		<?php if( $t_show_platform || $t_show_os || $t_show_os_version ) { ?>
+<?php
+	}
+
+	# Profile
+	if( $t_show_platform || $t_show_os || $t_show_os_version ) {
+?>
 			<div class="field-container">
 				<label><span><?php echo lang_get( 'select_profile' ) ?></span></label>
 				<span class="select">
 <?php
 					if( count( profile_get_all_for_user( auth_get_current_user_id() ) ) > 0 ) { ?>
-						<select <?php echo helper_get_tab_index() ?> id="profile_id" name="profile_id">
+						<select <?php echo helper_get_tab_index() ?> id="profile_id" name="profile_id" class="profile-select">
 							<?php print_profile_option_list( auth_get_current_user_id(), $f_profile_id ) ?>
 						</select>
 <?php
 					}
 
-					collapse_icon( 'profile' );
-					echo lang_get( 'or_fill_in' );
+		collapse_open( 'profile' );
 ?>
-				</span>
-				<span class="label-style"></span>
-			</div>
+				<div class="profile-fill-in">
+<?php
+		collapse_icon( 'profile' );
+		echo lang_get( 'or_fill_in' );
+?>
+				</div>
 
-			<?php collapse_open( 'profile' ); ?>
 				<div class="field-container">
 					<label><span><?php echo lang_get( 'platform' ) ?></span></label>
 					<span class="input">
@@ -410,10 +415,27 @@ if( $t_show_attachments ) {
 					</span>
 					<span class="label-style"></span>
 				</div>
-			<?php collapse_closed( 'profile' );?>
-			<?php collapse_end( 'profile' ); ?>
-<?php } ?>
+
 <?php
+			collapse_closed( 'profile' );
+?>
+				<div class="profile-fill-in">
+<?php
+			collapse_icon( 'profile' );
+			echo lang_get( 'or_fill_in' );
+?>
+				</div>
+<?php
+			collapse_end( 'profile' );
+?>
+
+				</span>
+				<span class="label-style"></span>
+			</div>
+
+<?php
+	}
+
 	if( $t_show_product_version ) {
 		$t_product_version_released_mask = VERSION_RELEASED;
 

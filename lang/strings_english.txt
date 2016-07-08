@@ -96,6 +96,7 @@ $s_actiongroup_menu_update_product_build = 'Update Product Build';
 $s_actiongroup_menu_update_due_date = 'Update Due Date';
 $s_actiongroup_menu_add_note = 'Add Note';
 $s_actiongroup_menu_attach_tags = 'Attach Tags';
+$s_actiongroup_menu_detach_tags = 'Detach Tags';
 $s_actiongroup_bugs = 'Selected Issues';
 $s_actiongroup_error_issue_is_readonly = 'Issue is readonly.';
 

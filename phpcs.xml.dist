@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<ruleset name="MantisBT">
+	<description>The coding standard for MantisBT.</description>
+
+	<!-- show report in color, with progress -->
+	<arg name="report-width" value="auto"/>
+	<arg name="colors"/>
+	<arg value="p"/>
+	<arg name="encoding" value="utf-8"/>
+
+	<!-- MantisBT rules -->
+	<rule ref="./phing/CodeSniffer/Mantis"></rule>
+
+</ruleset>

@@ -339,10 +339,18 @@ function string_process_bug_link( $p_string, $p_include_anchor = true, $p_detail
 	static $s_bug_link_callback = array();
 
 	$t_tag = config_get( 'bug_link_tag' );
-
 	# bail if the link tag is blank
 	if( '' == $t_tag || $p_string == '' ) {
 		return $p_string;
+	}
+
+	if( is_array( $t_tag ) ) {
+		$t_callback = function ( $p_tag ) {
+			return preg_quote( trim( $p_tag ), '/' );
+		};
+		$t_tag = '(?:' . implode( '|', array_map( $t_callback, $t_tag ) ) . ')';
+	} else {
+		$t_tag = preg_quote( $t_tag, '/' );
 	}
 
 	if( !isset( $s_bug_link_callback[$p_include_anchor][$p_detail_info][$p_fqdn] ) ) {
@@ -379,7 +387,7 @@ function string_process_bug_link( $p_string, $p_include_anchor = true, $p_detail
 	}
 
 	$p_string = preg_replace_callback(
-		'/(^|[^\w&])' . preg_quote( $t_tag, '/' ) . '(\d+)\b/',
+		'/(^|[^\w&])' . $t_tag . '(\d+)\b/',
 		$s_bug_link_callback[$p_include_anchor][$p_detail_info][$p_fqdn],
 		$p_string
 	);
@@ -409,6 +417,7 @@ function string_process_bugnote_link( $p_string, $p_include_anchor = true, $p_de
 	static $s_bugnote_link_callback = array();
 
 	$t_tag = config_get( 'bugnote_link_tag' );
+	$t_tags = array_map('trim', explode('|', $t_tag));
 
 	# bail if the link tag is blank
 	if( '' == $t_tag || $p_string == '' ) {
@@ -462,11 +471,13 @@ function string_process_bugnote_link( $p_string, $p_include_anchor = true, $p_de
 				}; # end of bugnote link callback closure
 		}
 	}
-	$p_string = preg_replace_callback(
-		'/(^|[^\w])' . preg_quote( $t_tag, '/' ) . '(\d+)\b/',
-		$s_bugnote_link_callback[$p_include_anchor][$p_detail_info][$p_fqdn],
-		$p_string
-	);
+	foreach($t_tags as $t_tag) {
+		$p_string = preg_replace_callback(
+			'/(^|[^\w])' . preg_quote( $t_tag, '/' ) . '(\d+)\b/',
+			$s_bugnote_link_callback[$p_include_anchor][$p_detail_info][$p_fqdn],
+			$p_string
+		);
+	}
 	return $p_string;
 }
 

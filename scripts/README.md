@@ -14,5 +14,7 @@ documentation about their purpose and usage.
 
 ### Development
 
+- _pre-commit_ :
+    Git pre-commit hook
 - _travis_before_script.sh_ and _travis_script.sh_ :
     Travis-CI scripts (used in _.travis.yml_) 

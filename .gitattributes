@@ -1,0 +1,11 @@
+# Default attributes for all files
+# Whitespace, per MantisBT Coding Guidelines
+*	whitespace=indent-with-non-tab,trailing-space,cr-at-eol,tabwidth=4
+
+# Exceptions to above rule
+# - Markdown files
+# - YAML spec forbids tabs http://yaml.org/spec/1.2/spec.html#id2777534
+# - Composer lock file is dynamically generated and uses spaces for indents
+*.md	whitespace=-indent-with-non-tab,-trailing-space
+*.yml	whitespace=-indent-with-non-tab
+composer.lock	whitespace=-indent-with-non-tab

@@ -39,7 +39,7 @@ class MenuItem {
 	public $label;
 
 	/**
-	 * Optional FontAwesome icon to display next to label.
+	 * FontAwesome icon to display next to label.
 	 * @var string
 	 */
 	public $icon;

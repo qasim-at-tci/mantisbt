@@ -96,8 +96,15 @@ $t_colors = config_get( 'status_colors' );
 foreach( $t_statuses as $t_id => $t_label ) {
 	# Status color class
 	if( array_key_exists( $t_label, $t_colors ) ) {
+		$t_fg = html_get_status_css_fg( $t_id );
+		$t_bg = html_get_status_css_bg( $t_id );
 		$t_color = $t_colors[$t_label];
-		echo '.' . html_get_status_css_fg( $t_id ) . " { color: {$t_color}; }\n";
-		echo '.' . html_get_status_css_bg( $t_id ) . " { background-color: {$t_color}; }\n";
+
+		echo ".{$t_fg} { color: {$t_color}; }\n";
+		echo ".{$t_bg} { background-color: {$t_color}; }\n";
+
+		# Override black color set by Bootstrap when printing
+		# Only works properly for Chrome and Safari
+		echo "@media print { .{$t_fg}:before { color: {$t_color} !important; -webkit-print-color-adjust: exact; } }\n";
 	}
 }

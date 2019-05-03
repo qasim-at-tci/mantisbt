@@ -27,27 +27,27 @@ script:
 #
 
 php:
-  - 5.5
-  - 5.6
+#  - 5.5
+#  - 5.6
   - 7.0
-  - 7.1
-  - 7.2
-  - 7.3
+#  - 7.1
+#  - 7.2
+#  - 7.3
 
 env:
   - DB=mysql
-  - DB=pgsql
+#  - DB=pgsql
 
 matrix:
   include:
     # Add a specific build for Documentation
-    - env: DOCBOOK=1
-      # Using Ruby as it's preinstalled and we don't need PHP to build docs
-      language: ruby
-      addons:
-        apt:
-          packages:
-            - publican
+#    - env: DOCBOOK=1
+#      # Using Ruby as it's preinstalled and we don't need PHP to build docs
+#      language: ruby
+#      addons:
+#        apt:
+#          packages:
+#            - publican
 
   allow_failures:
 

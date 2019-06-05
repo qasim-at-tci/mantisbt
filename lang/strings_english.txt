@@ -1284,7 +1284,7 @@ $s_close_bug_button = 'Close';
 $s_move_bug_button = 'Move';
 $s_attached_files = 'Attached Files';
 $s_publish = 'Publish';
-$s_add_user_to_monitor = 'Add';
+$s_add_user_to_monitor = 'Start Monitoring';
 $s_browser_does_not_support_audio = 'Your browser does not support audio tag.';
 $s_browser_does_not_support_video = 'Your browser does not support video tag.';
 

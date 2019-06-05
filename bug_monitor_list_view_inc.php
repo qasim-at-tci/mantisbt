@@ -119,17 +119,65 @@ if( $t_can_see_monitors || $t_can_add_others ) {
 								</div>
 <?php
 	if( $t_can_add_others ) {
-?>
+		# Build list of users who can monitor the bug, excluding those already monitoring it
+		# @@@ Code is mostly based on print_user_option_list - maybe modify that slightly, to avoid code duplication
+		$t_users_can_monitor = project_get_all_user_rows( $g_project_override, config_get( 'monitor_bug_threshold' ) );
 
-		<div class="space-10"></div>
-		<form method="get" action="bug_monitor_add.php" class="form-inline noprint">
-			<?php echo form_security_field( 'bug_monitor_add' ) ?>
-			<input type="hidden" name="bug_id" value="<?php echo (integer)$f_bug_id; ?>" />
-			<label for="bug_monitor_list_username"><?php echo lang_get( 'username' ) ?></label>
-			<input type="text" class="input-sm" id="bug_monitor_list_username" name="username" />
-			<input type="submit" class="btn btn-primary btn-sm btn-white btn-round" value="<?php echo lang_get( 'add_user_to_monitor' ) ?>" />
-		</form>
-<?php } ?>
+		$t_display = array();
+		$t_sort = array();
+		$t_show_realname = ( ON == config_get( 'show_realname' ) );
+		$t_sort_by_last_name = ( ON == config_get( 'sort_by_last_name' ) );
+
+		foreach( $t_users_can_monitor as $key => $t_user ) {
+
+			# If user is already monitoring the issue, remove them from list
+			if( in_array( $t_user['id'], $t_users ) ) {
+				unset( $t_users_can_monitor[$key] );
+				continue;
+			}
+
+			$t_user_name = string_attribute( $t_user['username'] );
+			$t_sort_name = mb_strtolower( $t_user_name );
+			if( $t_show_realname && ( $t_user['realname'] <> '' ) ) {
+				$t_user_name = string_attribute( $t_user['realname'] );
+				if( $t_sort_by_last_name ) {
+					$t_sort_name_bits = explode( ' ', mb_strtolower( $t_user_name ), 2 );
+					$t_sort_name = ( isset( $t_sort_name_bits[1] ) ? $t_sort_name_bits[1] . ', ' : '' ) . $t_sort_name_bits[0];
+				} else {
+					$t_sort_name = mb_strtolower( $t_user_name );
+				}
+			}
+			$t_display[] = $t_user_name;
+			$t_sort[] = $t_sort_name;
+		}
+
+		# Display form only if there are users who can monitor the bug
+		if( count( $t_users_can_monitor ) > 0 ) {
+			array_multisort( $t_sort, SORT_ASC, SORT_STRING, $t_users_can_monitor, $t_display );
+?>
+            <div class="space-10"></div>
+            <form method="get" action="bug_monitor_add.php">
+            <?php echo form_security_field( 'bug_monitor_add' ) ?>
+                <input type="hidden" name="bug_id" value="<?php echo (integer)$f_bug_id; ?>" />
+                <select name="user_id[]" class="input-sm" multiple>
+                    <option value="0"><?php echo '[' . lang_get( 'myself' ) . ']'; ?></option>";
+<?php
+						# Build selection list with all users who can monitor this bug
+						foreach( $t_users_can_monitor as $key => $t_user ) {
+							echo '<option value="' . $t_user['id'] . '" ';
+							echo '>' . string_attribute( $t_display[$key] ) . '</option>';
+						}
+?>
+                </select>
+
+                <button class="btn btn-primary btn-sm btn-white btn-round">
+                    <?php echo lang_get( 'add_user_to_monitor' ) ?>
+                </button>
+            </form>
+<?php
+        }
+    }
+?>
 							</td>
 						</tr>
 					</table>

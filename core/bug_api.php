@@ -2019,14 +2019,19 @@ function bug_reopen( $p_bug_id, $p_bugnote_text = '', $p_time_tracking = '0:00',
 /**
  * Updates the bug's last_updated field.
  * @param integer $p_bug_id Integer representing bug identifier.
+ * @param integer $p_last_modified  Optional timestamp, defaults to current
  * @return void
  * @access public
  * @uses database_api.php
  */
-function bug_date_update( $p_bug_id ) {
+function bug_date_update( $p_bug_id, $p_last_modified = 0 ) {
 	db_param_push();
 	$t_query = 'UPDATE {bug} SET last_updated=' . db_param() . ' WHERE id=' . db_param();
-	db_query( $t_query, array( db_now(), $p_bug_id ) );
+	$t_param = array(
+		$p_last_modified ? $p_last_modified : db_now(),
+		$p_bug_id
+	);
+	db_query( $t_query, $t_param );
 
 	bug_clear_cache( $p_bug_id );
 }

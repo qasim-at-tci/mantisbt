@@ -841,7 +841,7 @@ function tag_bug_attach( $p_tag_id, $p_bug_id, $p_user_id = null ) {
 	history_log_event_special( $p_bug_id, TAG_ATTACHED, $t_tag_name );
 
 	# updated the last_updated date
-	bug_update_date( $p_bug_id );
+	bug_date_update( $p_bug_id );
 
 	return true;
 }
@@ -891,7 +891,7 @@ function tag_bug_detach( $p_tag_id, $p_bug_id, $p_add_history = true, $p_user_id
 	}
 
 	# updated the last_updated date
-	bug_update_date( $p_bug_id );
+	bug_date_update( $p_bug_id );
 
 	return true;
 }

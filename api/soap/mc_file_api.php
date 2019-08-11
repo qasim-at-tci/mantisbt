@@ -177,7 +177,7 @@ function mci_file_add( $p_id, $p_name, $p_content, $p_file_type, $p_table, $p_ti
 
 	if( 'bug' == $p_table ) {
 		# bump the last_updated date
-		bug_update_date( $t_issue_id );
+		bug_date_update( $t_issue_id );
 
 		# add history entry
 		history_log_event_special( $t_issue_id, FILE_ADDED, $p_name );

@@ -303,7 +303,7 @@ function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_
 
 	# update bug last updated
 	if( !$p_skip_bug_update ) {
-		bug_update_date( $p_bug_id );
+		bug_date_update( $p_bug_id );
 	}
 
 	# log new bug
@@ -706,7 +706,7 @@ function bugnote_set_text( $p_bugnote_id, $p_bugnote_text ) {
 
 	# updated the last_updated date
 	bugnote_date_update( $p_bugnote_id );
-	bug_update_date( $t_bug_id );
+	bug_date_update( $t_bug_id );
 
 	# insert a new revision
 	$t_user_id = auth_get_current_user_id();

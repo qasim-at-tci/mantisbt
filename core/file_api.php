@@ -862,7 +862,7 @@ function file_add( $p_bug_id, array $p_file, $p_table = 'bug', $p_title = '', $p
 	if( 'bug' == $p_table ) {
 		# update the last_updated date
 		if( !$p_skip_bug_update ) {
-			bug_update_date( $p_bug_id );
+			bug_date_update( $p_bug_id );
 		}
 
 		# log file added to bug history

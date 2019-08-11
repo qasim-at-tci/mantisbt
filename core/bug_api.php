@@ -795,7 +795,7 @@ class BugData {
 		}
 
 		# Update the last update date
-		bug_update_date( $c_bug_id );
+		bug_date_update( $c_bug_id );
 
 		# allow bypass if user is sending mail separately
 		if( false == $p_bypass_mail ) {
@@ -1818,7 +1818,7 @@ function bug_set_field( $p_bug_id, $p_field_name, $p_value ) {
 
 	# updated the last_updated date
 	if( $p_field_name != 'last_updated' ) {
-		bug_update_date( $p_bug_id );
+		bug_date_update( $p_bug_id );
 	}
 
 	# log changes except for duplicate_id which is obsolete and should be removed in
@@ -1879,7 +1879,7 @@ function bug_assign( $p_bug_id, $p_user_id, $p_bugnote_text = '', $p_bugnote_pri
 		bugnote_process_mentions( $p_bug_id, $t_bugnote_id, $p_bugnote_text );
 
 		# updated the last_updated date
-		bug_update_date( $p_bug_id );
+		bug_date_update( $p_bug_id );
 
 		bug_clear_cache( $p_bug_id );
 
@@ -2017,19 +2017,33 @@ function bug_reopen( $p_bug_id, $p_bugnote_text = '', $p_time_tracking = '0:00',
 }
 
 /**
- * updates the last_updated field
+ * Updates the bug's last_updated field.
  * @param integer $p_bug_id Integer representing bug identifier.
- * @return boolean (always true)
+ * @return void
  * @access public
  * @uses database_api.php
  */
-function bug_update_date( $p_bug_id ) {
+function bug_date_update( $p_bug_id ) {
 	db_param_push();
 	$t_query = 'UPDATE {bug} SET last_updated=' . db_param() . ' WHERE id=' . db_param();
 	db_query( $t_query, array( db_now(), $p_bug_id ) );
 
 	bug_clear_cache( $p_bug_id );
+}
 
+/**
+ * updates the last_updated field.
+ * Stub for backwards-compatibility after renaming the function.
+ * @param integer $p_bug_id Integer representing bug identifier.
+ * @param integer $p_last_modified  Optional timestamp
+ * @return boolean (always true)
+ * @deprecated v2.22.0 replaced by bug_date_update()
+ */
+function bug_update_date( $p_bug_id ) {
+	log_event(LOG_AJAX, 'DEPRECATED CALL');
+	error_parameters( __FUNCTION__ . '()', 'bug_date_update()' );
+	trigger_error( ERROR_DEPRECATED_SUPERSEDED, DEPRECATED );
+	bug_date_update( $p_bug_id, $p_last_modified = 0 );
 	return true;
 }
 
@@ -2066,7 +2080,7 @@ function bug_monitor( $p_bug_id, $p_user_id ) {
 	history_log_event_special( $c_bug_id, BUG_MONITOR, $c_user_id );
 
 	# updated the last_updated date
-	bug_update_date( $p_bug_id );
+	bug_date_update( $p_bug_id );
 
 	email_monitor_added( $p_bug_id, $p_user_id );
 
@@ -2159,7 +2173,7 @@ function bug_unmonitor( $p_bug_id, $p_user_id ) {
 	history_log_event_special( $p_bug_id, BUG_UNMONITOR, (int)$p_user_id );
 
 	# updated the last_updated date
-	bug_update_date( $p_bug_id );
+	bug_date_update( $p_bug_id );
 
 	return true;
 }

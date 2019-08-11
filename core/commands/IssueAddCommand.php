@@ -381,7 +381,7 @@ class IssueAddCommand extends Command {
 			# it's a child generation... let's create the relationship and add some lines in the history
 
 			# update master bug last updated
-			bug_update_date( $t_master_issue_id );
+			bug_date_update( $t_master_issue_id );
 
 			# Add log line to record the cloning action
 			history_log_event_special( $t_issue_id, BUG_CREATED_FROM, '', $t_master_issue_id );

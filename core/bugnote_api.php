@@ -664,13 +664,18 @@ function bugnote_set_time_tracking( $p_bugnote_id, $p_time_tracking ) {
 /**
  * Update the last_modified field of the bugnote
  * @param integer $p_bugnote_id A bugnote identifier.
+ * @param integer $p_last_modified  Optional timestamp, defaults to current
  * @return void
  * @access public
  */
-function bugnote_date_update( $p_bugnote_id ) {
+function bugnote_date_update( $p_bugnote_id, $p_last_modified = 0 ) {
 	db_param_push();
 	$t_query = 'UPDATE {bugnote} SET last_modified=' . db_param() . ' WHERE id=' . db_param();
-	db_query( $t_query, array( db_now(), $p_bugnote_id ) );
+	$t_param = array(
+		$p_last_modified ? $p_last_modified : db_now(), $p_bug_id,
+		$p_bugnote_id
+	);
+	db_query( $t_query, $t_param );
 }
 
 /**

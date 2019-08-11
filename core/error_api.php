@@ -449,6 +449,16 @@ function error_print_delayed() {
 }
 
 /**
+ * Returns true if there are delayed error messages pending for display.
+ * @return bool
+ */
+function error_delayed_errors_pending() {
+	global $g_errors_delayed;
+
+	return !empty( $g_errors_delayed );
+}
+
+/**
  * Print out the error details
  * @param string  $p_file    File error occurred in.
  * @param integer $p_line    Line number error occurred on.

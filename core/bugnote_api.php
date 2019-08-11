@@ -303,7 +303,7 @@ function bugnote_add( $p_bug_id, $p_bugnote_text, $p_time_tracking = '0:00', $p_
 
 	# update bug last updated
 	if( !$p_skip_bug_update ) {
-		bug_date_update( $p_bug_id );
+		bug_date_update( $p_bug_id, $c_last_modified );
 	}
 
 	# log new bug

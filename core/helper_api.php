@@ -592,13 +592,19 @@ function helper_get_tab_index() {
 }
 
 /**
- * returns a boolean indicating whether SQL queries executed should be shown or not.
+ * Returns true if messages need to be shown prior to redirect.
+ * This could happen if SQL queries are printed on page, or in the case of
+ * deprecated warnings.
  * @return boolean
  */
 function helper_log_to_page() {
-	# Check is authenticated before checking access level, otherwise user gets
+	# Check if authenticated before checking access level, otherwise user gets
 	# redirected to login_page.php.  See #8461.
-	return config_get_global( 'log_destination' ) === 'page' && auth_is_user_authenticated() && access_has_global_level( config_get( 'show_log_threshold' ) );
+	return error_delayed_errors_pending()
+		|| ( config_get_global( 'log_destination' ) === 'page'
+			&& auth_is_user_authenticated()
+			&& access_has_global_level( config_get( 'show_log_threshold' ) )
+			);
 }
 
 /**

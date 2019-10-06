@@ -22,6 +22,7 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\API\ApiObjectFactory;
 use Mantis\Exceptions\ClientException;
 
 $g_app->group('/issues', function() use ( $g_app ) {

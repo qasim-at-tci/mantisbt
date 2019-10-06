@@ -23,6 +23,8 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\API\ApiObjectFactory;
+
 # Bypass default Mantis headers
 $g_bypass_headers = true;
 $g_bypass_error_handler = true;

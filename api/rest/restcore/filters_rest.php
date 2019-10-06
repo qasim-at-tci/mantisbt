@@ -24,6 +24,7 @@
 
 require_once( dirname( dirname( dirname( __FILE__ ) ) ) . '/soap/mc_filter_api.php'  );
 
+use Mantis\API\ApiObjectFactory;
 use \Slim\Http\Request as SlimRequest;
 use \Slim\Http\Response as SlimResponse;
 

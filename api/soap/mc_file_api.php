@@ -23,6 +23,8 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\API\ApiObjectFactory;
+
 /**
  * Check if the current user can download attachments for the specified bug.
  * @param integer $p_bug_id  A bug identifier.

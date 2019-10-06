@@ -22,6 +22,8 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\API\ApiObjectFactory;
+
 $g_app->group('/projects', function() use ( $g_app ) {
 	$g_app->get( '', 'rest_projects_get' );
 	$g_app->get( '/', 'rest_projects_get' );

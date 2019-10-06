@@ -25,6 +25,7 @@
 
 require_once( dirname( __FILE__ ) . '/mc_core.php' );
 
+use Mantis\API\ApiObjectFactory;
 use Mantis\Exceptions\ClientException;
 
 /**

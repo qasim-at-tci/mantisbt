@@ -25,6 +25,8 @@
 
 require_once( dirname( __FILE__ ) . '/mc_core.php' );
 
+use Mantis\API\ApiObjectFactory;
+
 /**
  * Get the issue attachment with the specified id.
  *

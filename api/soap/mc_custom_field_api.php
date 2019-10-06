@@ -23,6 +23,8 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\API\ApiObjectFactory;
+
 /**
  * Get the custom field id given an object ref.  The id is set based on the following algorithm:
  * - id from objectref (if not zero).

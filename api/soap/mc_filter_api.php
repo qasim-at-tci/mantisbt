@@ -31,6 +31,8 @@
 
 require_api( 'filter_constants_inc.php' );
 
+use Mantis\API\ApiObjectFactory;
+
 // doesn't contain 'custom_fields' and project_id
 $g_soap_api_to_filter_names = array(
 	'search' => FILTER_PROPERTY_SEARCH,

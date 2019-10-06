@@ -40,6 +40,7 @@ require_once( dirname( __FILE__ ) . '/../../api/soap/mc_issue_api.php' );
 require_once( dirname( __FILE__ ) . '/../../api/soap/mc_project_api.php' );
 
 use Mantis\Exceptions\ClientException;
+use Mantis\API\ApiObjectFactory;
 
 /**
  * Sample:

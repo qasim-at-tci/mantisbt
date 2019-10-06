@@ -214,15 +214,6 @@ function autoload_mantis( $p_class ) {
 		$p_class = substr( $p_class, $t_end_of_namespace + 1 );
 	}
 
-	# Exceptions
-	if( substr( $p_class, -9 ) === 'Exception' ) {
-		$t_require_path = $g_core_path . 'exceptions/' . $p_class . '.php';
-		if( file_exists( $t_require_path ) ) {
-			require_once( $t_require_path );
-			return;
-		}	
-	}
-
 	# Legacy, non-namespaced MantisBT classes
 	global $g_class_path;
 	$t_require_path = $g_class_path . $p_class . '.class.php';

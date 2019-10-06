@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace Mantis\Commands;
+
 require_api( 'bug_api.php' );
 require_api( 'constant_inc.php' );
 require_api( 'config_api.php' );

@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace Mantis\Commands;
+
 /**
  * A base class for intent based commands that can accomplish a task.
  * Such commands will be used from web ui action pages, REST API, SOAP API, etc.

@@ -35,11 +35,15 @@ require_api( 'relationship_api.php' );
 require_api( 'string_api.php' );
 require_api( 'user_api.php' );
 
-require_once( dirname( __FILE__ ) . '/../../api/soap/mc_api.php' );
-require_once( dirname( __FILE__ ) . '/../../api/soap/mc_enum_api.php' );
-require_once( dirname( __FILE__ ) . '/../../api/soap/mc_issue_api.php' );
-require_once( dirname( __FILE__ ) . '/../../api/soap/mc_project_api.php' );
+global $g_absolute_path;
+$t_soap_path = $g_absolute_path . '/api/soap/';
 
+require_once( $t_soap_path . 'mc_api.php' );
+require_once( $t_soap_path . 'mc_enum_api.php' );
+require_once( $t_soap_path . 'mc_issue_api.php' );
+require_once( $t_soap_path . 'mc_project_api.php' );
+
+use \BugData;
 use Mantis\Exceptions\ClientException;
 
 /**

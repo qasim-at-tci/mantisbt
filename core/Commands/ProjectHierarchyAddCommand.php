@@ -22,7 +22,9 @@ require_api( 'helper_api.php' );
 require_api( 'project_api.php' );
 require_api( 'project_hierarchy_api.php' );
 
-require_once( dirname( __FILE__ ) . '/../../api/soap/mc_api.php' );
+global $g_absolute_path;
+$t_soap_path = $g_absolute_path . '/api/soap/';
+require_once( $t_soap_path . 'mc_api.php' );
 
 use Mantis\Exceptions\ClientException;
 

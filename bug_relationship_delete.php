@@ -38,6 +38,8 @@ require_api( 'helper_api.php' );
 require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\IssueRelationshipDeleteCommand;
+
 form_security_validate( 'bug_relationship_delete' );
 
 $f_rel_id = gpc_get_int( 'rel_id' );

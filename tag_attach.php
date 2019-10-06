@@ -45,6 +45,8 @@ require_api( 'print_api.php' );
 require_api( 'string_api.php' );
 require_api( 'utility_api.php' );
 
+use Mantis\Commands\TagAttachCommand;
+
 form_security_validate( 'tag_attach' );
 
 $f_bug_id = gpc_get_int( 'bug_id' );

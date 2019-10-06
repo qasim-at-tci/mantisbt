@@ -63,6 +63,8 @@ require_api( 'string_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
 
+use Mantis\Commands\IssueDeleteCommand;
+
 auth_ensure_user_authenticated();
 helper_begin_long_process();
 

@@ -43,6 +43,8 @@ require_api( 'html_api.php' );
 require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\ProjectHierarchyDeleteCommand;
+
 form_security_validate( 'manage_proj_subproj_delete' );
 
 auth_reauthenticate();

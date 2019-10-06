@@ -51,6 +51,8 @@ require_api( 'print_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
 
+use Mantis\Commands\VersionAddCommand;
+
 form_security_validate( 'manage_proj_ver_add' );
 
 auth_reauthenticate();

@@ -40,6 +40,8 @@ require_api( 'history_api.php' );
 require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\IssueRelationshipAddCommand;
+
 form_security_validate( 'bug_relationship_add' );
 
 $f_rel_type = gpc_get_int( 'rel_type' );

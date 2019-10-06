@@ -52,6 +52,8 @@ require_api( 'print_api.php' );
 require_api( 'string_api.php' );
 require_api( 'utility_api.php' );
 
+use Mantis\Commands\IssueAddCommand;
+
 form_security_validate( 'bug_report' );
 
 $f_master_bug_id = gpc_get_int( 'm_id', 0 );

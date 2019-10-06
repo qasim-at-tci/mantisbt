@@ -36,6 +36,8 @@ require_api( 'gpc_api.php' );
 require_api( 'print_api.php' );
 require_api( 'string_api.php' );
 
+use Mantis\Commands\IssueNoteDeleteCommand;
+
 form_security_validate( 'bugnote_delete' );
 
 $f_bugnote_id = gpc_get_int( 'bugnote_id' );

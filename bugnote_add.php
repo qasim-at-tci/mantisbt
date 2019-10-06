@@ -35,6 +35,8 @@ require_api( 'form_api.php' );
 require_api( 'gpc_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\IssueNoteAddCommand;
+
 form_security_validate( 'bugnote_add' );
 
 $f_bug_id = gpc_get_int( 'bug_id' );

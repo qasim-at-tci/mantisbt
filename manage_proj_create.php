@@ -51,6 +51,8 @@ require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 require_api( 'project_api.php' );
 
+use Mantis\Commands\ProjectHierarchyAddCommand;
+
 form_security_validate( 'manage_proj_create' );
 
 auth_reauthenticate();

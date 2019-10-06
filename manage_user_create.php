@@ -49,6 +49,8 @@ require_api( 'print_api.php' );
 require_api( 'string_api.php' );
 require_api( 'utility_api.php' );
 
+use Mantis\Commands\UserCreateCommand;
+
 form_security_validate( 'manage_user_create' );
 
 auth_reauthenticate();

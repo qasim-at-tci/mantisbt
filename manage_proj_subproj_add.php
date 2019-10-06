@@ -45,6 +45,8 @@ require_api( 'html_api.php' );
 require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\ProjectHierarchyAddCommand;
+
 form_security_validate( 'manage_proj_subproj_add' );
 
 auth_reauthenticate();

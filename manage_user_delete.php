@@ -49,6 +49,8 @@ require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 require_api( 'user_api.php' );
 
+use Mantis\Commands\UserDeleteCommand;
+
 form_security_validate( 'manage_user_delete' );
 
 auth_reauthenticate();

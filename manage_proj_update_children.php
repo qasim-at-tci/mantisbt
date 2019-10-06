@@ -41,6 +41,8 @@ require_api( 'form_api.php' );
 require_api( 'gpc_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\ProjectHierarchyUpdateCommand;
+
 form_security_validate( 'manage_proj_update_children' );
 
 auth_reauthenticate();

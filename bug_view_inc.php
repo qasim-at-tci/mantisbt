@@ -77,6 +77,8 @@ require_api( 'version_api.php' );
 
 require_css( 'status_config.php' );
 
+use Mantis\Commands\IssueViewPageCommand;
+
 $f_issue_id = gpc_get_int( 'id' );
 $f_history = gpc_get_bool( 'history', config_get( 'history_default_visible' ) );
 

@@ -34,6 +34,8 @@ require_api( 'form_api.php' );
 require_api( 'gpc_api.php' );
 require_api( 'print_api.php' );
 
+use Mantis\Commands\TagDetachCommand;
+
 form_security_validate( 'tag_detach' );
 
 $f_tag_id = gpc_get_int( 'tag_id' );

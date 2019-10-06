@@ -31,34 +31,9 @@
 
 require_api( 'api_token_api.php' );
 
+use Mantis\API\RestFault;
 use Mantis\Exceptions\ClientException;
 use Mantis\Exceptions\LegacyApiFaultException;
-
-/**
- * A class to capture a RestFault
- */
-class RestFault {
-	/**
-	 * @var integer The http status code
-	 */
-	public $status_code;
-
-	/**
-	 * @var string The http status string
-	 */
-	public $fault_string;
-
-	/**
-	 * RestFault constructor.
-	 *
-	 * @param integer $p_status_code The http status code
-	 * @param string $p_fault_string The error description
-	 */
-	function __construct( $p_status_code, $p_fault_string = '' ) {
-		$this->status_code = $p_status_code;
-		$this->fault_string = $p_fault_string === null ? '' : $p_fault_string;
-	}
-}
 
 /**
  * A factory class that can abstract away operations that can behave differently based

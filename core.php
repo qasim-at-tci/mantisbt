@@ -180,16 +180,17 @@ function http_is_protocol_https() {
  * @return void
  */
 function autoload_mantis( $p_class ) {
-	global $g_core_path, $g_class_path;
+	global $g_core_path;
 
-	# Search in subdirectory within classes path, following namespace
-	# this includes classes wihtout namespace, without "class.php" extension, only ".php"
+	# Search in subdirectory within core path, following namespace
 	if( strpos( $p_class, 'Mantis\\' ) === 0 ) {
 		$t_class = substr( $p_class, 7 );
 	} else {
 		$t_class = $p_class;
 	}
-	$t_require_path = $g_class_path . str_replace('\\', DIRECTORY_SEPARATOR, $t_class) . '.php';
+	$t_require_path = $g_core_path
+		. str_replace( '\\', DIRECTORY_SEPARATOR, $t_class )
+		. '.php';
 	if( is_readable( $t_require_path ) ) {
 		require_once( $t_require_path );
 		return;
@@ -219,17 +220,17 @@ function autoload_mantis( $p_class ) {
 		}	
 	}
 
-	global $g_library_path;
-
+	# Legacy, non-namespaced MantisBT classes
+	global $g_class_path;
 	$t_require_path = $g_class_path . $p_class . '.class.php';
-
 	if( file_exists( $t_require_path ) ) {
 		require_once( $t_require_path );
 		return;
 	}
 
+	# Legacy RSS builder classes
+	global $g_library_path;
 	$t_require_path = $g_library_path . 'rssbuilder' . DIRECTORY_SEPARATOR . 'class.' . $p_class . '.inc.php';
-
 	if( file_exists( $t_require_path ) ) {
 		require_once( $t_require_path );
 		return;

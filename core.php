@@ -176,6 +176,18 @@ function http_is_protocol_https() {
 /**
  * Define an autoload function to automatically load classes when referenced
  *
+ * To reduce the mess in the classes directory and as a first step towards PSR-4
+ * compliance, the autoloader looks for classes under the core directory, based
+ * on a tree structure matching the class' namespace, excluding the top-level
+ * `Mantis` namespace.
+ *
+ * The include file name must match the class name, with a .php extension
+ * (e.g. the file for class `Foo` in namespace `Mantis\Bar` will be
+ * `<core_path>/Bar/Foo.php`).
+ *
+ * If that does not work or there is no namespace, the legacy naming convention
+ * and autoload method will apply, i.e. look for `<class_path>/Foo.class.php`.
+ *
  * @param string $p_class Class name being autoloaded.
  * @return void
  */

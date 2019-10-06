@@ -23,6 +23,17 @@
  */
 
 use Mantis\API\ApiObjectFactory;
+use Mantis\Commands\IssueAddCommand,
+	Mantis\Commands\IssueDeleteCommand,
+	Mantis\Commands\IssueFileAddCommand,
+	Mantis\Commands\IssueFileGetCommand,
+	Mantis\Commands\IssueNoteAddCommand,
+	Mantis\Commands\IssueNoteDeleteCommand,
+	Mantis\Commands\IssueRelationshipAddCommand,
+	Mantis\Commands\IssueRelationshipDeleteCommand,
+	Mantis\Commands\MonitorAddCommand,
+	Mantis\Commands\TagAttachCommand,
+	Mantis\Commands\TagDetachCommand;
 use Mantis\Exceptions\ClientException;
 
 $g_app->group('/issues', function() use ( $g_app ) {

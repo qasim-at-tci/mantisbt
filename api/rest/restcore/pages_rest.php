@@ -22,6 +22,7 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\Commands\IssueViewPageCommand;
 use Mantis\Exceptions\ClientException;
 
 $g_app->group('/pages', function() use ( $g_app ) {

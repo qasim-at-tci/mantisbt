@@ -22,6 +22,9 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\Commands\ProjectHierarchyAddCommand,
+	Mantis\Commands\ProjectHierarchyUpdateCommand,
+	Mantis\Commands\ProjectHierarchyDeleteCommand;
 use Mantis\API\ApiObjectFactory;
 
 $g_app->group('/projects', function() use ( $g_app ) {

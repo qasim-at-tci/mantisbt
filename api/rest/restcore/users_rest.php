@@ -22,6 +22,9 @@
  * @link http://www.mantisbt.org
  */
 
+use Mantis\Commands\UserCreateCommand,
+	Mantis\Commands\UserDeleteCommand;
+
 $g_app->group('/users', function() use ( $g_app ) {
 	$g_app->get( '/me', 'rest_user_get_me' );
 

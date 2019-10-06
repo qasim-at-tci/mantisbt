@@ -24,6 +24,7 @@
  */
 
 use Mantis\API\ApiObjectFactory;
+use Mantis\Commands\VersionAddCommand;
 use Mantis\Exceptions\ClientException;
 
 /**

@@ -16,6 +16,7 @@
 
 namespace Mantis\API;
 
+use \SoapFault;
 use Mantis\Exceptions\LegacyApiFaultException;
 
 /**
@@ -116,10 +117,10 @@ class ApiObjectFactory {
 	/**
 	 * Generate fault based on provided exception.
 	 *
-	 * @param Exception $p_exception The exception to process.
+	 * @param \Exception $p_exception The exception to process.
 	 * @return RestFault|SoapFault The fault object.
 	 */
-	static function faultFromException( Exception $p_exception ) {
+	static function faultFromException( \Exception $p_exception ) {
 		$t_code = $p_exception->getCode();
 
 		switch( $t_code ) {
@@ -244,7 +245,7 @@ class ApiObjectFactory {
 
 	/**
 	 * Convert a soap object to an array
-	 * @param stdClass|array $p_object Object.
+	 * @param \stdClass|array $p_object Object.
 	 * @param boolean $p_recursive
 	 * @return array
 	 */
@@ -270,7 +271,7 @@ class ApiObjectFactory {
 		$t_string_value = self::datetimeString( $p_value );
 
 		if( ApiObjectFactory::$soap ) {
-			return new SoapVar($t_string_value, XSD_DATETIME, 'xsd:dateTime');
+			return new \SoapVar($t_string_value, XSD_DATETIME, 'xsd:dateTime');
 		}
 
 		return $t_string_value;
@@ -281,7 +282,7 @@ class ApiObjectFactory {
 	 * @param integer $p_timestamp Integer value to format as date time string.
 	 * @return string for provided timestamp
 	 */
-	static function datetimeString($p_timestamp ) {
+	static function datetimeString( $p_timestamp ) {
 		if( $p_timestamp == null || date_is_null( $p_timestamp ) ) {
 			return null;
 		}

@@ -97,8 +97,6 @@ require_api( 'project_api.php' );
 require_api( 'string_api.php' );
 require_api( 'utility_api.php' );
 
-require_css( 'status_config.php' );
-
 use Mantis\Exceptions\ClientException;
 
 /**

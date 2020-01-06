@@ -40,8 +40,6 @@ require_api( 'html_api.php' );
 require_api( 'lang_api.php' );
 require_api( 'string_api.php' );
 
-require_css( 'status_config.php' );
-
 /**
  * Initialise bug action group api
  * @param string $p_action Custom action to run.
@@ -70,6 +68,7 @@ function bug_group_action_init( $p_action ) {
  * @return void
  */
 function bug_group_action_print_top() {
+	require_css( 'status_config.php' );
 	layout_page_header();
 	layout_page_begin();
 }

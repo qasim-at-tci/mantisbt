@@ -16,6 +16,12 @@
     "require-dev": {
         "phpunit/phpunit": "^4.8"
     },
+    "suggest": {
+        "ext-curl": "Required for some plugins (e.g. source-integration, ManTweet)",
+        "ext-fileinfo": "Required for file attachments and many plugins",
+        "ext-gd": "Required for the captcha feature",
+        "ext-ldap": "Required for LDAP authentication"
+    },
     "repositories": [
         {
             "type": "vcs",

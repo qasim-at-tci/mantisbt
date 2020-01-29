@@ -72,9 +72,12 @@ function mention_get_candidates( $p_text ) {
 			. '(?<=^|[^\w])'
 			# Negative lookbehind  to ensure we don't match multiple tags
 			. '(?<!' . $t_quoted_tag . ')' . $t_quoted_tag
-			. ')'
+			. ')('
 			# any word char, dash or period, must end with word char
-			. '([\w\-.]*[\w])'
+			. '[\w\-.]*[\w]'
+			# or any char between braces {} - enables match of username with spaces
+			. '|\{[^}]+\}'
+			. ')'
 			# Lookforward to ensure next char is not a valid mention char or
 			# the end of the string, or the mention tag
 			. '(?=[^\w@]|$)'
@@ -108,7 +111,7 @@ function mention_get_users( $p_text ) {
 	$t_mentioned_users = array();
 
 	foreach( $t_matches as $t_candidate ) {
-		if( $t_user_id = user_get_id_by_name( $t_candidate ) ) {
+		if( $t_user_id = user_get_id_by_name( trim( $t_candidate, '{}' ) ) ) {
 			if( false === $t_user_id ) {
 				continue;
 			}

@@ -880,14 +880,22 @@ event_signal( 'EVENT_MANAGE_PROJECT_PAGE', array( $f_project_id ) );
 
 						<div class="widget-toolbox padding-8 clearfix">
 							<div class="form-inline pull-left">
-								<input type="submit" name="submit-apply" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'apply_changes' ) ?>" />
+								<button name="submit-apply"
+									class="btn btn-primary btn-white btn-round">
+									<?php echo lang_get( 'apply_changes' ) ?>
+								</button>
 							</div>
 							<div class="form-inline pull-right">
 								<?php echo form_security_field( 'manage_proj_user_remove' ) ?>
-								<input type="submit" name="btn-remove-all" class="btn btn-primary btn-white btn-round btn-xs"
-									formaction="manage_proj_user_remove.php" value="<?php echo lang_get( 'remove_all_link' ) ?>">
-								<button name="btn-undo-remove-all" class="hidden btn btn-primary btn-white btn-round btn-xs">
-									<?php echo lang_get( 'undo' ). ': ', lang_get( 'remove_all_link' ) ?></button>
+								<button type="submit" name="btn-remove-all"
+									class="btn btn-primary btn-white btn-round"
+									formaction="manage_proj_user_remove.php" >
+									<?php echo lang_get( 'remove_all_link' ) ?>
+								</button>
+								<button name="btn-undo-remove-all"
+									class="hidden btn btn-primary btn-white btn-round">
+									<?php echo lang_get( 'undo' ). ': ', lang_get( 'remove_all_link' ) ?>
+								</button>
 							</div>
 						</div>
 					</form>

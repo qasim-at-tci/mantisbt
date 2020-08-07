@@ -685,21 +685,6 @@ event_signal( 'EVENT_MANAGE_PROJECT_PAGE', array( $f_project_id ) );
 
 <div class="col-md-12 col-xs-12">
 	<div class="space-10"></div>
-	<div class="alert alert-info">
-		<div class="center bigger-110">
-			<i class="fa fa-info-circle"></i>
-	<?php
-	if( VS_PUBLIC == project_get_field( $f_project_id, 'view_state' ) ) {
-		echo lang_get( 'public_project_msg' );
-	} else {
-		echo lang_get( 'private_project_msg' );
-	} ?>
-	</div>
-	</div>
-</div>
-
-<div class="col-md-12 col-xs-12">
-	<div class="space-10"></div>
 	<div id="manage-project-users-div" class="form-container">
 		<div class="widget-box widget-color-blue2">
 			<div class="widget-header widget-header-small">
@@ -708,6 +693,22 @@ event_signal( 'EVENT_MANAGE_PROJECT_PAGE', array( $f_project_id ) );
 					<?php echo lang_get( 'manage_accounts_title' ); ?>
 				</h4>
 			</div>
+
+			<div class="widget-body">
+				<div class="alert alert-info">
+					<div class="center bigger-110">
+						<i class="fa fa-info-circle"></i>
+<?php
+						if( VS_PUBLIC == project_get_field( $f_project_id, 'view_state' ) ) {
+							echo lang_get( 'public_project_msg' );
+						} else {
+							echo lang_get( 'private_project_msg' );
+						}
+?>
+					</div>
+				</div>
+			</div>
+
 			<div class="widget-body" id="manage-project-users-list">
 
 				<div class="widget-toolbox padding-8 clearfix">

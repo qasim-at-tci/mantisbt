@@ -47,7 +47,7 @@ require_api( 'lang_api.php' );
 require_api( 'print_api.php' );
 require_api( 'project_api.php' );
 
-form_security_validate( 'manage_proj_delete' );
+form_security_validate( 'manage_proj_update' );
 
 auth_reauthenticate();
 

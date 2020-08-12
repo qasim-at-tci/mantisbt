@@ -1,0 +1,80 @@
+[[admin.config.issues]]
+== Issues visibility
+
+By default, all issues are visible to any user within a project. To
+limit the visibility of issues there are several mechanisms.
+
+[[admin.config.issues.private]]
+=== Public/Private view status
+
+A view status flag can be set, for an issue, to be either public or
+private. Private issues are accesible by the user who created it, and by
+those users that meet a threshold defined in `$g_private_bug_threshold`.
+
+Refer to the following configuration options related to issue view
+status configurations:
+
+$g_default_bug_view_status::
+  The default viewing status for the new bug (VS_PUBLIC or VS_PRIVATE).
+  The default is VS_PUBLIC.
+$g_private_bug_threshold::
+  The threshold for a user to be able to view any private issue within a
+  project.
+$g_set_view_status_threshold::
+  The threshold for a user to be able to set an issue to Private/Public.
+$g_change_view_status_threshold::
+  The threshold for a user to be able to update the view status while
+  updating an issue.
+
+[[admin.config.issues.limitedview]]
+=== Limited view configuration
+
+The `$g_limit_view_unless_threshold` option allows the administrator to
+configure access limitations for users, letting them view only those
+issues that they are involved with, i.e. if:
+
+* They reported the issue,
+* It is assigned to them,
+* Or they are monitoring the issue.
+
+This configuration option can be set individually for each project. It
+defaults to ANYBODY, effectively disabling the limitation (i.e. users
+can see all issues).
+
+The value for this option is an access level threshold, so that those
+users that meet that threshold have an unrestricted view of any issue in
+the project. A user that doesn't meet this threshold, will have a
+restricted view of only those issues in the conditions previously
+described.
+
+Note that this visibility does not override other restrictions as
+_private issues_ or _pivate projects_ user assignments.
+
+[[admin.config.issues.limitreporters]]
+=== "Limit reporters" configuration (deprecated)
+
+When the option `$g_limit_reporters` is enabled, users that are
+reporters in a project, or lower access level, are only allowed to see
+the issues they reported. Issues reported by other users are not
+accessible by them.
+
+This option is only supported for ALL_PROJECTS, this means that it's a
+global setting that affects all projects
+
+Note that the definition of _reporter_ in this context is the actual
+access level for which a user is able to report issues, and is
+determined by `$g_report_bug_threshold`. Additionally, that threshold
+can have different values in each project. Being dependant on that
+threshold, the behaviour of this option is not well defined when the
+reporting threshold is configured as discrete values with gaps, instead
+of a simple threshold. In that scenario, the visibilty is determined by
+the minimum access level contained in the `$g_report_bug_threshold`
+access levels array.
+
+[NOTE]
+====
+This option option is deprecated in favour of
+`$g_limit_view_unless_threshold`. The new option will be available by
+default on new installations, or after disabling `$g_limit_reporters` if
+enabled in an existing instance.
+====

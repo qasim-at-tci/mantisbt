@@ -1,0 +1,20 @@
+[[admin.config.speed]]
+== Speed Optimisation
+
+$g_compress_html::
+  This option is used to enable buffering/compression of HTML output if
+  the user's browser supports it. Default value is ON. This option will
+  be ignored in the following scenarios:
+  +
+  * If php.ini has zlib.output_compression enabled.
+  * If php.ini has output_handler set to a handler.
+  * If PHP does not include the zlib extension (PHP 4.3.0 and later
+  include zlib extension by default).
+  +
+  You can check the loaded modules in your PHP by running "php -m" on
+  the command line, or by using php_info() command in a php script.
+$g_use_persistent_connections::
+  Use persistent database connections, setting this to ON will open the
+  database once per connection, rather than once per page. There might
+  be some scalability issues here and that is why it is defaulted to
+  OFF.

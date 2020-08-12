@@ -1,0 +1,29 @@
+[[admin.config.sponsorship]]
+== Sponsorship
+
+$g_enable_sponsorship::
+  enable/disable the whole issue sponsorship feature. The default os
+  OFF.
+$g_sponsorship_currency::
+  The currency string used for all sponsorships. The default is 'US$'.
+$g_minimum_sponsorship_amount::
+  The minimum sponsorship amount that can be entered. If the user enters
+  a value less than this, an error will be flagged. The default is 5.
+$g_view_sponsorship_total_threshold::
+  The access level threshold needed to view the total sponsorship for an
+  issue by all users. The default is VIEWER.
+$g_view_sponsorship_details_threshold::
+  The access level threshold needed to view the details of the
+  sponsorship (i.e., who will donate what) for an issue by all users.
+  The default is VIEWER.
+$g_sponsor_threshold::
+  The access level threshold needed to allow user to sponsor issues. The
+  default is REPORTER. Note that sponsoring user must have their email
+  set in their profile.
+$g_handle_sponsored_bugs_threshold::
+  The access level required to be able to handle sponsored issues. The
+  default is DEVELOPER.
+$g_assign_sponsored_bugs_threshold::
+  The access level required to be able to assign a sponsored issue to a
+  user with access level greater or equal to
+  'handle_sponsored_bugs_threshold'. The default is MANAGER.

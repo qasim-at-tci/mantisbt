@@ -1,0 +1,15 @@
+[[admin.config.subprojects]]
+== Sub-Projects
+
+$g_subprojects_enabled::
+  Whether sub-projects feature should be enabled. Before turning this
+  flag OFF, make sure all sub-projects are moved to top level projects,
+  otherwise they won't be accessible. The default value is ON.
+$g_subprojects_inherit_versions::
+  Whether sub-projects should inherit versions from parent projects. For
+  project X which is a sub-project of A and B, it will have versions
+  from X, A and B. The default value is ON.
+$g_subprojects_inherit_categories::
+  Whether sub-projects should inherit categories from parent projects.
+  For project X which is a sub-project of A and B, it will have
+  categories from X, A and B. The default value is ON.

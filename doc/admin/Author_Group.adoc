@@ -1,0 +1,3 @@
+MantisBT Development Team
+
+mantisbt-dev@lists.sourceforge.net

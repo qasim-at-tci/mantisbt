@@ -1,0 +1,26 @@
+[[admin.config.wiki]]
+== Wiki Integration
+
+$g_wiki_enable::
+  Set to ON to enable Wiki integration. Defaults to OFF.
+$g_wiki_engine::
+  The following Wiki Engine values are supported:
+  +
+  * _dokuwiki_: https://www.dokuwiki.org/[DokuWiki]
+  * _mediawiki_: https://www.mediawiki.org/[MediaWiki]
+  * _twiki_: http://twiki.org/[TWiki]
+  * _wikka_: http://wikkawiki.org/[WikkaWiki]
+  * _xwiki_: http://www.xwiki.org/[XWiki]
+$g_wiki_root_namespace::
+  Wiki namespace to be used as root for all pages relating to this
+  MantisBT installation.
+$g_wiki_engine_url::
+  URL under which the wiki engine is hosted.
+  +
+  Must be on the same server as MantisBT, requires a trailing '/'.
+  +
+  If left empty (default), the URL is derived from the global MantisBT
+  path ($g_path, see link:#admin.config.path[???]), replacing the URL's
+  path component by the wiki engine string (i.e. if $g_path =
+  'http://example.com/mantis/' and $g_wiki_engine = 'dokuwiki', the wiki
+  URL will be 'http://example.com/dokuwiki/').

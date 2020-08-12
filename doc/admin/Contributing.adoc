@@ -1,0 +1,48 @@
+[[admin.contributing]]
+== Contributing to MantisBT
+
+[[admin.contributing.develop]]
+=== Talent and Time
+
+One of the greatest ways to contribute to MantisBT is to contribute your
+talent and time. For MantisBT to keep growing we need such support in
+all areas related to the software development cycle. This includes:
+business analysts, developers, web designers, graphics designers,
+technical writers, globalization developers, translators, testers, super
+users, packagers and active users. If you would like to contribute in
+any of these capacities please contact us through the "Contact Us" page.
+
+[[admin.contributing.share]]
+=== Recommend MantisBT to Others
+
+It feels great when we get feedback from the user community about how
+MantisBT boosted their productivity, and benefited their organization. A
+lot of the feedback I get is via email, some on mailing lists, and some
+on forums. I would encourage such users to blog about it, tell their
+friends about MantisBT, and recommend MantisBT to other organizations.
+MantisBT is driven by it's community, the greater the community, the
+greater the ideas, the greater of a product it becomes.
+
+[[admin.contributing.blog]]
+=== Blog about MantisBT
+
+If you have a blog, then talk about MantisBT, review it's features and
+help us spread the word. A lot of users also like to blog about how they
+customized MantisBT to fit their needs or to integrate with other tools
+that they use in their work environment.
+
+[[admin.contributing.integrate]]
+=== Integrate with MantisBT
+
+If you have a product that can be integrated with MantisBT to provide
+value for MantisBT users, that would be a great place to contribute and
+benefit both your project's and the MantisBT community.
+
+A great example in this area are integrations with content management
+systems (e.g. *Nuke, Xoops), project management (PHPProjekt), and
+TestLink for Test Management. MantisBT can easily be integrated with
+projects in any programming language whether it is hosted on the same
+webserver or anywhere else in the world. This can be achieved through
+its SOAP API and MantisConnect client libraries. MantisConnect comes
+with client libraries and samples in languages like PHP, .NET, Java and
+Cocoa.

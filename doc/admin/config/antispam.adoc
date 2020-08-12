@@ -1,0 +1,10 @@
+[[admin.config.antispam]]
+== Anti-Spam Configuration
+
+$g_antispam_max_event_count::
+  Max number of events to allow for users with default access level (see
+  $g_default_new_account_access_level) when signup is enabled. Use 0 for
+  no limit. Default is 10.
+$g_antispam_time_window_in_seconds::
+  Time window to enforce max events within. Default is 3600 seconds (1
+  hour).

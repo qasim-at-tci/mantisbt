@@ -1,0 +1,73 @@
+[[admin.troubleshooting]]
+== Troubleshooting
+
+This chapter provides the Administrator with additional information
+related to Application Errors and common problems in MantisBT.
+
+Useful additional reference information and support may also be found on
+the https://mantisbt.org/[MantisBT website], more specifically the
+https://mantisbt.org/forums/[Forums] and the
+https://mantisbt.org/bugs/[Bugtracker].
+
+[[admin.troubleshooting.errors]]
+=== Application Errors
+
+Additional information about common MantisBT errors.
+
+[[admin.troubleshooting.errors.2800]]
+==== Error 2800 - Invalid form security token
+
+This error may only occur when Form Validation is enabled with
+$g_form_security_validation = ON (see
+link:#admin.config.webserver[???]). There are several known cases that
+could trigger it:
+
+* Multiple submissions of a form by clicking on the submit button
+several times (user error)
+* Invalid or unauthorized submission of a form, e.g. by hand-crafting
+the URL (CSRF attack)
+* Expired PHP session
+
+In the first two instances, MantisBT's behavior is by design, and the
+response as expected. For expired sessions however, the user is impacted
+by system behavior, which could not only cause confusion, but also
+potential loss of submitted form data. What happens is driven by several
+php.ini configuration settings:
+
+* The ratio
+https://www.php.net/session.gc-probability[session.gc_probability]
+divided by https://www.php.net/session.gc-divisor[session.gc_divisor],
+which determines the probability that the garbage collection process
+will start when a session is initialized.
+* https://www.php.net/session.gc-maxlifetime[session.gc_maxlifetime]
+which specifies (as the name does not indicate) the _minimum_ validity
+of session data.
+
+With PHP default values, sessions created more than 1440 seconds (24
+minutes) ago have a 1% chance to be invalidated each time a new session
+is initialized. This explains the seemingly random occurrence of this
+error.
+
+Unfortunately, this problem cannot be fixed without a major rework of
+the way sessions and form security are handled in MantisBT.
+
+As a workaround, the Administrator can
+
+* Increase the value of
+https://www.php.net/session.gc-maxlifetime[session.gc_maxlifetime]
+* Set $g_form_security_validation = OFF. _Note that for security
+reasons, it is strongly recommended not to do this._
+
+Users may also install local tools to avoid loss of form data, such as
+https://chrome.google.com/webstore/detail/typio-form-recovery/djkbihbnjhkjahbhjaadbepppbpoedaa[Typio
+Form Recovery] Chrome extension, or
+https://stephanmahieu.github.io/fhc-home/[Form History Control] add-on
+for Firefox and Chrome.
+
+Further references and reading:
+
+* MantisBT issues https://mantisbt.org/bugs/view.php?id=12381[12381],
+https://mantisbt.org/bugs/view.php?id=12492[12492],
+https://mantisbt.org/bugs/view.php?id=13106[13106],
+https://mantisbt.org/bugs/view.php?id=13246[13246]
+* https://mantisbt.org/forums/search.php?keywords=2800[MantisBT forums]

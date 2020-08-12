@@ -1,0 +1,289 @@
+[[admin.config.email]]
+== Email
+
+$g_webmaster_email::
+  The webmaster's e-mail address. This address is displayed in the
+  bottom of all MantisBT pages. webmaster@example.com
+$g_from_email::
+  The email address to be used as the source of all emails sent by
+  MantisBT. noreply@example.com
+$g_from_name::
+  The sender name of all emails sent by MantisBT. Mantis Bug Tracker
+$g_return_path_email::
+  Email address to receive bounced emails.
+$g_enable_email_notification::
+  Set to ON to enable email notifications, OFF to disable them. Default
+  is ON. Note that disabling email notifications has no effect on emails
+  generated as part of the user signup process. When set to OFF, the
+  password reset feature is disabled. Additionally, notifications of
+  administrators updating accounts are not sent to users.
+$g_email_notifications_verbose::
+  When enabled, the email notifications will include the full issue with
+  a hint about the change type at the top, rather than using dedicated
+  notifications that are focused on what changed. This change can be
+  overridden in the database per user. Default is OFF.
+$g_default_notify_flags::
+  Associates a default notification flag with each action, to control
+  who should be notified. The default will be used if the action is not
+  defined in _$g_notify_flags_ or if the flag is not included in the
+  specific action definition.
+  +
+  The list of actions include: _new_, _assigned_, _resolved_, _bugnote_,
+  _reopened_, _closed_, _deleted_, _feedback_.
+  +
+  The default is:
+  +
+....
+$g_default_notify_flags = array(
+    'reporter'      => ON,
+    'handler'       => ON,
+    'monitor'       => ON,
+    'bugnotes'      => ON,
+    'category'      => ON,
+    'explicit'      => ON,
+    'threshold_min' => NOBODY,
+    'threshold_max' => NOBODY
+);
+....
+  +
+  _threshold_min_ and _threshold_max_ are used to send messages to all
+  members of the project whose status is
+  +
+  * greater than or equal to _threshold_min_, and
+  * less than or equal to _threshold_max_.
+  +
+  Sending messages to everyone would set _threshold_min_ to ANYBODY and
+  _threshold_max_ to NOBODY. To send to all DEVELOPERS and above, use
+  DEVELOPER and NOBODY respectively.
+$g_notify_flags::
+  Defines the specific notification flags when they are different from
+  the defaults defined in _$g_default_notify_flags_.
+  +
+  For example, the following code overrides the default by disabling
+  notifications to bugnote authors and users monitoring the bug when
+  submitting a new bug:
+  +
+....
+$g_notify_flags['new'] = array(
+    'bugnotes' => OFF,
+    'monitor' => OFF,
+);
+....
+  +
+  See link:#admin.customize.email[???] for further examples of
+  customizing the notification flags.
+  +
+  Available actions include:
+  +
+  * _new_: a new bug has been added
+  * _reopened_: the bug has been reopened
+  * _deleted_: a bug has been deleted
+  * _owner_: the bug has been assigned a new owner
+  * _bugnote_: a bugnote has been added to a bug
+  * _sponsor_: the sponsorship for the bug has changed (added, deleted
+  or updated)
+  * _relation_: a relationship for the bug has changed (added, deleted
+  or updated)
+  * _monitor_: a user is added to the monitor list.
+  +
+  In addition, an action can match the bug status in
+  _$g_status_enum_string_. Note that spaces in the string are replaced
+  with underscores ('_') when creating the action. Thus, using the
+  defaults, 'feedback' would be a valid action.
+$g_email_receive_own::
+  This defines whether users should receive emails for their own
+  actions. This option is defaulted to OFF, hence, users do not receive
+  email notification for their own actions. This can be a source for
+  confusions for users upgrading from MantisBT 0.17.x versions, since in
+  these versions users used to get notified of their own actions.
+$g_validate_email::
+  Determines whether email addresses are validated.
+  +
+  When ON (default), validation is performed using the pattern given by
+  the
+  https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address[HTML5
+  specification for _email_ type form input elements]. When OFF,
+  validation is disabled.
+  +
+  [NOTE]
+  ====
+  Regardless of how this option is set, validation is never performed
+  when using LDAP email (i.e. when $g_use_ldap_email = ON, see
+  link:#admin.config.auth.ldap[???]), as we assume that it is handled by
+  the directory.
+  ====
+$g_check_mx_record::
+  Set to OFF to disable email checking. Default is OFF.
+$g_allow_blank_email::
+  If ON, allows the user to omit an email address field. If you allow
+  users to create their own accounts, they must specify an email at that
+  point, no matter what the value of this option is. Otherwise they
+  wouldn't get their passwords.
+  +
+  Administrators are able to bypass this check to enable them to create
+  special accounts like anonymous access and other service accounts that
+  don't need notifications.
+$g_email_login_enabled::
+  Enable support for logging in by email and password, in addition to
+  username and password. This will only work as long as there is a
+  single user with the specified email address and the email address is
+  not blank. The default value is OFF.
+$g_email_ensure_unique::
+  When enabled, the uniqueness of email addresses will be enforced for
+  new users as well as updates to existing ones. Note that there can be
+  duplicate emails before this option was turned ON. Default is ON.
+$g_limit_email_domains::
+  Only allow and send email to addresses in the given domain(s). This is
+  useful as a security feature and it is also useful in cases like
+  Sourceforge where its servers are limited to only sending emails to
+  SourceForge email addresses in order to avoid spam.
+  $g_limit_email_domains = array( 'users.sourceforge.net',
+  'sourceforge.net' );
+$g_show_user_email_threshold::
+  This specifies the access level that is needed to have user names
+  hyperlinked with mailto: links. The default value is NOBODY, hence,
+  even administrators won't have this feature enabled.
+$g_phpMailer_method::
+  Select the method to send mail:
+  +
+  * _PHPMAILER_METHOD_MAIL_ for use of mail() function,
+  * _PHPMAILER_METHOD_SENDMAIL_ for sendmail (or postfix),
+  * _PHPMAILER_METHOD_SMTP_ for SMTP,
+  +
+  Default is PHPMAILER_METHOD_MAIL.
+$g_smtp_host::
+  This option specifies the SMTP server to submit messages to. The SMTP
+  server (MTA) then takes on the responsibility of delivering messages
+  to their final destinations.
+  +
+  To use the local SMTP (if available) set this to 'localhost',
+  otherwise use the fully qualified domain name of the remote SMTP
+  server.
+  +
+  It can be either a single hostname, or multiple semicolon-delimited
+  hostnames. You can specify for each host a port other than the
+  default, using format: _hostname:port_ (e.g.
+  "smtp1.example.com:25;smtp2.example.com").
+  +
+  Hosts will be tried in the given order.
+  +
+  [NOTE]
+  ====
+  This is only used with _PHPMAILER_METHOD_SMTP_ (see
+  $g_phpmailer_method).
+  ====
+  +
+  The default is 'localhost'.
+$g_smtp_port::
+  The default SMTP port to use. This can be overridden individually for
+  specific hosts. (see $g_smtp_host).
+  +
+  Typical SMTP ports are 25 and 587.
+  +
+  The default is 25.
+$g_smtp_connection_mode::
+  Allow secure connection to the SMTP server. Valid values are:
+  +
+  * _'' (empty string)_: No encryption. This is the default.
+  * _ssl_
+  * _tls_
+$g_smtp_username::
+  SMTP Server Authentication user
+  +
+  Allows the use of SMTP Authentication when using a remote SMTP host.
+  +
+  [NOTE]
+  ====
+  must be set to '' (empty string) if the SMTP host does not require
+  authentication.
+  ====
+  +
+  Default is ''.
+$g_smtp_password::
+  This is the password that is used in SMTP Authentication. Not used
+  when $g_smtp_username = ''
+  +
+  Default is ''.
+$g_email_dkim_enable::
+  Enables DomainKeys Identified Mail (DKIM) Signatures (rfc6376). To
+  successfully sign mails you need to enable DKIM and provide at least:
+  _DKIM domain (see $g_email_dkim_domain)_, _DKIM private key or key
+  file path (see $g_email_dkim_private_key_file_path and
+  $g_email_dkim_private_key_string)_, _DKIM selector (see
+  $g_email_dkim_selector)_, _DKIM identity (see
+  $g_email_dkim_identity)_.
+  +
+  The default is OFF.
+$g_email_dkim_domain::
+  Defines domain for DomainKeys Identified Mail (DKIM) Signatures.
+  +
+  Typically same as the host part of the $g_from_email. For example
+  example.com.
+$g_email_dkim_private_key_file_path::
+  Path to the private domain key to be used for DomainKeys Identified
+  Mail (DKIM) Signatures.
+  +
+  If the key is specified in $g_email_dkim_private_key_string this
+  setting will not be used.
+$g_email_dkim_private_key_string::
+  Private domain key to be used for DomainKeys Identified Mail (DKIM)
+  Signatures.
+  +
+  This string should contain private key for signing. Leave empty string
+  if you wish to load the key from the file defined with
+  $g_email_dkim_private_key_file_path.
+$g_email_dkim_selector::
+  Selector to be used for DomainKeys Identified Mail (DKIM) Signatures.
+  +
+  If your domain is example.com, typically DNS TXT field should have:
+  _host: mail.example._domainkey_, _value: v=DKIM1; t=s; n=core; k=rsa;
+  p=[public key]_. In this case selector should be mail.example
+$g_email_dkim_passphrase::
+  Private DKIM domain key password.
+  +
+  Leave empty string if your private key does not have password
+$g_email_dkim_identity::
+  Identity to be used for DomainKeys Identified Mail (DKIM) Signatures.
+  +
+  This is usually the same as your g_from_email. For example
+  noreply@example.com
+$g_email_retry_in_days::
+  Duration (in days) to retry failed emails before deleting them from
+  queue. Default 7 days.
+$g_email_send_using_cronjob::
+  Disables sending of emails as soon as an action is performed. Emails
+  are instead queued and must be sent by running scripts/send_emails.php
+  periodically. This script can only be executed from the CLI, not from
+  the web interface, for security reasons.
+  +
+  Enabling this option can help with performance problems if large
+  numbers of emails are generated or mail delivery is slow by not
+  delaying page execution when sending emails.
+$g_email_separator1::
+  Default is str_pad('', 70, '='); This means 70 equal signs.
+$g_email_separator2::
+  Default is str_pad('', 70, '-'); This means 70 minus signs.
+$g_email_padding_length::
+  Default is 28.
+
+MantisBT uses flags and a threshold system to generate emails on events.
+For each new event, email is sent to:
+
+* the reporter, qualified by the notify flag 'reporter' below
+* the handler (or Assigned to), qualified by the notify flag 'handler'
+below
+* anyone monitoring the bug, qualified by the notify flag 'monitor'
+below
+* anyone who has ever added a bugnote the bug, qualified by the notify
+flag 'bugnotes' below
+* anyone assigned to the project whose access level is greater than or
+equal to the notify flag 'threshold_min' and less than or equal to the
+notify flag 'threshold_max' below
+
+From this list, those recipients who meet the following criteria are
+eliminated:
+
+* the originator of the change, if $g_email_receive_own is OFF
+* the recipient either no longer exists, or is disabled
+* the recipient has turned their email_on_<new status> preference OFF
+* the recipient has no email address entered

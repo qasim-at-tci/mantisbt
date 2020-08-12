@@ -1,0 +1,17 @@
+[[admin.config.timezone]]
+== Time Zone
+
+$g_default_timezone::
+  Default timezone to use in MantisBT. This configuration is normally
+  initialized when installing Mantis. It should be set to one of the
+  values specified in the https://www.php.net/timezones[List of
+  Supported Timezones].
+  +
+  If this config is left blank, the timezone will be initialized by
+  calling function
+  https://www.php.net/date-default-timezone-get[date_default_timezone_get()],
+  which will fall back to _UTC_ if unable to determine the timezone.
+  +
+  Correct configuration of this variable can be confirmed by running the
+  administration checks. Users can override the default timezone under
+  user their preferences.

@@ -1,0 +1,133 @@
+[[admin.config.display]]
+== Display
+
+$g_font_family::
+  Name of the google font family for the browser to use. For all
+  available fonts, see: https://fonts.google.com/[fonts.google.com].
+$g_font_family_choices::
+  Google font family list offered to the user to chose from. Font files
+  are fetched from google servers.
+$g_font_family_choices_local::
+  This is a small subset of _$g_font_family_choices_ in which font files
+  are part of MantisBT installation.
+$g_window_title::
+  This is the browser window title (<TITLE> tag).
+$g_search_title::
+  This is used as prefix to describe Browser Search entries, and must be
+  short enough so that when inserted into the 'opensearch_XXX_short'
+  language string, the resulting text is 16 characters or less, to be
+  compliant with the limit for the ShortName element as defined in the
+  https://github.com/dewitt/opensearch/blob/master/opensearch-1-1-draft-6.md[OpenSearch
+  specification].
+  +
+  Defaults to the value of $g_window_title.
+$g_favicon_image::
+  Path to the favorites icon relative to MantisBT root folder This icon
+  should be of _image/x-icon_ MIME type, and its size 16x16 pixels. It
+  is also used to decorate OpenSearch Browser search entries. (default
+  'images/favicon.ico').
+$g_logo_image::
+  Path to the logo image relative to MantisBT root folder (default
+  'images/mantis_logo.gif').
+$g_logo_url::
+  The default URL to be associated with the logo. By default this is set
+  to $g_default_home_page (which defaults to My View page). Clicking on
+  the logo from any page in the bug tracker will navigate to the URL
+  specified in this configuration option.
+$g_show_project_menu_bar::
+  This option specifies whether to add menu at the top of the page which
+  includes links to all the projects. The default value is OFF.
+$g_show_assigned_names::
+  When a bug is assigned then replace the word "assigned" with the name
+  of the developer in parenthesis. Default is ON.
+$g_show_priority_text::
+  Specifies whether to show priority as text (ON) or icon (OFF) in the
+  view all bugs page. Default is OFF (icon).
+$g_priority_significant_threshold::
+  Define the priority level at which a bug becomes significant.
+  Significant bugs are displayed with emphasis. Set this value to -1 to
+  disable the feature. The default value is HIGH.
+$g_severity_significant_threshold::
+  Define the severity level at which a bug becomes significant.
+  Significant bugs are displayed with emphasis. Set this value to -1 to
+  disable the feature. The default value is MAJOR.
+$g_view_issues_page_columns::
+  This configuration option is used to select the columns to be included
+  in the View Issues page and in which order. If one of the column is
+  not accessible to the logged in user, or corresponds to a disabled
+  feature, then it will be automatically removed from the list at
+  runtime. Hence, the same column list may show a different set of
+  columns based on the logged in user, the currently selected project
+  and enabled features (e.g. sponsorship_total is only shown if the
+  sponsorship feature is enabled).
+  +
+  The supported columns are: selection, edit, id, project_id,
+  reporter_id, handler_id, priority, reproducibility, projection, eta,
+  resolution, fixed_in_version, view_state, os, os_build, build (for
+  product build), platform, version, date_submitted, attachment_count,
+  category, sponsorship_total, severity, status, last_updated, summary,
+  bugnotes_count, description, steps_to_reproduce, additional_info. As
+  for custom fields they can be referenced by adding a 'custom_' to
+  their name (e.g. xyz would be custom_xyz).
+  +
+  By default the following columns are selected: selection, edit,
+  priority, id, sponsorship_total, bugnotes_count, attachment_count,
+  category_id, severity, status, last_updated, summary.
+$g_print_issues_page_columns::
+  This configuration option is used to select the columns to be included
+  in the Print Issues page and in which order. See
+  $g_view_issues_page_columns for more details about the supported
+  fields.
+  +
+  By default the following columns are selected: selection, priority,
+  id, sponsorship_total, bugnotes_count, attachment_count, category_id,
+  severity, status, last_updated, summary
+$g_csv_columns::
+  This configuration option is used to select the columns to be included
+  in the CSV export and in which order. See $g_view_issues_page_columns
+  for more details about the supported fields.
+  +
+  By default the following columns are selected: id, project_id,
+  reporter_id, handler_id, priority, severity, reproducibility, version,
+  build, projection, category_id, date_submitted, eta, os, os_build,
+  platform, view_state, last_updated, summary, status, resolution,
+  fixed_in_version, duplicate_id.
+$g_excel_columns::
+  This configuration option is used to select the columns to be included
+  in the CSV export and in which order. See $g_view_issues_page_columns
+  for more details about the supported fields.
+  +
+  By default the following columns are selected: id, project_id,
+  reporter_id, handler_id, priority, severity, reproducibility, version,
+  build, projection, category_id, date_submitted, eta, os, os_build,
+  platform, view_state, last_updated, summary, status, resolution,
+  fixed_in_version, duplicate_id.
+$g_show_bug_project_links::
+  Show project links when in All Projects mode. Default is ON.
+$g_show_product_version::
+  This controls display of the product version in the report, view,
+  update and print issue pages. This flag also applies to other product
+  version related fields like product build, fixed in version, and
+  target version. Valid values are ON, OFF, and AUTO. ON for always
+  displayed, AUTO for displayed when project has versions defined, and
+  OFF for always OFF. The default value is AUTO.
+$g_show_version_dates_threshold::
+  The access level threshold at which users will see the date of release
+  for product versions. Dates will be shown next to the product version,
+  target version and fixed in version fields. Set this threshold to
+  NOBODY to disable the feature. Default value is NOBODY.
+$g_show_realname::
+  This control will replace the user's userid with their realname. If it
+  is set to ON, and the real name field has been populated, the
+  replacement will occur. It defaults to OFF.
+$g_show_avatar::
+  Show the users' avatar
+  +
+  In addition to enabling this configuration option it is necessary to
+  install an avatar plugin like the https://www.gravatar.com[Gravatar]
+  plugin which is bundled out of the box.
+$g_show_avatar_threshold::
+  The threshold of users for which MantisBT should show the avatar
+  (default DEVELOPER). Note that the threshold is related to the user
+  for whom the avatar is being shown, rather than the user who is
+  currently logged in.

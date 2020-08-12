@@ -1,0 +1,191 @@
+[[admin.config.logging]]
+== System Logging and Debugging
+
+This section describes settings which can be used to troubleshoot
+MantisBT operations as well as assist during development.
+
+$g_show_timer::
+  Time page loads. The page execution timer shows at the bottom of each
+  page.
+  +
+  Default is OFF.
+$g_show_memory_usage::
+  Show memory usage for each page load in the footer.
+  +
+  Default is OFF.
+$g_debug_email::
+  Used for debugging e-mail notifications. When it is '', the emails are
+  sent normally. If set to an e-mail address, all messages are sent to
+  it, with the original recipients (To, Cc, Bcc) included in the message
+  body.
+  +
+  Default is ''.
+$g_show_queries_count::
+  Shows the total number/unique number of queries executed to serve the
+  page.
+  +
+  Default is OFF.
+$g_display_errors::
+  Errors Display Method. Defines what
+  https://www.php.net/errorfunc.constants[errors] are displayed and how.
+  Available options are:
+  +
+  DISPLAY_ERROR_HALT;;
+    Stop and display the error message (including variables and
+    backtrace if _$g_show_detailed_errors_ is ON).
+  DISPLAY_ERROR_INLINE;;
+    Display a one line error and continue execution.
+  DISPLAY_ERROR_NONE;;
+    Suppress the error (no display). This is the default behavior for
+    unspecified https://www.php.net/errorfunc.constants[errors
+    constants].
+  +
+  The default settings, recommended for use in production will only
+  display and exit on errors and suppress warninga and notices.
+  +
+  Recommended `config_inc.php` settings for developers:
+  +
+....
+$g_display_errors = array(
+    E_USER_WARNING => DISPLAY_ERROR_HALT,
+    E_WARNING      => DISPLAY_ERROR_HALT,
+    E_ALL          => DISPLAY_ERROR_INLINE,
+);
+....
+  +
+  [NOTE]
+  ====
+  The system automatically sets _$g_display_errors_ to the above
+  recommended development values when the server's name is _localhost_.
+  ====
+  +
+  Less intrusive settings, recommended for testing purposes:
+  +
+....
+$g_display_errors = array(
+    E_USER_WARNING => DISPLAY_ERROR_INLINE,
+    E_WARNING      => DISPLAY_ERROR_INLINE,
+);
+....
+  +
+  [WARNING]
+  ====
+  `E_USER_ERROR` should _always_ be set to `DISPLAY_ERROR_HALT`. Using
+  any other value will cause program execution to continue despite the
+  error, which may lead to data integrity issues and/or cause MantisBT
+  to function incorrectly.
+  ====
+$g_show_detailed_errors::
+  Shows a list of variables and their values whenever an error is
+  triggered. Only applies to error types configured to
+  `DISPLAY_ERROR_HALT` in _$g_display_errors_.
+  +
+  Default is OFF.
+  +
+  [WARNING]
+  ====
+  Setting this to ON is a potential security hazard, as it can expose
+  sensitive information. Only enable this setting for debugging purposes
+  when you really need it.
+  ====
+$g_stop_on_errors::
+  Debug messages. If this option is turned OFF, page redirects will
+  function if a non-fatal error occurs. For debugging purposes, you can
+  set this to ON so that any non-fatal error will prevent page
+  redirection, allowing you to see the errors.
+  +
+  Default is OFF.
+  +
+  [NOTE]
+  ====
+  This should only be turned on when debugging.
+  ====
+$g_log_level::
+  The system logging interface is used to extract detailed debugging
+  information for the MantisBT system. It can also serve as an audit
+  trail for users' actions.
+  +
+  This controls the type of logging information recorded. Refer to
+  _$g_log_destination_ for details on where to save the logs.
+  +
+  The available log channels are:
+  +
+  LOG_NONE;;
+    Disable logging
+  LOG_AJAX;;
+    logs AJAX events
+  LOG_DATABASE;;
+    logs database events and executed SQL queries
+  LOG_EMAIL;;
+    logs issue id, message type and recipients for all emails sent
+  LOG_EMAIL_VERBOSE;;
+    Enables extra logging for troubleshooting internals of email queuing
+    and sending.
+  LOG_EMAIL_RECIPIENT;;
+    logs the details of email recipient determination. Each user id is
+    listed as well as why they are added, or deleted from the recipient
+    list
+  LOG_FILTERING;;
+    logs filter operations
+  LOG_LDAP;;
+    logs the details of LDAP operations
+  LOG_WEBSERVICE;;
+    logs the details of Web Services operations (e.g. SOAP API)
+  LOG_PLUGIN;;
+    Enables logging from plugins.
+  LOG_ALL;;
+    combines all of the above log levels
+  +
+  Default is LOG_NONE.
+  +
+  [NOTE]
+  ====
+  Multiple log channels can be combined using
+  https://www.php.net/language.operators.bitwise[PHP bitwise operators],
+  e.g.
+
+....
+$g_log_level = LOG_EMAIL | LOG_EMAIL_RECIPIENT;
+....
+
+  or
+
+....
+$g_log_level = LOG_ALL & ~LOG_DATABASE;
+....
+  ====
+$g_log_destination::
+  Specifies where the log data goes. The following five options are
+  available:
+  +
+  '';;
+    The empty string means https://www.php.net/error_log[default PHP
+    error log settings]
+  'none';;
+    Don't output the logs, but would still trigger EVENT_LOG plugin
+    event.
+  'file';;
+    Log to a specific file, specified as an absolute path, e.g.
+    `'file:/var/log/mantis.log'` (Unix) or `'file:c:/temp/mantisbt.log'`
+    (Windows)
+    +
+    [NOTE]
+    ====
+    This file must be writable by the web server running MantisBT.
+    ====
+  'page';;
+    Display log output at bottom of the page. See also
+    _$g_show_log_threshold_ to restrict who can see log data.
+  +
+  Default is '' (empty string).
+$g_show_log_threshold::
+  Indicates the access level required for a user to see the log output
+  (if _$g_log_destination_ is 'page').
+  +
+  Default is ADMINISTRATOR.
+  +
+  [NOTE]
+  ====
+  This threshold is compared against the user's _global access level_
+  rather than the one from the currently active project.
+  ====

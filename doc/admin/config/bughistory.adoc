@@ -1,0 +1,19 @@
+[[admin.config.bughistory]]
+== Bug History
+
+Bug history is a feature where MantisBT tracks all modifications that
+are made to bugs. These include everything starting from its creation,
+till it is closed. For each change, the bug history will record the time
+stamp, user who made the change, field that changed, old value, and new
+value.
+
+Independent of the these settings, MantisBT will always track the
+changes to a bug and add them to its history.
+
+$g_history_default_visible::
+  Make the bug history visible by default. If this option is not
+  enabled, then the user will have to click on the Bug History link to
+  see the bug history. Default is ON.
+$g_history_order::
+  Show bug history entries in ascending or descending order. Default
+  value is 'ASC'.

@@ -1,0 +1,97 @@
+[[admin.config.html]]
+== HTML
+
+$g_html_make_links::
+  This flag controls whether www URLs and email addresses are
+  automatically converted into clickable links as well as where the www
+  links open when clicked. The options are:
+  +
+  * _OFF_ - do not convert URLs or emails
+  * _LINKS_SAME_WINDOW_ - convert to links that open in current
+  tab/window. NOTE: for backwards-compatibility, this is equivalent to
+  _ON_.
+  * _LINKS_NEW_WINDOW_ - convert to links that open in a new tab/window
+  +
+  Default is _LINKS_SAME_WINDOW_.
+$g_html_valid_tags::
+  This is the list of HTML tags that are allowed.Do NOT include href or
+  img tags here.Do NOT include tags that have parameters (eg. )The HTML
+  code is allowed to enter the database as is. The $g_allow_href_tags
+  does not have to be enabled to make URL links. The package will
+  automatically hyperlink properly formatted URLs eg. https://blah.blah/
+  or mailto://me@more.com/
+$g_bottom_include_page::
+  Specifies a file to be included at the bottom of each page. It can be
+  used e.g. for company branding, to include Google Analytics script,
+  etc.
+$g_top_include_page::
+  Specifies a file to be included at the top of each page. It can be
+  used e.g. for company branding.
+  +
+  If a file is supplied, the logo specified by `$g_logo_image` (see
+  link:#admin.config.display[???]) will not be shown, and the include
+  file will have to handle display of the logo. To do so you can use the
+  `html_print_logo()` API function, which will display the logo with an
+  URL link if one has been specified in `$g_logo_url`
+  +
+  Example top include PHP file with logo and centered page title:
+  +
+....
+<div id="banner" style="display: flex; align-items: center;">
+    <div style="width: 10%;">
+        <?php html_print_logo(); ?>
+    </div>
+
+    <div class="center">
+        <span class="pagetitle">
+            <?php global $g_window_title; echo $g_window_title; ?>
+        </span>
+    </div>
+
+    <div style="width: 10%;">
+    </div>
+</div>
+....
+$g_css_include_file::
+  Set this to point to the CSS file of your choice.
+$g_css_rtl_include_file::
+  Set this to point to the RTL CSS file of your choice.
+$g_cdn_enabled::
+  A flag that indicates whether to use CDN (content delivery networks)
+  for loading javascript libraries and their associated CSS. This
+  improves performance for loading MantisBT pages. This can be disabled
+  if it is desired that MantisBT doesn't reach out outside corporate
+  network. Default OFF.
+$g_main_menu_custom_options::
+  This option will add custom options to the main menu. It is an array
+  of arrays listing the caption, access level required, and the link to
+  be executed. For example:
+  +
+....
+$g_main_menu_custom_options = array(
+    array( 
+        'title'        => 'My Link',
+        'access_level' => MANAGER,
+        'url'          => 'my_link.php',
+        'icon'         => 'fa-plug'
+    ),
+    array( 
+        'title'        => 'My Link2',
+        'access_level' => ADMINISTRATOR,
+        'url'          => 'my_link2.php',
+        'icon'         => 'fa-plug'
+    )
+);
+....
+  +
+  Note that if the caption is found in `custom_strings_inc.php` (see
+  link:#admin.customize.strings[???]), it will be replaced by the
+  corresponding translated string. Options will only be added to the
+  menu if the current logged in user has the appropriate access level.
+  +
+  Use icons from https://fontawesome.io/icons/[Font Awesome]. Add "fa-"
+  prefix to icon name.
+  +
+  Access level is an optional field, and no check will be done if it is
+  not set. Icon is an optional field, and 'fa-plug' will be used if it
+  is not set.

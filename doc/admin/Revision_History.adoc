@@ -1,0 +1,43 @@
+[[appe-Admin_Guide-Revision_History]]
+== Revision History
+
+2.24-1 Sun May 3 2020 Victor Boctor vboctor@mantisbt.org Release 2.24.1
+2.24-0 Sun Mar 15 2020 Victor Boctor vboctor@mantisbt.org Release 2.24.0
+2.23-0 Sun Dec 9 2019 Victor Boctor vboctor@mantisbt.org Release 2.23.0
+2.22-1 Thu Sep 26 2019 Victor Boctor vboctor@mantisbt.org Release 2.22.1
+2.22-0 Sun Aug 25 2019 Victor Boctor vboctor@mantisbt.org Release 2.22.0
+2.21-2 Mon Aug 19 2019 Victor Boctor vboctor@mantisbt.org Release 2.21.2
+2.21-1 Thu Jun 13 2019 Victor Boctor vboctor@mantisbt.org Release 2.21.1
+2.21-0 Sat Apr 20 2019 Victor Boctor vboctor@mantisbt.org Release 2.21.0
+2.20-0 Sat Mar 16 2019 Victor Boctor vboctor@mantisbt.org Release 2.20.0
+2.19-0 Wed Jan 2 2019 Victor Boctor vboctor@mantisbt.org Release 2.19.0
+2.18-0 Tue Oct 16 2018 Victor Boctor vboctor@mantisbt.org Release 2.18.0
+2.17-1 Mon Sep 24 2018 Victor Boctor vboctor@mantisbt.org Release 2.17.1
+2.17-0 Mon Sep 3 2018 Victor Boctor vboctor@mantisbt.org Release 2.17.0
+2.16-0 Sun Jul 29 2018 Victor Boctor vboctor@mantisbt.org Release 2.16.0
+2.15-0 Tue Jun 5 2018 Victor Boctor vboctor@mantisbt.org Release 2.15.0
+2.14-0 Sun Apr 29 2018 Victor Boctor vboctor@mantisbt.org Release 2.14.0
+2.13-1 Wed Apr 4 2018 Victor Boctor vboctor@mantisbt.org Release 2.13.1
+2.13-0 Sun Apr 1 2018 Victor Boctor vboctor@mantisbt.org Release 2.13.0
+2.12-0 Sat Mar 3 2018 Victor Boctor vboctor@mantisbt.org Release 2.12.0
+2.11-0 Tue Feb 6 2018 Victor Boctor vboctor@mantisbt.org Release 2.11.0
+2.10-0 Sat Dec 30 2017 Victor Boctor vboctor@mantisbt.org Release 2.10.0
+2.9-0 Sun Dec 3 2017 Victor Boctor vboctor@mantisbt.org Release 2.9.0
+2.8-0 Sat Oct 28 2017 Victor Boctor vboctor@mantisbt.org Release 2.8.0
+2.7-0 Sun Oct 8 2017 Victor Boctor vboctor@mantisbt.org Release 2.7.0
+2.6-0 Sun Sep 3 2017 Victor Boctor vboctor@mantisbt.org Release 2.6.0
+2.5-1 Sat Jun 17 2017 Victor Boctor vboctor@mantisbt.org Release 2.5.1
+2.5-0 Sun Jun 4 2017 Victor Boctor vboctor@mantisbt.org Release 2.5.0
+2.4-1 Sat May 20 2017 Victor Boctor vboctor@mantisbt.org Release 2.4.1
+2.4-0 Sun Apr 30 2017 Victor Boctor vboctor@mantisbt.org Release 2.4.0
+2.3-3 Sun Apr 30 2017 Victor Boctor vboctor@mantisbt.org Release 2.3.2
+2.3-2 Sun Apr 17 2017 Victor Boctor vboctor@mantisbt.org Release 2.3.1
+2.3-1 Fri Mar 31 2017 Victor Boctor vboctor@mantisbt.org Release 2.3.0
+2.2-3 Wed Mar 22 2017 Damien Regad dregad@mantisbt.org Release 2.2.2
+2.2-2 Sun Mar 12 2017 Victor Boctor vboctor@mantisbt.org Release 2.2.1
+2.2-1 Sun Feb 26 2017 Victor Boctor vboctor@mantisbt.org Release 2.2.0
+2.1-2 Sun Feb 26 2017 Victor Boctor vboctor@mantisbt.org Release 2.1.1
+2.1-1 Tue Jan 31 2017 Victor Boctor vboctor@mantisbt.org Release 2.1.0
+2.0-2 Fri Dec 30 2016 Victor Boctor vboctor@mantisbt.org Release 2.0.0
+2.0-1 Sat Nov 26 2016 Damien Regad dregad@mantisbt.org Release
+2.0.0-rc.2

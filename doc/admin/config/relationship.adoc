@@ -1,0 +1,44 @@
+[[admin.config.relationship]]
+== Relationship Graphs
+
+$g_relationship_graph_enable::
+  This enables the relationship graphs feature where issues are
+  represented by nodes and relationships as links between such nodes.
+  Possible values are ON or OFF. Default is OFF.
+  +
+  [NOTE]
+  ====
+  This feature requires installing the
+  https://www.graphviz.org/[GraphViz] library. Refer to the notes near
+  the top of `core/graphviz_api.php` and
+  `core/relationship_graph_api.php` for more information.
+  ====
+$g_relationship_graph_fontname::
+  Font name and size, as required by Graphviz. If Graphviz fails to run
+  for you, you are probably using a font name that gd PHP extension
+  can't find. On Linux, try the name of the font file without the
+  extension. The default value is 'Arial'.
+$g_relationship_graph_fontsize::
+  Font size, default is 8.
+$g_relationship_graph_orientation::
+  Default dependency orientation. If you have issues with lots of
+  children or parents, leave as 'horizontal', otherwise, if you have
+  lots of "chained" issue dependencies, change to 'vertical'. Default is
+  'horizontal'.
+$g_relationship_graph_max_depth::
+  Max depth for relation graphs. This only affects relationship graphs,
+  dependency graphs are drawn to the full depth. The default value is 2.
+$g_relationship_graph_view_on_click::
+  If set to ON, clicking on an issue on the relationship graph will open
+  the bug view page for that issue, otherwise, will navigate to the
+  relationship graph for that issue.
+$g_dot_tool::
+  The full path for the dot tool. The webserver must have execute
+  permission to this program in order to generate relationship graphs.
+  This configuration option is not relevant for Windows. The default
+  value is '/usr/bin/dot'.
+$g_neato_tool::
+  The full path for the neato tool. The webserver must have execute
+  permission to this program in order to generate relationship graphs.
+  This configuration option is not relevant for Windows. The default
+  value is '/usr/bin/neato'.

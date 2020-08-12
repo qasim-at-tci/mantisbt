@@ -1,0 +1,129 @@
+[[admin.config.auth]]
+== Authentication
+
+[[admin.config.auth.global]]
+=== Global authentication parameters
+
+$g_login_method::
+  Specifies which method will be used to authenticate. It should be one
+  of the following values (defaults to _MD5_):
+  +
+  * MD5 - user's password is stored as a hash in the database
+  * LDAP - authenticates against an LDAP (or Active Directory) server
+  * BASIC_AUTH
+  * HTTP_AUTH
+  +
+  In addition, the following deprecated values are supported for
+  backwards-compatibility, and should no longer be used:
+  +
+  * PLAIN - password is stored in plain, unencrypted text in the
+  database
+  * CRYPT
+  * CRYPT_FULL_SALT
+  +
+  Note: you may not be able to easily switch encryption methods, so this
+  should be carefully chosen at install time. However, MantisBT will
+  attempt to "fall back" to older methods if possible.
+$g_reauthentication::
+  Determines whether MantisBT will require the user to re-authenticate
+  before granting access to the Admin areas after timeout expiration.
+  Defaults to _ON_
+$g_reauthentication_expiry::
+  Duration of the reauthentication timeout, in seconds. Defaults to 5
+  minutes.
+
+[[admin.config.auth.ldap]]
+=== LDAP authentication method parameters
+
+The parameters below are only used if $g_login_method (see above) is set
+to LDAP.
+
+$g_ldap_server::
+  Specifies the LDAP or Active Directory server to connect to.
+  +
+  This must be a full LDAP URI (`ldap[s]://hostname:port`)
+  +
+  * Protocol can be either `ldap` or `ldaps` (for SSL/TLS encryption).
+  If omitted, then an unencrypted connection will be established on port
+  389.
+  * Port number is optional, and defaults to _389_. If this doesn't
+  work, try using one of the following standard port numbers: 636
+  (ldaps); for Active Directory Global Catalog forest-wide search, use
+  3268 (ldap) or 3269 (ldaps).
+  +
+  Examples of valid URI:
+  +
+....
+ldap.example.com
+ldap://ldap.example.com/
+ldaps://ldap.example.com:3269/
+....
+$g_ldap_root_dn::
+  The root distinguished name for LDAP searches. For example,
+  "dc=example, dc=com".
+$g_ldap_organization::
+  LDAP search filter for the organization, for example,
+  "(organizationname=*Traffic)". Defaults to _''_.
+$g_ldap_protocol_version::
+  The LDAP Protocol Version. If 0, then the protocol version is not set.
+  Defaults to _0_.
+  +
+  For Active Directory use protocol version 3.
+$g_ldap_network_timeout::
+  Duration of the timeout for TCP connection to the LDAP server (in
+  seconds). Defaults to _0_ (infinite).
+  +
+  Set this to a low value when the hostname defined in $g_ldap_server
+  resolves to multiple IP addresses, allowing rapid failover to the next
+  available LDAP server.
+$g_ldap_follow_referrals::
+  Determines whether the LDAP library automatically follows referrals
+  returned by LDAP servers or not. This maps to LDAP_OPT_REFERRALS ldap
+  library option. Defaults to _ON_.
+  +
+  For Active Directory, this should be set to OFF.
+$g_ldap_bind_dn::
+  The distinguished name of the service account to use for binding to
+  the LDAP server. For example,
+  'CN=ldap,OU=Administrators,DC=example,DC=com'.
+$g_ldap_bind_passwd::
+  The password for the service account used to establish the connection
+  to the LDAP server.
+$g_ldap_uid_field::
+  The LDAP field for username. Defaults to _uid_.
+  +
+  For Active Directory, set to _sAMAccountName_.
+$g_ldap_realname_field::
+  The LDAP field for the user's real name (i.e. common name). Defaults
+  to _cn_.
+$g_use_ldap_realname::
+  Use the realname specified in LDAP (ON) rather than the one stored in
+  the database (OFF). Defaults to _OFF_.
+  +
+  Note that MantisBT will update the database with the data retrieved
+  from LDAP when ON.
+$g_use_ldap_email::
+  Use the email address specified in LDAP (ON) rather than the one
+  stored in the database (OFF). Defaults to _OFF_.
+  +
+  Note that MantisBT will update the database with the data retrieved
+  from LDAP when ON.
+$g_ldap_simulation_file_path::
+  This configuration option allows replacing the ldap server with a
+  comma-delimited text file for development or testing purposes.
+  +
+  The LDAP simulation file format is as follows:
+  +
+  * One line per user
+  * Each line has 4 comma-delimited fields
+  ** username
+  ** realname
+  ** e-mail
+  ** password
+  * Any extra fields are ignored
+  +
+  [WARNING]
+  ====
+  On production systems, this option should be set to '' (This is the
+  default).
+  ====

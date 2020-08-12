@@ -1,0 +1,40 @@
+[[admin.config.date]]
+== Date
+
+These variables control how the date is displayed. The default is
+https://en.wikipedia.org/wiki/ISO_8601[ISO 8601] formatting.
+
+Please refer to the
+https://www.php.net/manual/en/function.date.php#refsect1-function.date-parameters[PHP
+manual] for details on available formatting options.
+
+$g_short_date_format::
+  This format is used in the bug listing pages (eg: View Bugs). Default
+  is `Y-m-d`.
+$g_normal_date_format::
+  This format is used in the view/update bug pages, bug notes, manage
+  section, and news section. Default is `Y-m-d H:i`.
+$g_complete_date_format::
+  This format is used on the top of each page (current time) and the
+  emails that are sent out. Default is `Y-m-d H:i T`.
+$g_datetime_picker_format::
+  This format is used with the datetime picker widget. Default is
+  `Y-MM-DD HH:mm`.
+  +
+  [NOTE]
+  ====
+  The formatting convention for the DateTime picker is different from
+  the one used for the other date settings described above; see
+  https://momentjs.com/docs/#/displaying/format/[Moment.js
+  documentation] for details.
+  ====
+  +
+  [WARNING]
+  ====
+  This format needs to match the one defined in _$g_normal_date_format_.
+  Inconsistencies between these two settings, e.g. using different date
+  ordering (DMY, MDY or YMD) or displaying the month as a number vs a
+  word or abbreviation, may result in unexpected behavior such as an
+  invalid interpretation of the date by the DateTime picker widget, or
+  errors trying to save a modified date.
+  ====

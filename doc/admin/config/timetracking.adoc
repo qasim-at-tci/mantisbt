@@ -1,0 +1,30 @@
+[[admin.config.timetracking]]
+== Time Tracking
+
+$g_time_tracking_enabled::
+  Turns Time Tracking features ON or OFF - Default is OFF
+$g_time_tracking_without_note::
+  Allow time tracking to be recorded without writing some text in the
+  associated bugnote - Default is ON
+$g_time_tracking_with_billing::
+  Adds calculation links to workout how much time has been spent between
+  a particular time frame. Currently it will allow you to enter a
+  cost/hour and will work out some billing information. This will become
+  more extensive in the future. Currently it is more of a proof of
+  concept.
+$g_time_tracking_billing_rate::
+  Default billing rate per hour - Default is 0
+$g_time_tracking_stopwatch::
+  Instead of a text field turning this option on places a stopwatch on
+  the page with Start/Stop and Reset buttons next to it. A bit gimmicky,
+  but who cares.
+$g_time_tracking_view_threshold::
+  Access level required to view time tracking information - Default
+  DEVELOPER.
+$g_time_tracking_edit_threshold::
+  Access level required to add/edit time tracking information (If you
+  give a user $g_time_tracking_edit_threshold you must give them
+  $g_time_tracking_view_threshold as well) - Default DEVELOPER.
+$g_time_tracking_reporting_threshold::
+  Access level required to run reports (not completed yet) - Default
+  MANAGER.

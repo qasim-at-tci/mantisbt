@@ -1,0 +1,9 @@
+[[admin.config.users]]
+== User Management
+
+$g_impersonate_user_threshold::
+  The threshold for a user to be able to impersonate another user, or
+  NOBODY to disable impersonation. Default ADMINISTRATOR.
+$g_manage_user_threshold::
+  The threshold for a user to manage user accounts. Default
+  ADMINISTRATOR.

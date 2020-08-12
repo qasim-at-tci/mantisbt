@@ -1,0 +1,129 @@
+[[admin.config.defaults]]
+== Default Preferences
+
+$g_default_new_account_access_level::
+  This is the default access level users are given when their account is
+  created by email. The default access level is REPORTER. Look in
+  constant_inc.php for other values.
+$g_default_project_view_status::
+  The default viewing status for new projects (VS_PUBLIC or VS_PRIVATE).
+  The default is VS_PUBLIC.
+$g_default_bug_description::
+  Default value for bug description field used on bug report page.
+  Default is empty description.
+$g_default_bug_additional_info::
+  Default value for bug additional info field used on bug report page.
+  Default is empty.
+$g_default_bug_steps_to_reproduce::
+  Default value for bug steps to reproduce field used on bug report
+  page. Default is empty.
+$g_default_bug_view_status::
+  The default viewing status for the new bug (VS_PUBLIC or VS_PRIVATE).
+  The default is VS_PUBLIC.
+$g_default_bugnote_view_status::
+  The default viewing status for the new bugnote (VS_PUBLIC or
+  VS_PRIVATE). The default is VS_PUBLIC.
+$g_timeline_view_threshold::
+  Threshold for viewing timeline information. Use NOBODY to turn it off.
+  If the timeline is turned off, the other widgets are displayed in a
+  two column view. The default is VIEWER.
+$g_default_reminder_view_status::
+  The default viewing status for the new reminders (VS_PUBLIC or
+  VS_PRIVATE). The default is VS_PUBLIC.
+$g_reminder_receive_threshold::
+  The minimum access level for a user to show up in the reminder user
+  picker. Note that this is the access level for the project for which
+  the issue belongs. The default is DEVELOPER.
+$g_default_bug_resolution::
+  The resolution for a newly created issue. The default is OPEN. Look in
+  constant_inc.php for other values.
+$g_default_bug_severity::
+  The severity for a newly created issue. The default is MINOR. Look in
+  constant_inc.php for other values.
+$g_default_bug_priority::
+  The priority for a newly created issue. The default is NORMAL. Look in
+  constant_inc.php for other values.
+$g_default_bug_reproducibility::
+  The reproducibility for a newly created issue. The default is
+  REPRODUCIBILITY_HAVENOTTRIED. Look in constant_inc.php for other
+  values.
+$g_default_bug_projection::
+  The projection for a newly created issue. The default is
+  PROJECTION_NONE. Look in constant_inc.php for other values.
+$g_default_bug_eta::
+  The ETA for a newly created issue. The default is ETA_NONE. Look in
+  constant_inc.php for other values.
+$g_default_category_for_moves::
+  Default global category to be used when an issue is moved from a
+  project to another that doesn't have a category with a matching name.
+  The default is 1 which is the "General" category that is created in
+  the default database.
+$g_default_limit_view::
+  Number of bugs to show in the View Bugs page. The default value is 50.
+$g_default_show_changed::
+  Highlight bugs that have changed during the last N hours. The default
+  value is 6.
+$g_hide_status_default::
+  Controls which issues will be displayed in the View Issues page.
+  Default value is CLOSED, implying that all issues at "closed" or
+  higher state will not be shown.
+$g_min_refresh_delay::
+  This is the delay between automatic refreshes of the View Issues page
+  in minutes. Make sure refresh delay in user preferences isn't too
+  short. If a users set their preferences to be lower then it is bumped
+  back up to this minimum value. The default value is 10 minutes.
+
+These settings are used as the default values for preferences for new
+users. Each user can override these settings through the user
+preferences form. Default language is set to default site language
+($g_default_language).
+
+$g_default_refresh_delay::
+  Default page refresh delay (in minutes). This is for the bug listing
+  pages. Default value is 30 minutes.
+$g_default_redirect_delay::
+  Default delay before a user is redirected to a page after being
+  prompted by a message (eg: operational successful). Default value is 2
+  seconds.
+$g_default_bugnote_order::
+  This controls the time order in which bug notes are displayed. It can
+  be either ASC (oldest first, the default) or DESC (newest first).
+$g_default_email_on_new, $g_default_email_on_assigned,
+$g_default_email_on_feedback, $g_default_email_on_resolved,
+$g_default_email_on_closed::
+  Default user preferences to enable receiving emails when a bug is set
+  to the corresponding status. This option only has an effect if users
+  have the required access level to receive such emails. Default value
+  is ON.
+$g_default_email_on_reopened::
+  Default user preferences to enable receiving emails when bugs are
+  re-opened. Default value is ON.
+$g_default_email_on_bugnote::
+  Default user preferences to enable receiving emails when bugnotes are
+  added to bugs. Default value is ON.
+$g_default_email_on_status::
+  Default user preferences to enable receiving emails when status is
+  changed. Default is OFF.
+$g_default_email_on_priority::
+  Default user preferences to enable receiving emails when priority is
+  changed. Default is OFF.
+$g_default_email_on_new_minimum_severity,
+$g_default_email_on_assigned_minimum_severity,
+$g_default_email_on_feedback_minimum_severity,
+$g_default_email_on_resolved_minimum_severity,
+$g_default_email_on_closed_minimum_severity,
+$g_default_email_on_reopened_minimum_severity,
+$g_default_email_on_bugnote_minimum_severity::
+  Default user preferences to enable filtering based on issue severity.
+  These correspond to the email_on_<status> settings. Default is 'any'.
+$g_default_email_on_bugnote_minimum_severity::
+  Default user preference to enable filtering based on issue severity.
+  These corresponds to the email_on_bugnote setting. Default is 'any'.
+$g_default_email_on_status_minimum_severity::
+  Default user preference to enable filtering based on issue severity.
+  These corresponds to the email_on_status settings. Default is 'any'.
+$g_default_email_on_priority_minimum_severity::
+  Default user preferences to enable filtering based on issue severity.
+  These corresponds to the email_on_priority settings. Default is 'any'.
+
+See also: link:#admin.customize.email[???]

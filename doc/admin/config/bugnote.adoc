@@ -1,0 +1,7 @@
+[[admin.config.bugnote]]
+== Bugnote
+
+$g_bugnote_order::
+  Order to use for sorting bugnotes by submit date. Possible values
+  include ASC for ascending and DESC for descending order. The default
+  value is ASC.

@@ -1,0 +1,28 @@
+[[admin.config]]
+== Configuration
+
+[[admin.config.intro]]
+=== Introduction
+
+MantisBT is highly customizable through the web interface and
+configuration files. Configuration options can be set globally as well
+as customized for a specific project or user (except for options listed
+in _$g_global_settings_, see link:#admin.config.settings[???]).
+
+Configuration options can be set in _config_inc.php_ and in the
+_database_ (using the various manage pages). Values stored in the
+database take precedence over values defined in _config_inc.php_. The
+former can also be viewed and updated on the _Configuration Report_ page
+(Manage > Manage Configuration > Configuration Report).
+
+To determine which value to use, MantisBT follows the list below,
+sequentially searching for the specified configuration option until a
+match is found.
+
+[arabic]
+. _database_: current user, current project
+. _database_: current user, all projects
+. _database_: all users, current project
+. _database_: all users, all projects
+. _config_inc.php_
+. _config_defaults_inc.php_

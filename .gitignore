@@ -8,6 +8,8 @@ docbook/*/*/build
 docbook/*/*/install
 docbook/*/tmp
 !docbook/Admin_Guide/*/config
+doc/admin/*.html
+doc/dev/*.html
 
 # Untracked plugins
 plugins/*

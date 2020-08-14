@@ -15,9 +15,9 @@ tasks required to operate the software.
 [colophon]
 == Colophon
 
-{version-label} {revnumber} from {revdate}
+{doctitle} {version-label} {revnumber} from {revdate}.
 
-{doctitle} was written by the {author},
+This document was written by the {author},
 with contributions from the MantisBT community.
 
 {revremark} was converted to AsciiDoc from the previous DocBook version

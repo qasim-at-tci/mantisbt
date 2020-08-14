@@ -13,6 +13,8 @@ ifdef::backend-html5[]
 image::{logo}[MantisBT logo,align="center"]
 endif::[]
 
+[abstract]
+.Abstract
 This book is targeted at MantisBT administrators, and documents the
 installation, upgrade, configuration, customization and administration
 tasks required to operate the software.

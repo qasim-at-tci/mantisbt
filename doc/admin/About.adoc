@@ -118,6 +118,7 @@ are the main ones:
 popular destinations for getting MantisBT support. Start off by
 searching the forums for your question, and if not found then go ahead
 and submit a new one.
+// @TODO Mailing lists page is gone - what to do with this section ?
 * http://mantisbt.org/mailinglists.php[Mailing lists] - Several
 lists are available, each of them with its own, specific purpose. Note
 that posting messages is restricted to subscribers so you will have to
@@ -129,6 +130,7 @@ chat room, you can have a live discussion with the developers and other
 MantisBT users. Gitter supports all modern browsers and also offers
 Android and iOS-based clients, as well as an
 https://irc.gitter.im/[IRC bridge].
+// @TODO IRC page is gone - what to do with this section ?
 * http://www.mantisbt.org/irc.php[IRC] - The `#mantisbt` IRC channel is
 not very active anymore as the developers have moved on to using Gitter
 for live discussions, but, the channel is still open.

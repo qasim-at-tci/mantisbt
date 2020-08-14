@@ -5,7 +5,7 @@ MantisBT Development Team <https://mantisbt.org>; Damien Regad
 :revremark: 3rd edition
 :doctype: book
 :sectnums:
-:toc: preamble
+:toc: left
 
 This book is targeted at MantisBT administrators, and documents the
 installation, upgrade, configuration, customization and administration

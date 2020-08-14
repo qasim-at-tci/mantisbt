@@ -3,6 +3,8 @@ MantisBT Development Team <https://mantisbt.org>; Damien Regad
 :revnumber: 2.25.0
 :revdate: 12-Aug-2020
 :revremark: 3rd edition
+:doctype: book
+:sectnums:
 :toc: preamble
 
 This book is targeted at MantisBT administrators, and documents the

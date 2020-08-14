@@ -6,6 +6,12 @@ MantisBT Development Team <https://mantisbt.org>; Damien Regad
 :doctype: book
 :sectnums:
 :toc: left
+:logo:  ../../images/mantis_logo.png
+:title-logo-image: {logo}
+
+ifdef::backend-html5[]
+image::{logo}[MantisBT logo,align="center"]
+endif::[]
 
 This book is targeted at MantisBT administrators, and documents the
 installation, upgrade, configuration, customization and administration

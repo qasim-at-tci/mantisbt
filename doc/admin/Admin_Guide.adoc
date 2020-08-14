@@ -44,6 +44,8 @@ A copy of the licence is included in the section entitled
 "GNU Free Documentation License".
 The latest version is available at https://www.gnu.org/licenses/fdl.html.
 
+// Individual book chapters are maintained in separate files
+
 include::About.adoc[]
 
 include::Installation.adoc[]
@@ -67,4 +69,3 @@ include::Project_Management.adoc[]
 include::Contributing.adoc[]
 
 include::Revision_History.adoc[]
-

@@ -63,6 +63,21 @@ CAUTION: Using development releases or nightly builds in production
 is not recommended, unless the Administrator is familiar with PHP
 and able to troubleshoot and fix any issues that may arise.
 
+[[admin.about.history]]
+=== History
+
+Kenzaburo Ito and a friend originally created a bug tracker as an
+internal tool for their pet project. A search for good, free packages
+came up with nothing suitable, so they decided to create their own.
+
+After a rewrite and cleanup, it was released to the public under the
+GNU General Public License (GPL), which was chosen because he believed
+that development tools should be cheap or free.
+
+In 2002, Ken was joined by Jeroen Latour, Victor Boctor and Julian
+Fitzell who formed the MantisBT's Core Development Team, initiating a
+new era in the project's lifetime as is became a team endeavor.
+
 [[admin.about.name]]
 === About the Name
 
@@ -92,21 +107,6 @@ The _BT_ suffix, which stands for _Bug Tracker_, was added to distinguish
 this project from general usage of the word Mantis.
 However, over time the project has typically been referred to as
 just _Mantis_.
-
-[[admin.about.history]]
-=== History
-
-Kenzaburo Ito and a friend originally created a bug tracker as an
-internal tool for their pet project. A search for good, free packages
-came up with nothing suitable, so they decided to create their own.
-
-After a rewrite and cleanup, it was released to the public under the
-GNU General Public License (GPL), which was chosen because he believed
-that development tools should be cheap or free.
-
-In 2002, Ken was joined by Jeroen Latour, Victor Boctor and Julian
-Fitzell who formed the MantisBT's Core Development Team, initiating a
-new era in the project's lifetime as is became a team endeavor.
 
 [[admin.about.support]]
 === Support

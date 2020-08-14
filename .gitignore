@@ -9,7 +9,9 @@ docbook/*/*/install
 docbook/*/tmp
 !docbook/Admin_Guide/*/config
 doc/admin/*.html
+doc/admin/*.pdf
 doc/dev/*.html
+doc/dev/*.pdf
 
 # Untracked plugins
 plugins/*

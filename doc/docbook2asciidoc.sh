@@ -11,6 +11,7 @@ case ${1:0:1} in
   "a"|*)
     GUIDE=Admin_Guide
     TARGET="$TARGET/admin"
+    UNUSED="Author_Group.adoc Book_Info.adoc"
     mkdir -p "$TARGET/config"
     ;;
 esac
@@ -32,4 +33,13 @@ do
   fi
   pandoc "$filename" -f docbook -t asciidoc -s --atx-header -o "$TARGET/${filename%.xml}.adoc"
 done
+
+if [[ -v UNUSED ]]
+then
+  echo "Deleting unused files: $UNUSED"
+  pushd "$TARGET" >/dev/null
+  rm $UNUSED
+  popd >/dev/null
+fi
+
 echo "Converted AsciiDoc files saved in $TARGET"

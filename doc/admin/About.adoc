@@ -8,28 +8,29 @@ MantisBT is a web based bug tracking system that was first made
 available to the public in November 2000. Over time it has matured and
 gained a lot of popularity, and now it has become one of the most
 popular open source bug/issue tracking systems. MantisBT is developed in
-PHP, with support to multiple database backends including MySQL, MS SQL
-and PostgreSQL.
+PHP, with support for multiple database backends including
+MySQL, PostgreSQL, Microsoft SQL Server and Oracle.
 
-MantisBT, as a PHP script, can run on any operating system that is
-supported by PHP and has support for one of the DBMSes that are
-supported. MantisBT is known to run fine on Windows, Linux, macOS and a
-variety of Unix operating systems.
+MantisBT can run on any operating system supported by PHP, provided that
+the Database Extension for one of the above-mentioned RDBMS is installed.
+It is known to run fine on Windows, Linux, macOS and a variety of Unix
+operating systems.
 
 [[admin.about.who]]
 === Who should read this manual?
 
-This manual is targeted for the person responsible for evaluating,
-installing and maintaining MantisBT in a company. Typically we refer to
-this person as the MantisBT administrator.
+This manual is targeted at the person responsible for evaluating,
+installing and maintaining MantisBT.
+Throughout this document, we typically refer to this person as the
+_Administrator_.
 
 [[admin.about.license]]
 === License
 
 MantisBT is released under the terms of
 https://www.gnu.org/copyleft/gpl.html[GNU General Public License (GPL)].
-MantisBT is free to use and modify. It is free to redistribute as long
-as you abide by the distribution terms of the
+MantisBT is free to use and modify.
+It is also free to redistribute as long as you abide by the
 https://www.gnu.org/copyleft/gpl.html[GPL].
 
 [[admin.about.download]]
@@ -47,47 +48,65 @@ above to download MantisBT. The download is compressed in tar.gz or zip
 format. Both formats can be unpacked using tools like
 https://www.7-zip.org/[7-Zip] (in case of Windows).
 
-Note that at any point in time there are typically two "latest" MantisBT
-releases that are available for download. The latest production release
-(stable), and the latest development release which can be an alpha or a
-release candidate. It is not recommended to use development releases in
-production specially if it is still in the alpha stage unless the
-administrator is familiar with PHP and is able to troubleshoot and fix
-any issues that may arise.
+The following release types are available for download:
+
+- The _latest_ production (stable) release;
+- The _legacy_ release, which only receives fixes for security
+  and critical bugs;
+- _Nightly builds_ are generated from the latest development branches
+  in our Git repository
+- In the weeks preceding a new major version's go-live,
+_Development_ releases (i.e. alpha, beta or release candidate)
+are published;
+
+CAUTION: Using development releases or nightly builds in production
+is not recommended, unless the Administrator is familiar with PHP
+and able to troubleshoot and fix any issues that may arise.
 
 [[admin.about.name]]
 === About the Name
 
-When initially seeking to name this project Ken ran into a problem every
-programmer encounters. What is a good name? It has to be descriptive,
-unique, and not too verbose. Additionally having multiple meanings would
-be a nice touch. Quickly ruled out were php*Something* names which,
-incidentally, although popular, do not seem to be condoned by the PHP
-Group developers. Drawing inspiration from Open Source projects like
-Apache, Mozilla, Gnome, and so forth resulted in two eventual choices:
-Dragonfly and Mantis. Dragonfly was already the name of a webmail
-package. So the name became Mantis.
+When initially seeking to name his project, Ken ran into a problem
+that every programmer encounters: what is a good name? It has to be
+descriptive, unique, and not too verbose. Additionally, having multiple
+meanings would be a nice touch.
 
-Praying Mantis are insects that feed primarily on other insects and
-bugs. They are extremely desirable in agriculture as they devour insects
-that feed on crops. They are also extremely elegant looking creatures.
-So, we have a name that is fairly distinctive and descriptive in
-multiple ways. The BT suffix stands for "Bug Tracker" and distinguishes
-this project from general usage of the word Mantis. However, over time
-the project was typically referred to as Mantis.
+Names along the lines of PHP__something__ were quickly ruled out, as
+-- Although popular -- these did not seem to be condoned by the PHP
+Group developers.
+
+Drawing inspiration from other Open Source projects like
+Apache, Mozilla, Gnome and so forth, resulted in two eventual choices:
+_Dragonfly_ and _Mantis_. The former was already the name of a webmail
+package at the time, so in the end _Mantis_ was chosen.
+
+https://en.wikipedia.org/wiki/Mantis[Praying Mantis] are very
+elegant-looking insects that primarily feed on other insects and bugs.
+They are extremely desirable in agriculture as they devour parasites
+that feed on crops.
+
+So, we have a name that is not only fairly distinctive, but also
+descriptive in multiple ways.
+
+The _BT_ suffix, which stands for _Bug Tracker_, was added to distinguish
+this project from general usage of the word Mantis.
+However, over time the project has typically been referred to as
+just _Mantis_.
 
 [[admin.about.history]]
 === History
 
 Kenzaburo Ito and a friend originally created a bug tracker as an
 internal tool for their pet project. A search for good, free packages
-came up with nothing suitable so they wrote their own. After a rewrite
-and cleanup it was made available to the public via the GNU General
-Public License (GPL). The GPL was chosen partly because of his belief
-that development tools should be cheap or free. In 2002, Ken was joined
-by Jeroen Latour, Victor Boctor and Julian Fitzell to be the
-administrators and the core development team of MantisBT. This marks a
-new era in MantisBT lifetime where it is now a team project.
+came up with nothing suitable, so they decided to create their own.
+
+After a rewrite and cleanup, it was released to the public under the
+GNU General Public License (GPL), which was chosen because he believed
+that development tools should be cheap or free.
+
+In 2002, Ken was joined by Jeroen Latour, Victor Boctor and Julian
+Fitzell who formed the MantisBT's Core Development Team, initiating a
+new era in the project's lifetime as is became a team endeavor.
 
 [[admin.about.support]]
 === Support
@@ -97,9 +116,9 @@ are the main ones:
 
 * https://mantisbt.org/forums/[Forums] - The forums are one of the most
 popular destinations for getting MantisBT support. Start off by
-searching the forums for your questions, if not found, then go ahead and
-submit a question.
-* http://www.mantisbt.org/mailinglists.php[Mailing lists] - Several
+searching the forums for your question, and if not found then go ahead
+and submit a new one.
+* http://mantisbt.org/mailinglists.php[Mailing lists] - Several
 lists are available, each of them with its own, specific purpose. Note
 that posting messages is restricted to subscribers so you will have to
 register before you can send messages; however, there are public
@@ -108,16 +127,19 @@ archives available if you're only interested in reading.
 on-line chat that has mainly replaced the team's use of IRC. In the main
 chat room, you can have a live discussion with the developers and other
 MantisBT users. Gitter supports all modern browsers and also offers
-Android and iOS-based clients, as well as an https://irc.gitter.im/[IRC
-bridge].
-* http://www.mantisbt.org/irc.php[IRC] - The IRC channel not very active
-anymore, as the developers have moved on to using Gitter for live
-discussions; nevertheless, the channel is still open. There are many
-free IRC clients: XChat (for Linux), http://hexchat.github.io/[HexChat],
-http://www.icechat.net/[IceChat] amongst others. You can also use
-http://webchat.freenode.net/[Web Chat] to connect to IRC via your web
-browser, which may also be useful when you're behind a firewall that
-blocks the IRC port. The IRC channel logs are archived and made
+Android and iOS-based clients, as well as an
+https://irc.gitter.im/[IRC bridge].
+* http://www.mantisbt.org/irc.php[IRC] - The `#mantisbt` IRC channel is
+not very active anymore as the developers have moved on to using Gitter
+for live discussions, but, the channel is still open.
+There are many free IRC clients, such as
+https://hexchat.github.io/[HexChat] or
+https://www.icechat.net/[IceChat], amongst others.
+You can also use Freenode's https://webchat.freenode.net/[Web Chat] to
+connect to IRC via your web browser, which may also be useful when
+you're behind a firewall that blocks the IRC port.
++
+NOTE: IRC channel logs are archived and made
 http://www.mantisbt.org/irclogs.php[available on the MantisBT web site].
 * https://mantisbt.org/wiki/doku.php/mantisbt:start[Wiki] - The MantisBT
 Wiki has information related to "How To (recipes)", FAQ, feature
@@ -133,8 +155,8 @@ Support questions should not be sent directly to MantisBT developers or
 through the MantisBT website's contact pages.
 
 Also, our https://mantisbt.org/bugs/[bug tracker] is reserved for
-reporting issues with the software, and _must not be used for support
-requests_.
+reporting issues with the software, and *must not be used for support
+requests*.
 ====
 
 [[admin.about.news]]
@@ -150,11 +172,11 @@ email address. This same account can also be used to report, monitor,
 and comment on issues relating to MantisBT.
 * https://mantisbt.org/blog/[MantisBT Blog] is used to communicate
 announcements about new releases, topics relating to MantisBT, etc.
-Users are encouraged to subscribe to the RSS feed to know when new posts
-are posted there.
+Users are encouraged to subscribe to the RSS feed to know when new
+articles are posted there.
 * https://twitter.com/mantisbt[Twitter] is used to notify users about
-up-to-date details about what is happening with MantisBT development.
-Twitter users are encouraged to follow "@mantisbt".
+important events related to MantisBT development.
+Twitter users are encouraged to follow `@mantisbt`.
 
 [[admin.about.versioning]]
 === Versioning
@@ -173,4 +195,4 @@ functionality, in a backwards-compatible manner.
 ** b__N__ or beta._N_ for beta releases, or
 ** rc__N__ or rc._N_ for release candidates.
 +
-Absence of suffix indicates a stable release.
+TIP: The absence of a suffix indicates a stable release.

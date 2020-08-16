@@ -5,6 +5,7 @@ MantisBT Development Team <https://mantisbt.org>; Damien Regad
 :revremark: 3rd edition
 :doctype: book
 :sectnums:
+:xrefstyle: full
 :toc: left
 :toclevels: 3
 :logo:  ../../images/mantis_logo.png

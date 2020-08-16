@@ -14,21 +14,21 @@ to the corresponding sections for details.
 |New Installation |Upgrade
 a|
 [arabic]
-. link:#admin.install.requirements[System Requirements]
-. link:#admin.install.preinstall[Pre-installation / upgrade tasks]
-. link:#admin.install.new[New Installation]
-. link:#admin.install.config[Configure your installation]
-. link:#admin.install.postcommon[Post-installation and upgrade tasks]
-. link:#admin.install.postinstall[Post-installation tasks]
+. <<admin.install.requirements>>
+. <<admin.install.preinstall>>
+. <<admin.install.new>>
+. <<admin.install.config>>
+. <<admin.install.postcommon>>
+. <<admin.install.postinstall>>
 
 a|
 [arabic]
-. link:#admin.install.preinstall[Pre-installation / upgrade tasks]
-. link:#admin.install.backups[Backups]
+. <<admin.install.preinstall>>
+. <<admin.install.backups>>
 . Put the site down for maintenance
-. link:#admin.install.upgrade[Upgrading]
-. link:#admin.install.postcommon[Post-installation and upgrade tasks]
-. link:#admin.install.postupgrade[Post-upgrade tasks]
+. <<admin.install.upgrade>>
+. <<admin.install.postcommon>>
+. <<admin.install.postupgrade>>
 
 |===
 
@@ -40,15 +40,13 @@ a|
 
 MantisBT has modest hardware requirements. It requires a computer that
 is able to run the server software (see
-link:#admin.install.requirements.software[Server Software
-Requirements]).
+<<admin.install.requirements.software>>).
 
-* Server type
-+
+Server type::
 The server can be a shared public web server or a dedicated co-located
 box.
-* CPU and Memory
-+
+
+CPU and Memory::
 As for any web application, you should size your server based on the
 traffic on the site.
 * Disk
@@ -62,102 +60,124 @@ expected number and size of attachments.
 [[admin.install.requirements.software]]
 ==== Server Software Requirements
 
-All of the required software is free for commercial and non-commercial
-use (open source). Please refer to the table in
-link:#admin.install.requirements.software.versions[Versions
-compatibility table] for minimum and recommended versions.
+All of the required software is open source and free for both commercial
+and non-commercial use.
+Please refer to <<admin.install.requirements.compat_table>>
+below for details about minimum and recommended versions.
 
-* Operating System
-+
+Operating System::
 MantisBT runs on Windows, macOS, Linux, Solaris, the BSDs, and just
 about anything that supports the required server software.
-* Web Server
-+
+
+Web Server::
 MantisBT is mainly tested with
 https://docs.microsoft.com/en-us/iis[Microsoft IIS] and
 https://www.apache.org/[Apache]. However, it is expected to work with
 any recent web server software.
 +
-File Extensions: MantisBT uses only _.php_ files. If your webserver is
-configured for other extensions (e.g. .PHP3, .PHTML) then you will have
-to request the administrator to add support for .PHP files. This should
-be a trivial modification. Further details can be found in the
-https://www.php.net/manual/en/install.php[PHP documentation]
-* https://www.php.net/[PHP]
+File Extensions:::
+MantisBT uses only _.php_ files.
 +
-The web server must support PHP. It can be installed as CGI or any other
-integration technology.
-* PHP extensions
-+
-MantisBT is designed to work in as many environments as possible. Hence
-the required extensions are minimal and many of them are optional
-affecting only one feature.
-+
-Mandatory extensions::
-  ** The extension for the RDBMS being used ( mysqli, pgsql, oci8,
-  sqlsrv )
-  ** _mbstring_ - Required for Unicode (UTF-8) support.
-  ** _date, hash, json, pcre, Reflection, session_ - Required to run
-  MantisBT in general.
-Optional extensions::
-  ** _Curl_ - required for the Twitter integration feature
-  ** _GD_ - required for the captcha feature
-  ** _Fileinfo_ - Required for file attachments and most of the plugins
-  +
-  Without this extension, file attachment previews and downloads do not
-  work as MantisBT won't be able to send the Content-Type header to a
-  browser requesting an attachment.
-  ** _LDAP_ - required for LDAP or Active Directory authentication (see
-  link:#admin.auth.ldap[???]).
-* Database
-+
-MantisBT requires a database to store its data. The supported RDBMS are:
-** MySQL (or one of its forks, e.g. MariaDB)
-** PostgreSQL
-+
-Experimental support is also available for
-** Microsoft SQL Server
-** Oracle
-+
-Experimental support means that manual intervention by a skilled
-Database Administrator may be required to complete the installation,
-and/or that there may be known issues or limitations when using the
-software. Please refer to our https://mantisbt.org/bugs/[Issue tracker],
-filtering on categories _db mssql_ and _db oracle_ to find out more
-about those.
-+
-[NOTE]
-====
-Please note that the MantisBT development team mainly works with MySQL,
-so testing for other drivers is not as extensive as we mainly rely on
-community contributions to improve support and fix issues with other
-RDBMS.
+If your webserver is configured for other extensions (e.g. .php,
+.phtml) then you will have to add support for .php files; this should
+be a trivial modification.
+Further details can be found in the
+https://www.php.net/manual/en/install.php[PHP documentation].
 
-We therefore recommend MySQL to store your database.
+PHP::
+The web server must support https://www.php.net/[PHP],
+which can be installed as CGI or any other integration technology.
++
+MantisBT is designed to work in as many environments as possible.
+Consequently, only a minimal set of extensions are required, and
+others are optional, affecting only one feature.
++
+[[admin.install.requirements.software.phpext]]
+Mandatory extensions:::
+  * The _database extension_ for the RDBMS being used (i.e.
+https://www.php.net/manual/en/book.mysqli.php[mysqli],
+https://www.php.net/manual/en/book.pgsql.php[pgsql],
+https://www.php.net/manual/en/book.oci8.php[oci8],
+https://www.php.net/manual/en/book.sqlsrv.php[sqlsrv]).
+  * _mbstring_ -- Required for Unicode (UTF-8) support.
+  * _date, hash, json, pcre, Reflection, session_ -- 
+Required to run MantisBT in general.
+
+Optional extensions:::
+
+  * _Curl_ -- required for the Twitter integration feature
+  * _GD_ -- required for the captcha feature
+  * _Fileinfo_ -- Required for file attachments and most of the plugins
++
+WARNING: Without this extension, file previews and downloads do not work
+properly, as MantisBT is not able to send the _Content-Type_ header
+to the browser requesting the attachment.
+
+  * _LDAP_ -- required for LDAP or Active Directory authentication
+(see <<admin.auth.ldap>>).
+
+Database::
+MantisBT requires a database to store its data.
++
+[TIP]
+====
+The MantisBT development team mainly works with MySQL.
+Consequently, testing for other database platforms is not as extensive,
+and we mainly rely on community contributions to improve support and
+fix issues.
+
+We therefore recommend to use MySQL with MantisBT.
+====
++
+The supported RDBMS are:
++
+  * MySQL (or one of its forks, e.g. MariaDB)
+  * PostgreSQL
++
+Experimental support is also available for:
++
+  * Microsoft SQL Server
+  * Oracle
++
+[CAUTION]
+====
+Experimental platforms may require manual intervention by a skilled
+Database Administrator to complete the installation, and there may be
+known issues or limitations when using MantisBT with them.
+
+Please refer to our https://mantisbt.org/bugs/[Issue tracker],
+filtering on categories _db mssql_ and _db oracle_ to find out more
+about such issues.
 ====
 
 [[admin.install.requirements.software.versions]]
 ===== Versions compatibility table
 
-[cols=",,,,",options="header",]
-|===
-|Category |Package |Minimum Version |Recommended |Comments
-|RDBMS |MySQL |5.5.35 |5.6 or later |PHP extension: mysqli
-|MariaDB |5.5.35 |10.x or later |PHP extension: mysqli |
-|PostgreSQL |9.2 |9.2 or later |PHP extension: pgsql |
-|MS SQL Server |2012 |2012 or later |PHP extension: sqlsrv |
-|Oracle |11gR2 |11gR2 or later |PHP extension: oci8 |
-|PHP |PHP |5.5.x |7.2 or later |See above for PHP extensions
-|Web Server |Apache |2.2.x |2.4.x |
-|lighttpd |1.4.x |1.4.x | |
-|nginx |1.10.x |1.16.x or later | |
-|IIS |7.5 |8.0 |Windows Server 2008 R2 SP1 or later |
-|===
-
 Our minimum requirements are generally based on availability of support
 for the underlying software by their respective vendors. In some cases,
 we do require a specific version because we rely on a feature that is
 not available in older releases.
+
+[[admin.install.requirements.compat_table]]
+.Versions compatibility
+[cols="5*",options="header",stripes=even]
+|===
+|Category |Package |Minimum Version |Recommended |Comments
+
+.5+|RDBMS |MySQL |5.5.35 |5.6 or later |PHP extension: mysqli
+|MariaDB |5.5.35 |10.x or later |PHP extension: mysqli
+|PostgreSQL |9.2 |9.2 or later |PHP extension: pgsql
+|MS SQL Server |2012 |2012 or later |PHP extension: sqlsrv
+|Oracle |11gR2 |11gR2 or later |PHP extension: oci8
+
+|PHP |PHP |5.5.x |7.2 or later |
+  See <<admin.install.requirements.software.phpext,PHP extensions>>
+
+.4+|Web Server |Apache |2.2.x |2.4.x |
+|lighttpd |1.4.x |1.4.x |
+|nginx |1.10.x |1.16.x or later |
+|IIS |7.5 |8.0 |Windows Server 2008 R2 SP1 or later |
+|===
 
 [WARNING]
 ====
@@ -185,16 +205,20 @@ These tasks cover the download and deployment of MantisBT, and should be
 performed prior to any new installation or upgrade.
 
 [arabic]
-. Download MantisBT (see link:#admin.about.download[???])
+. Download MantisBT (see <<admin.about.download>>)
+. Verify the downloaded file’s integrity by checking the corresponding
+ASCII-armored signature file against the
+https://github.com/mantisbt/mantisbt/blob/master/KEYS.md[official list of PGP keys]
+used by the MantisBT developers to sign the release packages.
 . Transfer the downloaded file to your webserver
 +
 This can be done using whatever method you like best (ftp, scp, etc).
 You will need to telnet/ssh into the server machine for the next steps.
 . Extract the release
 +
-It is highly recommended to maintain a separate directory for each
-release. This not only avoids mismatch between versions, (files may have
-been added or removed) but also provides an easy path to downgrade your
+TIP: It is highly recommended to maintain a separate directory for each
+release. This not only avoids mismatch between versions (files may have
+been added or removed), but also provides an easy path to downgrade your
 installation, should you need to.
 +
 The usual command is (1 step):
@@ -214,14 +238,14 @@ Other file archiving tools such as https://www.7-zip.org/[7-Zip] should
 also be able to handle decompression of the archive.
 +
 The extraction process should create a new directory like
-_mantisbt-1.3.x_
+_mantisbt-2.24.1_
 . Rename the directory
 +
 For new installations, you may want to rename the directory just created
 to something simpler, e.g. _mantisbt_
 +
 ....
-mv mantisbt-1.3.x mantisbt
+mv mantisbt-2.24.1 mantisbt
 ....
 
 [[admin.install.new]]
@@ -229,7 +253,7 @@ mv mantisbt-1.3.x mantisbt
 
 This chapter explains how to perform a new installation of MantisBT.
 
-Start by checking link:#admin.install.requirements[System Requirements]
+Start by checking <<admin.install.requirements>>
 and installing the appropriate version of required software.
 
 Once that is done, execute the installation script. From your web
@@ -242,31 +266,59 @@ http://yoursite/mantisbt/admin/install.php
 The installation procedure will go through the following steps:
 
 [arabic]
-. The script checks basic parameters for the web server
-. Provide required information for the installation
+. Check basic parameters for the web server
+. Collect required information for the installation
 * database type
 * database server hostname
-* user and password
+* database user and password (schema owner account)
 +
 Required privileges: SELECT, INSERT, UPDATE, and DELETE
+
 * high-privileged database account
 +
 Additional privileges required: INDEX, CREATE, ALTER, and DROP
 +
 If this account is not specified, the database user will be used.
-. Click the _Install/Upgrade Database_ button
-. The script creates the database and tables.
+
+* database table prefix, suffix and plugin table prefix
+* default time zone
+
 +
-The default Administrator user account is created at this stage, to
+The installer can optionally generate a SQL script instead of
+directly executing the statements. This may be useful for debugging
+purposes, or in environments where a manual creation of the schema
+is required.
++
+[WARNING]
+====
+*Executing this script may not result in a fully functional database*,
+particularly in upgrade scenarios.
+
+This is due to the fact that some upgrade steps require the execution
+of PHP code which cannot be translated to SQL statements.
+
+Use at your own risk.
+====
+
++
+When all the required information has been entered,
+click the _Install/Upgrade Database_ button.
+The script will create the database and tables.
+
+
+. The default Administrator user account is created at this stage, to
 allow the initial login and setup of MantisBT.
-. The script attempts to write a basic `config_inc.php` file to define
+
+. The script then attempts to write a basic `config_inc.php` file to store
 the database connection parameters.
 +
-This operation may fail if the web server's user account does not have
-write permissions to the directory (which is recommended for obvious
-security reasons). In this case, you will have to manually create the
-file and copy/paste the contents from the page.
-. The script perform post installation checks on the system.
+NOTE: This operation will fail if the web server's user account
+does not have write permissions to the `config` directory
+(which is recommended for obvious security reasons).
+In this case, you will have to manually create the file and copy/paste
+the contents from the page.
+
+. Finally, the script perform post-installation checks on the system.
 +
 Review and correct any errors.
 
@@ -276,7 +328,7 @@ Review and correct any errors.
 This chapter explains how to upgrade an existing MantisBT installation.
 
 Start by Performing the steps described in
-link:#admin.install.preinstall[Pre-installation / upgrade tasks] above.
+<<admin.install.preinstall>> above.
 
 [arabic]
 . Put the site down for maintenance
@@ -287,14 +339,15 @@ cp mantis_offline.php.sample mantis_offline.php
 +
 This will prevent users from using the system while the upgrade is in
 progress.
-. Always _Backup your code, data and config files_ before upgrading !
+. Always *Backup your code, data and config files* before upgrading !
 +
 This includes your Mantis directory, your attachments, and your
-database. Refer to link:#admin.install.backups[Backups] for details.
+database. Refer to <<admin.install.backups>> for details.
 . Copy the configuration files
 +
 To preserve your system settings, you should copy the files listed below
 to subdirectory `config` of the new installation.
+
 * `config_inc.php`,
 * `custom_strings_inc.php`,
 * `custom_constants_inc.php` and
@@ -306,17 +359,18 @@ The above list is not exhaustive. You might also have to copy other
 custom files specific to your installation such as logo, favicon, css,
 etc.
 ====
-. Copy third party plugins
+. Copy third-party plugins
 +
 To maintain system functionality, you should copy any additional plugins
-in the `plugins` subdirectory.
+installed in the `plugins` subdirectory.
 +
 For example on Unix, you could use the following command; it will copy
 all installed plugins (in local subdirectories or symlinked), excluding
 bundled ones.
 +
+[source,shell script]
 ....
-cd /path/to/mantisbt-OLD/plugins
+cd /path/to/mantisbt/plugins
 find -maxdepth 1 ! -path . -type d -o -type l |
     grep -Pv "(Gravatar|MantisCoreFormatting|MantisGraph|XmlImportExport)" |
     xargs -Idirs cp -r dirs /path/to/mantisbt-NEW/plugins
@@ -324,7 +378,7 @@ find -maxdepth 1 ! -path . -type d -o -type l |
 +
 [WARNING]
 ====
-Make sure that you _do not overwrite any of the bundled plugins_ as per
+Make sure that you *do not overwrite any of the bundled plugins* as per
 the list below, with an older version.
 
 * Avatars via Gravatar (`Gravatar`)
@@ -353,31 +407,32 @@ If this account is not specified, the database user will be used.
 .Upgrading large databases
 ====
 When processing large databases from versions older than 1.2, the
-upgrade script may fail during the conversion of date fields, leaving
-the system in an inconsistent (i.e. partially updated) state.
+upgrade script may fail during the conversion of date fields due to
+execution timeout, leaving the system in an inconsistent
+(i.e. partially updated) state.
 
 In this case, you should simply restart the upgrade process, which will
 resume where it left off. Note that you may have to repeat this several
 times, until normal completion.
 
-Reference: MantisBT issue
-https://mantisbt.org/bugs/view.php?id=12735[12735].
+Reference: MantisBT
+https://mantisbt.org/bugs/view.php?id=12735[issue #12735].
 ====
 
 [[admin.install.config]]
 === Configure your installation
 
 There are many settings that you can adjust to configure and customize
-MantisBT. Refer to link:#admin.config[???], as well as the
+MantisBT. Refer to <<admin.config>>, as well as the
 `config_defaults_inc.php` file for in depth explanations of the
-available options. Check out also link:#admin.customize[???] for further
+available options. Also check out <<admin.customize>> for further
 options to personalize your installation.
 
 This step is normally only required for new installations, but when
 upgrading you may want to review and possibly customize any new
 configuration options.
 
-Open or create the file `config_inc.php` in subfolder config in an
+Open or create the `config_inc.php` file in subfolder `config` in an
 editor and add or modify any values as required. These will override the
 default values.
 
@@ -386,8 +441,8 @@ starting point.
 
 [WARNING]
 ====
-you should never edit the `config_defaults_inc.php` file directly, as it
-could cause issues with future upgrades. Always store your custom
+You should *never edit the `config_defaults_inc.php` file* directly,
+as this could cause issues with future upgrades. Always store custom
 configuration in your own `config_inc.php` file.
 ====
 
@@ -395,8 +450,9 @@ configuration in your own `config_inc.php` file.
 ====
 The MantisBT configuration files (`config_inc.php` as well as
 `custom_strings_inc.php`, `custom_constants_inc.php`,
-`custom_functions_inc.php`, etc.) should always be saved as _UTF-8
-without BOM_. Failure to do so may lead to unexpected display issues.
+`custom_functions_inc.php`, etc.) should always be saved as
+https://www.w3.org/International/questions/qa-byte-order-mark[_UTF-8 without BOM_].
+Failure to do so may lead to unexpected display issues.
 ====
 
 [[admin.install.postcommon]]
@@ -408,8 +464,10 @@ upgrades, and should be applied after completing either process.
 [arabic]
 . Test your configuration
 +
-Load up _admin/check/index.php_ to validate whether everything is setup
-correctly, and take corrective action as needed.
+Navigate to http://yoursite-NEW/mantisbt/admin/check/index.php
+to validate whether everything is setup correctly,
+and take corrective action as needed.
+
 . Delete the _admin_ folder
 +
 Once you have confirmed that the install or upgrade process was
@@ -441,7 +499,7 @@ Instructions in this section should only be applied after a new
 installation
 
 [arabic]
-. Login to your bugtracker
+. Navigate to http://yoursite/mantisbt and login to your bugtracker
 +
 Use the default Administrator account. The id and password are
 _administrator / root_.
@@ -465,17 +523,19 @@ existing installation.
 +
 Perform any additional testing as appropriate to ensure the new version
 does not introduce any regressions.
+Upgrade third-party plugins as needed.
 . Switch the site to the new version
 +
 The commands below should be executed from the web root (or wherever the
-mantisbt scripts are installed) and assume that the "live" directory
+MantisBT scripts are installed) and assume that the "live" directory
 (old version) is named _mantisbt_ and the new release directory is
-_mantisbt-1.3.x_.
+_mantisbt-NEW_.
 +
 ....
-mv mantisbt mantisbt-old
-mv mantisbt-1.3.x mantisbt
+mv mantisbt mantisbt-OLD
+mv mantisbt-NEW mantisbt
 ....
+
 . Put the site back on line
 +
 ....
@@ -484,6 +544,12 @@ rm mantis_offline.php
 +
 This should be the final step in the upgrade process, as it will let
 users login again.
+
+. Remove or disable access to the old directory
++
+....
+rm -r mantisbt-OLD
+....
 
 [[admin.install.backups]]
 === Backups
@@ -510,7 +576,9 @@ upgrading !
 [[admin.install.backups.mysql]]
 ==== MySQL Backups
 
-MySQL databases are easy to backup using the _mysqldump_ command:
+MySQL databases are easy to backup using the
+https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html[_mysqldump_]
+command:
 
 ....
 mysqldump -u<username> -p<password> <database name> > <output file>
@@ -540,18 +608,19 @@ script]
 [[admin.install.uninstall]]
 === Uninstall
 
-It is recommended that you make a backup in case you wish to use your
-data in the future. See link:#admin.install.backups[Backups] for
-details.
+It is recommended that you make a complete backup of your MantisBT data
+before uninstalling, in case you wish to access it in the future.
+See <<admin.install.backups>> for details.
 
 To uninstall MantisBT:
 
 * Delete the MantisBT directory and all files and subdirectories.
+
 * Drop all MantisBT tables from the database, these can be identified by
 the configured prefix for the installation. The default prefix is
-'mantis'.
-* Remove any customizations or additions that you may have made.
+`mantis`.
++
+If your MantisBT database does not contain any other data and you have
+the permissions to do so, you can simply drop the whole database.
 
-If you have the permissions to create/drop databases and you have a
-specific database for MantisBT that does not contain any other data, you
-can drop the whole database.
+* Remove any customizations or additions that you may have made.

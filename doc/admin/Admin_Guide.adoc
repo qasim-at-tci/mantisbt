@@ -9,6 +9,7 @@ MantisBT Development Team <https://mantisbt.org>; Damien Regad
 :toc: left
 :toclevels: 3
 :logo:  ../../images/mantis_logo.png
+:icons: font
 :title-logo-image: {logo}
 :source-highlighter: rouge
 // Disabling default language, see https://github.com/asciidoctor/asciidoctor/issues/3734

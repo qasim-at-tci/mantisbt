@@ -32,6 +32,27 @@
  */
 class Period {
 	/**
+	 * Period types constants
+	 */
+	const PERIOD_NONE = 0;
+	const PERIOD_THIS_MONTH = 1;
+	const PERIOD_LAST_MONTH = 2;
+	const PERIOD_THIS_QUARTER = 3;
+	const PERIOD_LAST_QUARTER = 4;
+	const PERIOD_YEAR_TO_DATE = 5;
+	const PERIOD_LAST_YEAR = 6;
+	const PERIOD_THIS_WEEK = 7;
+	const PERIOD_LAST_WEEK = 8;
+	const PERIOD_TWO_WEEKS = 9;
+	const PERIOD_CUSTOM = 10;
+
+	/**
+	 * Period types.
+	 * @var array
+	 */
+	private $periods;
+	
+	/**
 	 * start date
 	 * @var string
 	 */
@@ -47,12 +68,24 @@ class Period {
 	 * Constructor
 	 */
 	function __construct() {
-		$this->start = '';
-
 		# default to today
+		$this->start = '';
 		$this->end = '';
 
-		# default to today
+		$this->periods = array(
+			self::PERIOD_NONE => plugin_lang_get( 'period_none' ),
+			self::PERIOD_THIS_WEEK => plugin_lang_get( 'period_this_week' ),
+			self::PERIOD_LAST_WEEK => plugin_lang_get( 'period_last_week' ),
+			self::PERIOD_TWO_WEEKS => plugin_lang_get( 'period_two_weeks' ),
+			self::PERIOD_THIS_MONTH => plugin_lang_get( 'period_this_month' ),
+			self::PERIOD_LAST_MONTH => plugin_lang_get( 'period_last_month' ),
+			self::PERIOD_THIS_QUARTER => plugin_lang_get( 'period_this_quarter' ),
+			self::PERIOD_LAST_QUARTER => plugin_lang_get( 'period_last_quarter' ),
+			self::PERIOD_YEAR_TO_DATE => plugin_lang_get( 'period_year_to_date' ),
+			self::PERIOD_LAST_YEAR => plugin_lang_get( 'period_last_year' ),
+			self::PERIOD_CUSTOM => plugin_lang_get( 'period_select' ),
+		);
+
 	}
 
 	/**
@@ -273,24 +306,11 @@ class Period {
      * @return string
 	 */
 	function period_selector( $p_control_name ) {
-		$t_periods = array(
-			0 => plugin_lang_get( 'period_none' ),
-			7 => plugin_lang_get( 'period_this_week' ),
-			8 => plugin_lang_get( 'period_last_week' ),
-			9 => plugin_lang_get( 'period_two_weeks' ),
-			1 => plugin_lang_get( 'period_this_month' ),
-			2 => plugin_lang_get( 'period_last_month' ),
-			3 => plugin_lang_get( 'period_this_quarter' ),
-			4 => plugin_lang_get( 'period_last_quarter' ),
-			5 => plugin_lang_get( 'period_year_to_date' ),
-			6 => plugin_lang_get( 'period_last_year' ),
-			10 => plugin_lang_get( 'period_select' ),
-		);
 		$t_default = gpc_get_int( $p_control_name, 0 );
 		$t_formatted_start = $this->get_start_formatted();
 		$t_formatted_end = $this->get_end_formatted();
 		$t_ret = '<div id="period_menu">';
-		$t_ret .= get_dropdown( $t_periods, $p_control_name, $t_default, false, false );
+		$t_ret .= get_dropdown( $this->periods, $p_control_name, $t_default, false, false );
 		$t_ret .= "</div> <br />\n";
 		$t_ret .= "<div id=\"dates\">\n";
 		$t_ret .= lang_get( 'from_date' ) . ' <input type="text" id="start_date" name="start_date" size="12" value="' . $t_formatted_start . '" class="datetimepicker input-xs" disabled="disabled" />' . "\n";
@@ -310,34 +330,34 @@ class Period {
 	function set_period_from_selector( $p_control_name, $p_start_field = 'start_date', $p_end_field = 'end_date' ) {
 		$t_default = gpc_get_int( $p_control_name, 0 );
 		switch( $t_default ) {
-			case 1:
+			case self::PERIOD_THIS_MONTH:
 				$this->month_to_date();
 				break;
-			case 2:
+			case self::PERIOD_LAST_MONTH:
 				$this->last_month();
 				break;
-			case 3:
+			case self::PERIOD_THIS_QUARTER:
 				$this->quarter_to_date();
 				break;
-			case 4:
+			case self::PERIOD_LAST_QUARTER:
 				$this->last_quarter();
 				break;
-			case 5:
+			case self::PERIOD_YEAR_TO_DATE:
 				$this->year_to_date();
 				break;
-			case 6:
+			case self::PERIOD_LAST_YEAR:
 				$this->last_year();
 				break;
-			case 7:
+			case self::PERIOD_THIS_WEEK:
 				$this->week_to_date();
 				break;
-			case 8:
+			case self::PERIOD_LAST_WEEK:
 				$this->last_week();
 				break;
-			case 9:
+			case self::PERIOD_TWO_WEEKS:
 				$this->last_week( 2 );
 				break;
-			case 10:
+			case self::PERIOD_CUSTOM:
 				$t_today = date( 'Y-m-d' );
 				if( $p_start_field != '' ) {
 					$this->start = gpc_get_string( $p_start_field, '' ) . ' 00:00:00';

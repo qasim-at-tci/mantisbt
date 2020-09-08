@@ -30,11 +30,15 @@ $t_interval->set_period_from_selector( 'interval' );
 
 $t_interval_days = $t_interval->get_elapsed_days();
 if( $t_interval_days <= 14 ) {
+	$t_date_format = config_get( 'normal_date_format' );
 	$t_incr = 60 * 60; # less than 14 days, use hourly
-} else if( $t_interval_days <= 92 ) {
-	$t_incr = 24 * 60 * 60; # less than three month, use daily
 } else {
-	$t_incr = 7 * 24 * 60 * 60; # otherwise weekly
+	$t_date_format = config_get( 'short_date_format' );
+	if( $t_interval_days <= 92 ) {
+		$t_incr = 24 * 60 * 60; # less than three month, use daily
+	} else {
+		$t_incr = 7 * 24 * 60 * 60; # otherwise weekly
+	}
 }
 
 $f_page_number = 1;
@@ -189,7 +193,6 @@ for( $i=0; $i<$t_count_cat; $i++ ) {
 # sort and display the results
 sort( $t_category );
 
-$t_date_format = config_get( 'short_date_format' );
 echo '<div class="space-10"></div>';
 echo '<div class="table-responsive">';
 echo '<table class="table table-striped table-bordered table-condensed"><tr><td></td>';

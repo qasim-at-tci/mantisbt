@@ -49,31 +49,56 @@ $t_types = array(
 				2 => plugin_lang_get( 'category_link' ),
 		   );
 ?>
+
 <div class="col-md-12 col-xs-12">
 	<div class="space-10"></div>
 	<form id="graph_form" method="post" action="<?php echo plugin_page( 'issues_trend_page.php' ); ?>" class="form-inline">
 		<div class="widget-box widget-color-blue2">
+
+		<div class="widget-header widget-header-small">
+			<h4 class="widget-title lighter">
+				<i class="ace-icon fa fa-filter"></i>
+				Filters
+			</h4>
+		</div>
+
 		<div class="widget-body">
-		<div class="widget-main no-padding">
-			<div class="table-responsive">
-			<table class="table table-condensed">
-				<tr>
-					<td class="center">
-					<div class="form-group">
-						<?php echo get_dropdown( $t_types, 'graph_type', $f_type ); ?>
-					</div>
-					</td>
-					<td class="center">
-					<div class="form-group">
-						<?php echo $t_period->period_selector( 'interval' ); ?>
-					</div>
-					</td>
-					<td class="center">
-					<div class="form-group">
-						<input type="submit" class="btn btn-sm btn-primary btn-white btn-round" name="show" value="<?php echo lang_get( 'proceed' ); ?>"/>
-					</div>
-					</td>
-				</tr>
+			<div class="widget-main no-padding">
+				<div class="table-responsive">
+					<table class="table table-striped table-bordered table-condensed">
+						<thead>
+							<tr>
+								<th>
+									<label for="graph_type">
+										<?php echo plugin_lang_get( 'issue_trends_link' ) ?>
+									</label>
+								</th>
+								<th>
+									<label for="interval">
+										<?php echo plugin_lang_get( 'period' ) ?>
+									</label>
+								</th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tr>
+							<td class="center">
+								<div class="form-group">
+									<?php echo get_dropdown( $t_types, 'graph_type', $f_type ); ?>
+								</div>
+							</td>
+							<td class="center">
+								<div class="form-group">
+									<?php echo $t_period->period_selector( 'interval' ); ?>
+								</div>
+							</td>
+							<td class="center widget-toolbox padding-8">
+								<div class="form-group">
+									<input type="submit" class="btn btn-sm btn-primary btn-white btn-round" name="show" value="<?php echo lang_get( 'proceed' ); ?>"/>
+								</div>
+							</td>
+						</tr>
 			</table>
 			</div>
 		</div>

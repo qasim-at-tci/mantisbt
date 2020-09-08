@@ -56,13 +56,13 @@ class Period {
 	 * start date
 	 * @var string
 	 */
-	private $start = '';
+	private $start;
 
 	/**
 	 * end date
 	 * @var string
 	 */
-	private $end = '';
+	private $end;
 
 	/**
 	 * Constructor

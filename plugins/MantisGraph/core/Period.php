@@ -313,10 +313,10 @@ class Period {
 		# printf mask to display the date entry field + date picker
 		$t_lang_locale = lang_get_current_datetime_locale();
 		$t_date_field = <<<HTML
-<div class="pull-left padding-8">
+<div class="pull-left padding-left-8">
 	<label for="%1\$s">%2\$s</label>
 	<input type="text" id="%1\$s" name="%1\$s" size="12"
-		   class="datetimepicker input-xs"
+		   class="datetimepicker input-sm"
 		   data-picker-locale="$t_lang_locale" data-picker-format="Y-MM-DD"
 		   value="%3\$s"
 	/>
@@ -325,12 +325,12 @@ class Period {
 HTML;
 
 		$t_ret = '<div id="period_menu">' . PHP_EOL;
-		$t_ret .= '<label for="' . $p_control_name . '">' . plugin_lang_get( 'period' ) . '</label>' . PHP_EOL;
+		$t_ret .= '<div class="pull-left">' . PHP_EOL;
 		$t_ret .= get_dropdown( $this->periods, $p_control_name, $t_default, false, false, true ) . PHP_EOL;
 		$t_ret .= "</div>\n";
 		# Javascript will dynamically show/hide Dates selectors based on
 		# selected Period Type
-		$t_ret .= '<div id="dates">' . PHP_EOL;
+		$t_ret .= '<div id="dates" class="pull-left">' . PHP_EOL;
 		$t_ret .= sprintf( $t_date_field,
 				'start_date',
 				lang_get( 'from_date' ),
@@ -341,6 +341,7 @@ HTML;
 				lang_get( 'to_date' ),
 				$t_formatted_end
 			);
+		$t_ret .= "</div>\n";
 		$t_ret .= "</div>\n";
 		return $t_ret;
 	}

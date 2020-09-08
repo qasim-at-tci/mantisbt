@@ -309,12 +309,38 @@ class Period {
 		$t_default = gpc_get_int( $p_control_name, 0 );
 		$t_formatted_start = $this->get_start_formatted();
 		$t_formatted_end = $this->get_end_formatted();
-		$t_ret = '<div id="period_menu">';
-		$t_ret .= get_dropdown( $this->periods, $p_control_name, $t_default, false, false );
-		$t_ret .= "</div> <br />\n";
-		$t_ret .= "<div id=\"dates\">\n";
-		$t_ret .= lang_get( 'from_date' ) . ' <input type="text" id="start_date" name="start_date" size="12" value="' . $t_formatted_start . '" class="datetimepicker input-xs" disabled="disabled" />' . "\n";
-		$t_ret .= lang_get( 'to_date' ) . ' <input type="text" id="end_date" name="end_date" size="12" value="' . $t_formatted_end . '" class="datetimepicker input-xs" disabled="disabled" />' . "\n";
+
+		# printf mask to display the date entry field + date picker
+		$t_lang_locale = lang_get_current_datetime_locale();
+		$t_date_field = <<<HTML
+<div class="pull-left padding-8">
+	<label for="%1\$s">%2\$s</label>
+	<input type="text" id="%1\$s" name="%1\$s" size="12"
+		   class="datetimepicker input-xs"
+		   data-picker-locale="$t_lang_locale" data-picker-format="Y-MM-DD"
+		   value="%3\$s"
+	/>
+	<i class="fa fa-calendar fa-lg datetimepicker"></i>
+</div>
+HTML;
+
+		$t_ret = '<div id="period_menu">' . PHP_EOL;
+		$t_ret .= '<label for="' . $p_control_name . '">' . plugin_lang_get( 'period' ) . '</label>' . PHP_EOL;
+		$t_ret .= get_dropdown( $this->periods, $p_control_name, $t_default, false, false ) . PHP_EOL;
+		$t_ret .= "</div>\n";
+		# Javascript will dynamically show/hide Dates selectors based on
+		# selected Period Type
+		$t_ret .= '<div id="dates">' . PHP_EOL;
+		$t_ret .= sprintf( $t_date_field,
+				'start_date',
+				lang_get( 'from_date' ),
+				$t_formatted_start
+			);
+		$t_ret .= sprintf( $t_date_field,
+				'end_date',
+				lang_get( 'to_date' ),
+				$t_formatted_end
+			);
 		$t_ret .= "</div>\n";
 		return $t_ret;
 	}

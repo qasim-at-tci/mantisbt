@@ -92,4 +92,16 @@ $(document).ready( function() {
             }
         });
     });
+
+    /**
+     * Show/hide the Date selection fields based on selected Period Type
+     */
+    $('#interval').change(function() {
+        if(1*this.value === 10 /* Period::PERIOD_CUSTOM PHP class constant */) {
+            $('#dates').show();//.removeClass('hidden');
+        } else {
+            $('#dates').hide();
+        }
+    })
+        .trigger('change');
 });

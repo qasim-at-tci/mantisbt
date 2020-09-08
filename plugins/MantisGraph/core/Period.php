@@ -34,7 +34,7 @@ class Period {
 	/**
 	 * Period types constants
 	 */
-	const PERIOD_NONE = 0;
+	const PERIOD_NONE = null;
 	const PERIOD_THIS_MONTH = 1;
 	const PERIOD_LAST_MONTH = 2;
 	const PERIOD_THIS_QUARTER = 3;
@@ -326,7 +326,7 @@ HTML;
 
 		$t_ret = '<div id="period_menu">' . PHP_EOL;
 		$t_ret .= '<label for="' . $p_control_name . '">' . plugin_lang_get( 'period' ) . '</label>' . PHP_EOL;
-		$t_ret .= get_dropdown( $this->periods, $p_control_name, $t_default, false, false ) . PHP_EOL;
+		$t_ret .= get_dropdown( $this->periods, $p_control_name, $t_default, false, false, true ) . PHP_EOL;
 		$t_ret .= "</div>\n";
 		# Javascript will dynamically show/hide Dates selectors based on
 		# selected Period Type

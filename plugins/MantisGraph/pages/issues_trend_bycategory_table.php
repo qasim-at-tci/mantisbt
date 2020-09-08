@@ -75,9 +75,10 @@ $t_marker[$t_ptr] = time();
 $t_data[$t_ptr] = array();
 foreach ( $t_rows as $t_row ) {
 	# the following function can treat the resolved parameter as an array to match
-	$t_cat = category_get_name( $t_row->category_id );
-	if( $t_cat == '' ) {
-		$t_cat = 'none';
+	if( category_exists( $t_row->category_id ) ) {
+		$t_cat = category_get_name( $t_row->category_id );
+	} else {
+		$t_cat = lang_get( 'no_category' );
 	}
 	if( !access_compare_level( $t_row->status, $t_resolved ) ) {
 		if( in_array( $t_cat, $t_category ) ) {

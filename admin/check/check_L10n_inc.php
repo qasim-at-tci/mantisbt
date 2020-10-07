@@ -56,3 +56,26 @@ check_print_test_row(
 		false => 'Fallback language can not be set to auto or a non-implemented language. Invalid fallback language detected: ' . htmlentities( $t_fallback_language )
 	)
 );
+
+# Check Core Language Files
+check_lang_dir(
+	config_get_global( 'language_path' ),
+	'MantisBT Core'
+);
+
+# Check Plugins Language Files
+$t_plugins_dir = config_get_global( 'plugin_path' );
+$t_plugins = array_filter(
+	scandir( $t_plugins_dir ),
+	function( $p_file ) use ( $t_plugins_dir ) {
+		return $p_file[0] != '.'
+			&& $p_file != 'Web.config'
+			&& is_dir( $t_plugins_dir . $p_file );
+	}
+);
+foreach( $t_plugins as $t_plugin ) {
+	check_lang_dir(
+		$t_plugins_dir . $t_plugin . '/lang/',
+		"'$t_plugin' Plugin"
+	);
+}

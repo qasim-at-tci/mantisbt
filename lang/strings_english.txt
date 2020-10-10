@@ -954,6 +954,8 @@ $s_reset_password_msg2 = 'Reset Password resets the password to be blank.';
 $s_show_all_users = 'All';
 $s_users_unused = 'Unused';
 $s_users_new = 'New';
+$s_failed_login_count = 'Failed Logins';
+$s_locked = 'Account Locked';
 
 # manage_user_reset.php
 $s_account_reset_msg = 'A confirmation request has been sent to the selected user\'s e-mail address. Using this, the user will be able to change their password.';

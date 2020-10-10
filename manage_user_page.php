@@ -349,11 +349,17 @@ $t_user_count = count( $t_users );
 		<thead>
 			<tr>
 <?php
+	$t_max_failed = config_get( 'max_failed_login_count' );
+
 	# Print column headers with sort links
 	$t_columns = array(
 		'username', 'realname', 'email', 'access_level',
-		'enabled', 'protected', 'date_created', 'last_visit'
+		'enabled', 'protected', 'failed_login_count', 'date_created', 'last_visit'
 	);
+	# No need to display failed logins count if max failed feature is disabled
+	if( $t_max_failed == OFF ) {
+		unset( $t_columns[array_search( 'failed_login_count', $t_columns)] );
+	}
 
 	foreach( $t_columns as $t_col ) {
 		echo "\t<th>";
@@ -383,6 +389,7 @@ $t_user_count = count( $t_users );
 		 * @var int $v_access_level
 		 * @var bool $v_enabled
 		 * @var bool $v_protected
+		 * @var int $v_failed_login_count
 		 */
 		extract( $t_user, EXTR_PREFIX_ALL, 'v' );
 
@@ -417,6 +424,22 @@ $t_user_count = count( $t_users );
 						echo '&#160;';
 					} ?>
 				</td>
+
+<?php
+	# Only show failed logins columns if feature is enabled
+	if( $t_max_failed != OFF ) {
+?>
+				<td class="center">
+<?php
+		if( $v_failed_login_count >= $t_max_failed  ) {
+			echo $t_lock_image;
+		} elseif( $v_failed_login_count ) {
+			echo $v_failed_login_count;
+		}
+?>
+				</td>
+<?php } # end if $t_max_failed ?>
+
 				<td><?php echo $v_date_created ?></td>
 				<td><?php echo $v_last_visit ?></td>
 			</tr>

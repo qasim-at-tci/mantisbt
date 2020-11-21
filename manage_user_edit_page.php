@@ -219,7 +219,6 @@ print_manage_menu( 'manage_user_page.php' );
 
 			<?php event_signal( 'EVENT_MANAGE_USER_UPDATE_FORM', array( $t_user['id'] ) ); ?>
 
-			<!-- Submit Button -->
 		</fieldset>
 		</table>
 		</div>
@@ -227,7 +226,10 @@ print_manage_menu( 'manage_user_page.php' );
 		</div>
 
 		<div class="widget-toolbox padding-8 clearfix">
-			<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'update_user_button' ) ?>" />
+			<!-- Submit Button -->
+			<button class="btn btn-primary btn-white btn-round">
+				<?php echo lang_get( 'update_user_button' ) ?>
+			</button>
 			<?php
 			if( config_get( 'enable_email_notification' ) == ON ) { ?>
 				&nbsp;

@@ -288,6 +288,17 @@ print_manage_menu( 'manage_user_page.php' );
 				</button>
 <?php
 	}
+
+	# Impersonate user button
+	$t_impersonate = auth_can_impersonate( $t_user_id );
+	if( $t_impersonate ) {
+?>
+				<button form="manage-user-impersonate-form"
+						class="btn btn-primary btn-white btn-round">
+					<?php echo lang_get( 'impersonate_user_button' ) ?>
+				</button>
+<?php
+	}
 ?>
 			</div>
 		</div>
@@ -314,41 +325,21 @@ print_manage_menu( 'manage_user_page.php' );
 	</form>
 <?php
 	}
+
+	if( $t_impersonate ) {
 ?>
-
-</div>
-<div class="space-10"></div>
-<?php
-# User action buttons: DELETE
-
-$t_impersonate = auth_can_impersonate( $t_user['id'] );
-
-if( $t_impersonate ) {
-?>
-<div id="manage-user-actions-div" class="col-md-6 col-xs-12 no-padding">
-<div class="space-8"></div>
-<div class="btn-group">
-
-<!-- Impersonate Button -->
-<?php if( $t_impersonate ) { ?>
-	<form id="manage-user-impersonate-form" method="post" action="manage_user_impersonate.php" class="pull-left">
-		<fieldset>
-			<?php echo form_security_field( 'manage_user_impersonate' ) ?>
-			<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
-			<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'impersonate_user_button' ) ?>" />
-		</fieldset>
+	<form id="manage-user-impersonate-form" action="manage_user_impersonate.php">
+		<?php echo form_security_field( 'manage_user_impersonate' ) ?>
+		<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
 	</form>
-<?php } ?>
-
+<?php
+	}
+?>
 </div>
-</div>
-<?php } ?>
 
 <?php event_signal( 'EVENT_MANAGE_USER_PAGE', array( $t_user_id ) ); ?>
 
-<div class="clearfix"></div>
-
-<!-- PROJECT ACCESS (if permissions allow) and user is not ADMINISTRATOR -->
+<!-- PROJECT ACCESS (if permissions allow and user is not ADMINISTRATOR) -->
 <?php if( access_has_global_level( config_get( 'manage_user_threshold' ) ) &&
 	!user_is_administrator( $t_user_id ) ) {
 ?>

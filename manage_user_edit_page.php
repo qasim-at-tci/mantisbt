@@ -266,9 +266,16 @@ if( $t_reset || $t_unlock || $t_delete || $t_impersonate ) {
 			<?php echo form_security_field( 'manage_user_reset' ) ?>
 			<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
 <?php	if( $t_reset ) { ?>
-			<span><input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'reset_password_button' ) ?>" /></span>
-<?php	} else { ?>
-			<span><input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'account_unlock_button' ) ?>" /></span>
+			<button name="reset" class="btn btn-primary btn-white btn-round">
+				<?php echo lang_get( 'reset_password_button' ) ?>
+			</button>
+<?php
+		}
+		if( $t_unlock ) {
+?>
+			<button name="unlock" class="btn btn-primary btn-white btn-round">
+				<?php echo lang_get( 'account_unlock_button' ) ?>
+			</button>
 <?php	} ?>
 		</fieldset>
 	</form>

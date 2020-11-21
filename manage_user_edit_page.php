@@ -240,6 +240,7 @@ print_manage_menu( 'manage_user_page.php' );
 			<!-- User action buttons -->
 			<div class="btn-group pull-right">
 <?php
+	# Unlock or clear failed logins button
 	if( $t_failed_login_count > 0 ) {
 		$t_btn_label = $t_is_locked ? 'account_unlock_button' : 'clear_failed_logins';
 ?>
@@ -247,52 +248,54 @@ print_manage_menu( 'manage_user_page.php' );
 				        class="btn btn-primary btn-white btn-round">
 					<?php echo lang_get( $t_btn_label ); ?>
 				</button>
-<?php } ?>
+<?php
+	}
+
+	# Reset password button
+	$t_reset = $t_user['id'] != auth_get_current_user_id()
+		&& auth_can_set_password( $t_user['id'] )
+		&& user_is_enabled( $t_user['id'] )
+		&& !user_is_protected( $t_user['id'] );
+	if( $t_reset ) {
+?>
+			<button name="reset" form="manage-user-reset-form"
+					class="btn btn-primary btn-white btn-round">
+				<?php echo lang_get( 'reset_password_button' ) ?>
+			</button>
+<?php
+	}
+?>
 			</div>
 		</div>
 		</div>
 		</div>
 	</form>
 
-	<!-- User action forms - submit buttons defined above -->
+	<!-- User action forms - submit buttons are defined above -->
+<?php
+	if( $t_reset || $t_failed_login_count > 0 ) {
+?>
 	<form id="manage-user-reset-form" action="manage_user_reset.php">
 		<?php echo form_security_field( 'manage_user_reset' ) ?>
 		<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
 	</form>
+<?php
+	}
+?>
+
 </div>
 <div class="space-10"></div>
 <?php
-# User action buttons: RESET and DELETE
+# User action buttons: DELETE
 
-$t_reset = $t_user['id'] != auth_get_current_user_id()
-	&& auth_can_set_password( $t_user['id'] )
-	&& user_is_enabled( $t_user['id'] )
-	&& !user_is_protected( $t_user['id'] );
 $t_delete = !( ( user_is_administrator( $t_user_id ) && ( user_count_level( config_get_global( 'admin_site_threshold' ) ) <= 1 ) ) );
 $t_impersonate = auth_can_impersonate( $t_user['id'] );
 
-if( $t_reset || $t_delete || $t_impersonate ) {
+if( $t_delete || $t_impersonate ) {
 ?>
 <div id="manage-user-actions-div" class="col-md-6 col-xs-12 no-padding">
 <div class="space-8"></div>
 <div class="btn-group">
-
-<!-- Reset Button -->
-<?php if( $t_reset ) { ?>
-	<form id="manage-user-reset-form" method="post" action="manage_user_reset.php" class="pull-left">
-		<fieldset>
-			<?php echo form_security_field( 'manage_user_reset' ) ?>
-			<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
-<?php	if( $t_reset ) { ?>
-			<button name="reset" class="btn btn-primary btn-white btn-round">
-				<?php echo lang_get( 'reset_password_button' ) ?>
-			</button>
-<?php
-		}
-?>
-		</fieldset>
-	</form>
-<?php } ?>
 
 <!-- Delete Button -->
 <?php if( $t_delete ) { ?>

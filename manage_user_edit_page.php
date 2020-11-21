@@ -272,6 +272,20 @@ print_manage_menu( 'manage_user_page.php' );
 				</button>
 <?php
 	}
+
+	# Delete user button
+	$t_delete = !(
+		user_is_administrator( $t_user_id )
+		&& user_count_level( config_get_global( 'admin_site_threshold' ) ) <= 1
+	);
+	if( $t_delete ) {
+?>
+				<button form="manage-user-delete-form"
+						class="btn btn-primary btn-white btn-round">
+					<?php echo lang_get( 'delete_user_button' ) ?>
+				</button>
+<?php
+	}
 ?>
 			</div>
 		</div>
@@ -289,6 +303,15 @@ print_manage_menu( 'manage_user_page.php' );
 	</form>
 <?php
 	}
+
+	if( $t_delete ) {
+?>
+	<form id="manage-user-delete-form" action="manage_user_delete.php">
+		<?php echo form_security_field( 'manage_user_delete' ) ?>
+		<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
+	</form>
+<?php
+	}
 ?>
 
 </div>
@@ -296,25 +319,13 @@ print_manage_menu( 'manage_user_page.php' );
 <?php
 # User action buttons: DELETE
 
-$t_delete = !( ( user_is_administrator( $t_user_id ) && ( user_count_level( config_get_global( 'admin_site_threshold' ) ) <= 1 ) ) );
 $t_impersonate = auth_can_impersonate( $t_user['id'] );
 
-if( $t_delete || $t_impersonate ) {
+if( $t_impersonate ) {
 ?>
 <div id="manage-user-actions-div" class="col-md-6 col-xs-12 no-padding">
 <div class="space-8"></div>
 <div class="btn-group">
-
-<!-- Delete Button -->
-<?php if( $t_delete ) { ?>
-	<form id="manage-user-delete-form" method="post" action="manage_user_delete.php" class="pull-left">
-		<fieldset>
-			<?php echo form_security_field( 'manage_user_delete' ) ?>
-			<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
-			<span><input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'delete_user_button' ) ?>" /></span>
-		</fieldset>
-	</form>
-<?php } ?>
 
 <!-- Impersonate Button -->
 <?php if( $t_impersonate ) { ?>

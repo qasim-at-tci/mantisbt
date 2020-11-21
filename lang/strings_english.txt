@@ -946,6 +946,7 @@ $s_confirm_account_pruning = 'Are you sure you want to delete old accounts that 
 # manage_user_page.php
 $s_edit_user_title = 'Edit User';
 $s_account_unlock_button = 'Unlock Account';
+$s_clear_failed_logins = 'Clear Failed logins';
 $s_reset_password_button = 'Reset Password';
 $s_delete_user_button = 'Delete User';
 $s_impersonate_user_button = 'Impersonate User';
@@ -961,6 +962,7 @@ $s_locked = 'Account Locked';
 $s_account_reset_msg = 'A confirmation request has been sent to the selected user\'s e-mail address. Using this, the user will be able to change their password.';
 $s_account_reset_msg2 = 'Account password has been set to blank...';
 $s_account_unlock_msg = 'The account has been unlocked.';
+$s_clear_failed_logins_msg = 'Failed Logins count has been cleared.';
 
 # manage_user_update.php
 $s_manage_user_protected_msg = 'Account protected; the \'Access Level\' and \'Enabled\' fields cannot be modified. Other fields were successfully updated.';

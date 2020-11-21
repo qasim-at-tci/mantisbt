@@ -257,11 +257,19 @@ print_manage_menu( 'manage_user_page.php' );
 		&& user_is_enabled( $t_user['id'] )
 		&& !user_is_protected( $t_user['id'] );
 	if( $t_reset ) {
+		if(    ON == config_get( 'send_reset_password' )
+			&& ON == config_get( 'enable_email_notification' )
+		) {
+			$t_tooltip = lang_get( 'reset_password_msg' );
+		} else {
+			$t_tooltip = lang_get( 'reset_password_msg2' );
+		}
 ?>
-			<button name="reset" form="manage-user-reset-form"
-					class="btn btn-primary btn-white btn-round">
-				<?php echo lang_get( 'reset_password_button' ) ?>
-			</button>
+				<button name="reset" form="manage-user-reset-form"
+						class="btn btn-primary btn-white btn-round"
+						title="<?php echo $t_tooltip ?>">
+					<?php echo lang_get( 'reset_password_button' ) ?>
+				</button>
 <?php
 	}
 ?>
@@ -319,22 +327,6 @@ if( $t_delete || $t_impersonate ) {
 	</form>
 <?php } ?>
 
-</div>
-</div>
-<?php } ?>
-
-<?php if( $t_reset ) { ?>
-<div class="col-md-6 col-xs-12 no-padding">
-<div class="space-4"></div>
-<div class="alert alert-info">
-<?php
-	print_icon( 'fa-info-circle' );
-	if( ( ON == config_get( 'send_reset_password' ) ) && ( ON == config_get( 'enable_email_notification' ) ) ) {
-		echo lang_get( 'reset_password_msg' );
-	} else {
-		echo lang_get( 'reset_password_msg2' );
-	}
-?>
 </div>
 </div>
 <?php } ?>

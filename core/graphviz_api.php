@@ -366,13 +366,9 @@ class Graph {
 			trigger_error( ERROR_GENERIC, ERROR );
 		}
 
-		$t_binary = $this->formats[$p_format]['binary'];
-		$t_type = $this->formats[$p_format]['type'];
-		$t_mime = $this->formats[$p_format]['mime'];
-
 		# Send Content-Type header, if requested.
 		if( $p_headers ) {
-			header( 'Content-Type: ' . $t_mime );
+			header( 'Content-Type: ' . $this->formats[$p_format]['mime'] );
 		}
 		# Retrieve the source dot document into a buffer
 		ob_start();

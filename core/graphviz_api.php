@@ -327,17 +327,16 @@ class Graph {
 
 	/**
 	 * Generates an undirected graph representation (suitable for neato).
-	 * @return void
+	 * @return string
 	 */
 	function generate() {
-		echo 'graph ' . $this->name . ' {' . "\n";
-
-		$this->print_graph_defaults();
+		$t_graph = 'graph ' . $this->name . ' {' . "\n";
+		$t_graph .= $this->graph_defaults();
 
 		foreach( $this->nodes as $t_name => $t_attr ) {
 			$t_name = '"' . addcslashes( $t_name, "\0..\37\"\\" ) . '"';
 			$t_attr = $this->build_attribute_list( $t_attr );
-			echo "\t" . $t_name . ' ' . $t_attr . ";\n";
+			$t_graph .= "\t" . $t_name . ' ' . $t_attr . ";\n";
 		}
 
 		foreach( $this->edges as $t_edge ) {
@@ -345,10 +344,10 @@ class Graph {
 			$t_dst = '"' . addcslashes( $t_edge['dst'], "\0..\37\"\\" ) . '"';
 			$t_attr = $t_edge['attributes'];
 			$t_attr = $this->build_attribute_list( $t_attr );
-			echo "\t" . $t_src . ' -- ' . $t_dst . ' ' . $t_attr . ";\n";
+			$t_graph .= "\t" . $t_src . ' -- ' . $t_dst . ' ' . $t_attr . ";\n";
 		}
 
-		echo "}\n";
+		return $t_graph . "}\n";
 	}
 
 	/**
@@ -365,12 +364,6 @@ class Graph {
 		if( !isset( $this->formats[$p_format] ) ) {
 			trigger_error( ERROR_GENERIC, ERROR );
 		}
-
-		# Retrieve the source dot document into a buffer
-		ob_start();
-		$this->generate();
-		$t_dot_source = ob_get_contents();
-		ob_end_clean();
 
 		# Start dot process
 
@@ -398,7 +391,7 @@ class Graph {
 		}
 
 		# Filter generated output through dot
-		fwrite( $t_pipes[0], $t_dot_source );
+		fwrite( $t_pipes[0], $this->generate() );
 		fclose( $t_pipes[0] );
 
 		# Read output
@@ -463,11 +456,13 @@ class Graph {
 	}
 
 	/**
-	 * Print graph attributes and defaults.
+	 * Generate default graph attributes.
 	 *
-	 * @return void
+	 * @return string
 	 */
-	protected function print_graph_defaults() {
+	protected function graph_defaults() {
+		$t_defaults = '';
+
 		foreach( $this->attributes as $t_name => $t_value ) {
 			if( !preg_match( '/[a-zA-Z]+/', $t_name ) ) {
 				continue;
@@ -481,18 +476,20 @@ class Graph {
 				continue;
 			}
 
-			echo "\t" . $t_name . '=' . $t_value . ";\n";
+			$t_defaults .= "\t" . $t_name . '=' . $t_value . ";\n";
 		}
 
 		if( null !== $this->default_node ) {
 			$t_attr = $this->build_attribute_list( $this->default_node );
-			echo "\t" . 'node ' . $t_attr . ";\n";
+			$t_defaults .= "\t" . 'node ' . $t_attr . ";\n";
 		}
 
 		if( null !== $this->default_edge ) {
 			$t_attr = $this->build_attribute_list( $this->default_edge );
-			echo "\t" . 'edge ' . $t_attr . ";\n";
+			$t_defaults .= "\t" . 'edge ' . $t_attr . ";\n";
 		}
+
+		return $t_defaults;
 	}
 }
 
@@ -517,17 +514,16 @@ class Digraph extends Graph {
 
 	/**
 	 * Generates a directed graph representation (suitable for dot).
-	 * @return void
+	 * @return string
 	 */
 	function generate() {
-		echo 'digraph ' . $this->name . ' {' . "\n";
-
-		$this->print_graph_defaults();
+		$t_graph = 'digraph ' . $this->name . ' {' . "\n";
+		$t_graph .= $this->graph_defaults();
 
 		foreach( $this->nodes as $t_name => $t_attr ) {
 			$t_name = '"' . addcslashes( $t_name, "\0..\37\"\\" ) . '"';
 			$t_attr = $this->build_attribute_list( $t_attr );
-			echo "\t" . $t_name . ' ' . $t_attr . ";\n";
+			$t_graph .= "\t" . $t_name . ' ' . $t_attr . ";\n";
 		}
 
 		foreach( $this->edges as $t_edge ) {
@@ -535,9 +531,9 @@ class Digraph extends Graph {
 			$t_dst = '"' . addcslashes( $t_edge['dst'], "\0..\37\"\\" ) . '"';
 			$t_attr = $t_edge['attributes'];
 			$t_attr = $this->build_attribute_list( $t_attr );
-			echo "\t" . $t_src . ' -> ' . $t_dst . ' ' . $t_attr . ";\n";
+			$t_graph .= "\t" . $t_src . ' -> ' . $t_dst . ' ' . $t_attr . ";\n";
 		}
 
-		echo "}\n";
+		return $t_graph . "}\n";
 	}
 }

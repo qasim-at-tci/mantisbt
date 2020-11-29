@@ -35,6 +35,7 @@
  * @uses utility_api.php
  */
 
+use Mantis\Exceptions\ServiceException;
 use Mantis\Exceptions\StateException;
 
 require_api( 'constant_inc.php' );
@@ -337,9 +338,12 @@ class Graph {
 
 	/**
 	 * Outputs a graph image or map in the specified format.
+	 *
 	 * @param string  $p_format  Graphviz output format.
 	 * @param boolean $p_headers Whether to sent http headers.
 	 * @return void
+	 *
+	 * @throws ServiceException if GraphViz execution fails
 	 */
 	function output( $p_format = 'dot', $p_headers = false ) {
 		# Check if it is a recognized format.
@@ -363,39 +367,64 @@ class Graph {
 
 		# Start dot process
 
+		# Use a temp file to capture stderr output. A pipe won't work due to a
+		# limitation on Windows which does not support non-blocking streams and
+		# hangs if there is no error output (stream_set_blocking has no effect).
+		$t_err_file = tempnam( sys_get_temp_dir(), 'mantis_relgraph_err.' );
+
 		$t_command = escapeshellcmd( $this->graphviz_tool . ' -T' . $p_format );
 		$t_descriptors = array(
 			0 => array( 'pipe', 'r', ),
 			1 => array( 'pipe', 'w', ),
-			2 => array( 'file', 'php://stderr', 'w', ),
+			2 => array( 'file', $t_err_file, 'w', ),
 			);
-
 		$t_pipes = array();
 		$t_process = proc_open( $t_command, $t_descriptors, $t_pipes );
 
-		if( is_resource( $t_process ) ) {
-			# Filter generated output through dot
-			fwrite( $t_pipes[0], $t_dot_source );
-			fclose( $t_pipes[0] );
+		if( $t_process === false ) {
+			$t_msg = "proc_open() call failed";
+			throw new ServiceException(
+				$t_msg,
+				ERROR_RELGRAPH_GENERATION,
+				array( $t_msg )
+			);
+		}
 
-			if( $p_headers ) {
-				# Headers were requested, use another output buffer to
-				# retrieve the size for Content-Length.
-				ob_start();
-				while( !feof( $t_pipes[1] ) ) {
-					echo fgets( $t_pipes[1], 1024 );
-				}
-				header( 'Content-Length: ' . ob_get_length() );
-				ob_end_flush();
-			} else {
-				# No need for headers, send output directly.
-				while( !feof( $t_pipes[1] ) ) {
-					print( fgets( $t_pipes[1], 1024 ) );
-				}
-			}
+		# Filter generated output through dot
+		fwrite( $t_pipes[0], $t_dot_source );
+		fclose( $t_pipes[0] );
 
-			fclose( $t_pipes[1] );
-			proc_close( $t_process );
+		# Read output
+		$t_stdout = '';
+		while( !feof( $t_pipes[1] ) ) {
+			$t_stdout .= fgets( $t_pipes[1], 1024 );
+		}
+		fclose( $t_pipes[1] );
+		fclose( $t_pipes[2] );
+		proc_close( $t_process );
+
+		# Check for errors
+		$t_errors = file_get_contents( $t_err_file );
+		unlink( $t_err_file );
+		if( $t_errors === false || $t_errors ) {
+			$t_errors = rtrim( $t_errors );
+			throw new ServiceException(
+				$t_errors,
+				ERROR_RELGRAPH_GENERATION,
+				array( $t_errors )
+			);
+		}
+
+		if( $p_headers ) {
+			# Headers were requested, use another output buffer to
+			# retrieve the size for Content-Length.
+			ob_start();
+			echo $t_stdout;
+			header( 'Content-Length: ' . ob_get_length() );
+			ob_end_flush();
+		} else {
+			# No need for headers, send output directly.
+			echo $t_stdout;
 		}
 	}
 

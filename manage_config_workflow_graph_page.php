@@ -55,7 +55,8 @@ if( !config_get( 'relationship_graph_enable' ) ) {
 	access_denied();
 }
 
-layout_page_header( lang_get( 'manage_workflow_graph' ) );
+$t_title = lang_get( 'manage_workflow_graph' );
+layout_page_header( $t_title );
 
 layout_page_begin( 'manage_overview_page.php' );
 
@@ -81,7 +82,9 @@ if( $t_project == ALL_PROJECTS ) {
 	</div>
 
 	<div class="center">
-		<img src="workflow_graph_img.php" />
+		<img src="workflow_graph_img.php"
+			 alt="<?php echo $t_title . ' - ' . error_string( ERROR_GENERIC ) ?>"
+		/>
 	</div>
 </div>
 

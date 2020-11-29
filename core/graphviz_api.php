@@ -35,6 +35,8 @@
  * @uses utility_api.php
  */
 
+use Mantis\Exceptions\StateException;
+
 require_api( 'constant_inc.php' );
 require_api( 'utility_api.php' );
 
@@ -205,9 +207,12 @@ class Graph {
 
 	/**
 	 * Constructor for Graph objects.
+	 *
 	 * @param string $p_name       Graph name.
 	 * @param array  $p_attributes Attributes.
 	 * @param string $p_tool       Graph generation tool.
+	 *
+	 * @throws StateException if $p_tool is not executable.
 	 */
 	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'neato' ) {
 		if( is_string( $p_name ) ) {
@@ -216,6 +221,14 @@ class Graph {
 
 		$this->set_attributes( $p_attributes );
 
+		if( !is_file( $p_tool ) || !is_executable( $p_tool ) ) {
+			$t_msg = "GraphViz tool '$p_tool' not found or not executable";
+			throw new StateException(
+				$t_msg,
+				ERROR_RELGRAPH_GENERATION,
+				array( $t_msg )
+			);
+		}
 		$this->graphviz_tool = $p_tool;
 	}
 
@@ -454,11 +467,15 @@ class Graph {
  * Directed graph creation and manipulation.
  */
 class Digraph extends Graph {
+
 	/**
 	 * Constructor for Digraph objects.
+	 *
 	 * @param string $p_name       Name of the graph.
 	 * @param array  $p_attributes Attributes.
 	 * @param string $p_tool       Graphviz tool.
+	 *
+	 * @throws StateException if $p_tool is not executable.
 	 */
 	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'dot' ) {
 		parent::__construct( $p_name, $p_attributes, $p_tool );

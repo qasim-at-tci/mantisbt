@@ -70,12 +70,20 @@ if( $t_project == ALL_PROJECTS ) {
 	$t_project_title = sprintf( lang_get( 'config_project' ), string_display_line( project_get_name( $t_project ) ) );
 }
 ?>
-	<br />
-	<br />
+
+<div class="space-10"></div>
+<div class="col-md-12 col-xs-12">
+	<div class="well">
+		<span class="bold">
+			<i class="fa fa-info-circle"></i>
+			<?php echo $t_project_title ?>
+		</span>
+	</div>
+
 	<div class="center">
-		<p class="bold"><?php echo $t_project_title ?></p>
-		<br />
 		<img src="workflow_graph_img.php" />
 	</div>
+</div>
+
 <?php
 layout_page_end();

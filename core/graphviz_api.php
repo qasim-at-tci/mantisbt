@@ -332,11 +332,11 @@ class Graph {
 	function generate() {
 		echo 'graph ' . $this->name . ' {' . "\n";
 
-		$this->_print_graph_defaults();
+		$this->print_graph_defaults();
 
 		foreach( $this->nodes as $t_name => $t_attr ) {
 			$t_name = '"' . addcslashes( $t_name, "\0..\37\"\\" ) . '"';
-			$t_attr = $this->_build_attribute_list( $t_attr );
+			$t_attr = $this->build_attribute_list( $t_attr );
 			echo "\t" . $t_name . ' ' . $t_attr . ";\n";
 		}
 
@@ -344,7 +344,7 @@ class Graph {
 			$t_src = '"' . addcslashes( $t_edge['src'], "\0..\37\"\\" ) . '"';
 			$t_dst = '"' . addcslashes( $t_edge['dst'], "\0..\37\"\\" ) . '"';
 			$t_attr = $t_edge['attributes'];
-			$t_attr = $this->_build_attribute_list( $t_attr );
+			$t_attr = $this->build_attribute_list( $t_attr );
 			echo "\t" . $t_src . ' -- ' . $t_dst . ' ' . $t_attr . ";\n";
 		}
 
@@ -444,11 +444,13 @@ class Graph {
 	}
 
 	/**
-	 * PROTECTED function to build a node or edge attribute list.
+	 * Build a node or edge attribute list.
+	 *
 	 * @param array $p_attributes Attributes.
+	 *
 	 * @return string
 	 */
-	function _build_attribute_list( array $p_attributes ) {
+	protected function build_attribute_list( array $p_attributes ) {
 		if( empty( $p_attributes ) ) {
 			return '';
 		}
@@ -475,10 +477,11 @@ class Graph {
 	}
 
 	/**
-	 * PROTECTED function to print graph attributes and defaults.
+	 * Print graph attributes and defaults.
+	 *
 	 * @return void
 	 */
-	function _print_graph_defaults() {
+	protected function print_graph_defaults() {
 		foreach( $this->attributes as $t_name => $t_value ) {
 			if( !preg_match( '/[a-zA-Z]+/', $t_name ) ) {
 				continue;
@@ -496,12 +499,12 @@ class Graph {
 		}
 
 		if( null !== $this->default_node ) {
-			$t_attr = $this->_build_attribute_list( $this->default_node );
+			$t_attr = $this->build_attribute_list( $this->default_node );
 			echo "\t" . 'node ' . $t_attr . ";\n";
 		}
 
 		if( null !== $this->default_edge ) {
-			$t_attr = $this->_build_attribute_list( $this->default_edge );
+			$t_attr = $this->build_attribute_list( $this->default_edge );
 			echo "\t" . 'edge ' . $t_attr . ";\n";
 		}
 	}
@@ -533,11 +536,11 @@ class Digraph extends Graph {
 	function generate() {
 		echo 'digraph ' . $this->name . ' {' . "\n";
 
-		$this->_print_graph_defaults();
+		$this->print_graph_defaults();
 
 		foreach( $this->nodes as $t_name => $t_attr ) {
 			$t_name = '"' . addcslashes( $t_name, "\0..\37\"\\" ) . '"';
-			$t_attr = $this->_build_attribute_list( $t_attr );
+			$t_attr = $this->build_attribute_list( $t_attr );
 			echo "\t" . $t_name . ' ' . $t_attr . ";\n";
 		}
 
@@ -545,7 +548,7 @@ class Digraph extends Graph {
 			$t_src = '"' . addcslashes( $t_edge['src'], "\0..\37\"\\" ) . '"';
 			$t_dst = '"' . addcslashes( $t_edge['dst'], "\0..\37\"\\" ) . '"';
 			$t_attr = $t_edge['attributes'];
-			$t_attr = $this->_build_attribute_list( $t_attr );
+			$t_attr = $this->build_attribute_list( $t_attr );
 			echo "\t" . $t_src . ' -> ' . $t_dst . ' ' . $t_attr . ";\n";
 		}
 

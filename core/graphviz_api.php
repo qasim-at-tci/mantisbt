@@ -366,10 +366,6 @@ class Graph {
 			trigger_error( ERROR_GENERIC, ERROR );
 		}
 
-		# Send Content-Type header, if requested.
-		if( $p_headers ) {
-			header( 'Content-Type: ' . $this->formats[$p_format]['mime'] );
-		}
 		# Retrieve the source dot document into a buffer
 		ob_start();
 		$this->generate();
@@ -427,16 +423,10 @@ class Graph {
 		}
 
 		if( $p_headers ) {
-			# Headers were requested, use another output buffer to
-			# retrieve the size for Content-Length.
-			ob_start();
-			echo $t_stdout;
-			header( 'Content-Length: ' . ob_get_length() );
-			ob_end_flush();
-		} else {
-			# No need for headers, send output directly.
-			echo $t_stdout;
+			header( 'Content-Type: ' . $this->formats[$p_format]['mime'] );
+			header( 'Content-Length: ' . strlen( $t_stdout ) );
 		}
+		echo $t_stdout;
 	}
 
 	/**

@@ -233,6 +233,16 @@ class Graph {
 
 		$this->set_attributes( $p_attributes );
 
+		# On Unix, we have symlinks for various GraphViz layouts, but on
+		# Windows, only the main dot tool exists so we need to set the layout
+		# engine with -K parameter.
+		if( is_windows_server() ) {
+			$t_opt = ' -K' . $p_tool;
+			$p_tool = self::TOOL_DOT . '.exe';
+		} else {
+			$t_opt ='';
+		}
+
 		$t_dir = config_get( 'relationship_graph_path' );
 		if( $t_dir ){
 			# Make sure directory exists and is accessible
@@ -255,7 +265,8 @@ class Graph {
 				);
 			}
 		}
-		$this->graphviz_tool = $p_tool;
+
+		$this->graphviz_tool = $p_tool . $t_opt;
 	}
 
 	/**

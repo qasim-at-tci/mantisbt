@@ -3727,26 +3727,23 @@ $g_rss_enabled = ON;
 
 /**
  * Enable relationship graphs support.
- * Show issue relationships using graphs.
  *
- * In order to use this feature, you must first install GraphViz.
+ * In order to use this feature, you must first install Graphviz.
  * @see https://www.graphviz.org/ Graphviz homepage
  *
- * Refer to the notes near the top of core/graphviz_api.php and
- * core/relationship_graph_api.php for more information.
  * @global integer $g_relationship_graph_enable
  */
 $g_relationship_graph_enable = OFF;
 
 /**
- * Full path to the directory containing the GraphViz library's binaries.
+ * Full path to the directory containing the Graphviz library's binaries.
  *
- * On Unix systems, this will usually be '/usr/bin/', requires trailing '/'.
+ * Requires trailing '/'. On Unix systems, this will usually be '/usr/bin/'.
  * Your webserver must have execute permission to the programs in this directory
  * to generate the relationship graphs.
  *
  * If this is left empty (which is the default), the system will look for the
- * desired GraphViz tool on the system path.
+ * desired Graphviz tool on the system path.
  *
  * NOTE: On windows, the IIS user may require permissions to cmd.exe to be able
  * to use PHP's proc_open()
@@ -3756,7 +3753,7 @@ $g_relationship_graph_enable = OFF;
 $g_relationship_graph_path = '';
 
 /**
- * Font name and size, as required by Graphviz. If Graphviz fails to run
+ * Font name, as required by Graphviz. If Graphviz fails to run
  * for you, you are probably using a font name that gd can't find. On
  * Linux, try the name of the font file without the extension.
  * @global string $g_relationship_graph_fontname

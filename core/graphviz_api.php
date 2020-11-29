@@ -15,9 +15,9 @@
 # along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * GraphViz API
+ * Graphviz API
  *
- * Wrapper classes around GraphViz utilities (dot and neato) for
+ * Wrapper classes around Graphviz utilities (dot and neato) for
  * directed and undirected graph generation. These wrappers are enhanced
  * enough just to support relationship_graph_api.php. They don't
  * support subgraphs yet.
@@ -26,7 +26,7 @@
  * 	- https://www.graphviz.org/
  *
  * @package CoreAPI
- * @subpackage GraphVizAPI
+ * @subpackage GraphvizAPI
  * @author Juliano Ravasi Ferraz <jferraz at users sourceforge net>
  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
  * @link http://www.mantisbt.org
@@ -72,7 +72,7 @@ define( 'GRAPHVIZ_PDF', 28 );
 class Graph {
 
 	/**
-	 * GraphViz tools.
+	 * Graphviz tools.
 	 * List is limited to the tools used in MantisBT; refer to documentation
 	 * for other possible values.
 	 */
@@ -233,7 +233,7 @@ class Graph {
 
 		$this->set_attributes( $p_attributes );
 
-		# On Unix, we have symlinks for various GraphViz layouts, but on
+		# On Unix, we have symlinks for various Graphviz layouts, but on
 		# Windows, only the main dot tool exists so we need to set the layout
 		# engine with -K parameter.
 		if( is_windows_server() ) {
@@ -248,7 +248,7 @@ class Graph {
 			# Make sure directory exists and is accessible
 			if( !is_dir( $t_dir ) || !is_readable( $t_dir ) ) {
 				throw new StateException(
-					"GraphViz binaries directory '$t_dir' not found or not readable",
+					"Graphviz binaries directory '$t_dir' not found or not readable",
 					ERROR_CONFIG_OPT_INVALID,
 					array( 'relationship_graph_path', $t_dir )
 				);
@@ -257,7 +257,7 @@ class Graph {
 			# Make sure the tool is executable
 			$p_tool = $t_dir . $p_tool;
 			if( !is_file( $p_tool ) || !is_executable( $p_tool ) ) {
-				$t_msg = "GraphViz tool '$p_tool' not found or not executable";
+				$t_msg = "Graphviz tool '$p_tool' not found or not executable";
 				throw new ServiceException(
 					$t_msg,
 					ERROR_RELGRAPH_GENERATION,
@@ -378,7 +378,7 @@ class Graph {
 	 * @param boolean $p_headers Whether to sent http headers.
 	 * @return void
 	 *
-	 * @throws ServiceException if GraphViz execution fails
+	 * @throws ServiceException if Graphviz execution fails
 	 */
 	function output( $p_format = 'dot', $p_headers = false ) {
 		# Check if it is a recognized format.

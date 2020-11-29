@@ -5,38 +5,36 @@
 <section id="admin.config.relationship">
 	<title>Relationship Graphs</title>
 
-	<para>MantisBT can display a graphical representation of the relationships
-		between issues. Two types of interactive visualizations are available,
-		<emphasis>dependencies</emphasis> and a full
-		<emphasis>relationships</emphasis> graph.
+	<para>MantisBT can graphically display the relationships between Issues.
+		In the graphs, issues are represented by nodes and relationships
+		as links between them.
+		Two types of interactive visualizations are available,
+		<emphasis>Dependencies</emphasis> and a full
+		<emphasis>Relationships</emphasis> graph.
+	</para>
+	<para>This feature can also provide a visual representation of
+		the <emphasis>Workflow</emphasis>, showing Issue States as nodes
+		and the possible transitions between them as links.
+		See <xref linkend="admin.lifecycle.workflow.transitions" />
 	</para>
 
 	<important>
-		<para>This feature relies on the external
-			<emphasis>dot</emphasis> and <emphasis>neato</emphasis> tools
-			from the <ulink url="https://www.graphviz.org/">GraphViz</ulink>
+		<para>This feature relies on tools from the external
+			<ulink url="https://www.graphviz.org/">Graphviz</ulink>
 			library, which must be installed separately.
 		</para>
-		<para>Most Linux distributions have a GraphViz package available
+		<para>Most Linux distributions have a Graphviz package available
 			for easy download and install.
-		</para>
-		<para>Under Windows, the software needs to be installed manually.
-			The following post-installation steps
+			Under Windows, the software needs to be installed manually.
+			For proper operations, it
 			<ulink url="https://mantisbt.org/bugs/view.php?id=27584#c64693">may be required</ulink>
-			for proper operations:
-			<itemizedlist>
-				<listitem>
-					<para>Update the system PATH to point to GraphViz's
-						<literal>bin</literal> directory
-					</para>
-				</listitem>
-				<listitem>
-					<para>Initialize the graph engine by running
-						<literal>dot -c</literal>
-						from an <emphasis>Administrator</emphasis> command prompt.
-					</para>
-				</listitem>
-			</itemizedlist>
+			to initialize the graph engine by running
+			<literal>dot -c</literal>
+			from an <emphasis>Administrator</emphasis> command prompt.
+		</para>
+		<para>The server relies on
+			<ulink url="https://www.php.net/manual/en/function.proc-open.php">proc_open</ulink>
+			to execute the tools, so this function must be enabled on your system.
 		</para>
 	</important>
 
@@ -45,20 +43,37 @@
 			<term>$g_relationship_graph_enable</term>
 			<listitem>
 				<para>
-					This enables the relationship graphs feature where issues are represented by
-					nodes and relationships as links between such nodes.  Possible values are ON or OFF.
+					This enables the relationship graphs feature.
 					Default is OFF.
 				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term>$g_relationship_graph_path</term>
+			<listitem>
+				<para>
+					Full path to the directory containing the Graphviz library's binaries,
+					requires trailing '/'.
+					On Unix systems, this will usually be <literal>/usr/bin/</literal>.
+					If this is left empty (which is the default), the system will look for the
+					desired Graphviz tool on the system path.
+				</para>
+				<note><para>Your webserver must have execute permission to the
+					programs in this directory to generate the relationship graphs.
+					On windows, the IIS user also requires permissions to cmd.exe.
+				</para></note>
 			</listitem>
 		</varlistentry>
 		<varlistentry>
 			<term>$g_relationship_graph_fontname</term>
 			<listitem>
 				<para>
-					Font name and size, as required by Graphviz. If Graphviz fails to run
-					for you, you are probably using a font name that gd PHP extension can't find.
-					On Linux, try the name of the font file without the extension.  The default
-					value is 'Arial'.
+					Font name, as required by Graphviz.
+					If Graphviz fails to run for you, you are probably using a font name that the
+					<ulink url="https://www.php.net/manual/en/intro.image.php">PHP GD extension</ulink>
+					can't find.
+					On Linux, try the name of the font file without the extension.
+					The default value is 'Arial'.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -74,9 +89,10 @@
 			<term>$g_relationship_graph_orientation</term>
 			<listitem>
 				<para>
-					Default dependency orientation.  If you have issues with lots of children
-					or parents, leave as 'horizontal', otherwise, if you have lots of
-					&quot;chained&quot; issue dependencies, change to 'vertical'.  Default is 'horizontal'.
+					Default dependency orientation.
+					If you have issues with lots of children or parents, leave as 'horizontal',
+					otherwise, if you have lots of &quot;chained&quot; issue dependencies, change to 'vertical'.
+					Default is 'horizontal'.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -84,8 +100,10 @@
 			<term>$g_relationship_graph_max_depth</term>
 			<listitem>
 				<para>
-					Max depth for relation graphs.  This only affects relationship graphs,
-					dependency graphs are drawn to the full depth.  The default value is 2.
+					Maximum depth for relation graphs.
+					This only affects Relationship graphs,
+					as Dependency graphs are always drawn to the full depth.
+					The default value is 2.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -93,31 +111,10 @@
 			<term>$g_relationship_graph_view_on_click</term>
 			<listitem>
 				<para>
-					If set to ON, clicking on an issue on the relationship graph will open
-					the bug view page for that issue, otherwise, will navigate to the
-					relationship graph for that issue.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
-			<term>$g_dot_tool</term>
-			<listitem>
-				<para>
-					The full path for the dot tool.  The webserver must have execute
-					permission to this program in order to generate relationship graphs.
-					This configuration option is not relevant for Windows.  The default
-					value is '/usr/bin/dot'.
-				</para>
-			</listitem>
-		</varlistentry>
-		<varlistentry>
-			<term>$g_neato_tool</term>
-			<listitem>
-				<para>
-					The full path for the neato tool.  The webserver must have execute
-					permission to this program in order to generate relationship graphs.
-					This configuration option is not relevant for Windows.  The default
-					value is '/usr/bin/neato'.
+					Defines the behavior when clicking on an issue (node).
+					If set to ON, clicking will open the bug view page for that issue,
+					otherwise, it will navigate to the issue's relationship graph.
+					Defaults to OFF.
 				</para>
 			</listitem>
 		</varlistentry>

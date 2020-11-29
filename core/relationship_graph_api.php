@@ -17,15 +17,15 @@
 /**
  * Relationship Graph API
  *
- * This uses GraphViz utilities to generate relationship graphs for
- * issues. GraphViz must be installed in order to use this feature.
+ * This uses Graphviz utilities to generate relationship graphs for
+ * issues. Graphviz must be installed in order to use this feature.
  *
  * Graphviz is available at: https://www.graphviz.org/
  *
- * Most Linux distributions already have a GraphViz package
+ * Most Linux distributions already have a Graphviz package
  * conveniently available for download and install. Refer to
  * config_defaults_inc.php for how to enable this feature once
- * GraphViz is installed.
+ * Graphviz is installed.
  *
  * @package CoreAPI
  * @subpackage RelationshipGraphAPI

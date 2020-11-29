@@ -155,7 +155,12 @@ $g_status_enum_workflow[RESOLVED]       ='90:closed,20:feedback,50:assigned';
 $g_status_enum_workflow[CLOSED]         ='20:feedback,50:assigned';
 </programlisting>
 		</para>
-		<note>
+		<para>If the Relationship Graphs feature is enabled
+			(see <xref linkend="admin.config.relationship" />),
+			a graphical representation of the possible transitions between
+			Issue states can be displayed.
+		</para>
+		<important>
 			<para>The workflow needs to have a path from the
 				statuses greater than or equal to the 'resolved' state
 				back to the 'feedback' state (see
@@ -164,7 +169,7 @@ $g_status_enum_workflow[CLOSED]         ='20:feedback,50:assigned';
 				<xref linkend="admin.config.status" />),
 				otherwise, the re-open operation won't work.
 			</para>
-		</note>
+		</important>
 		<note>
 			<para>The first item in each list denotes the default
 				value for this status, which will be pre-selected in the

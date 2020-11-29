@@ -3739,19 +3739,21 @@ $g_rss_enabled = ON;
 $g_relationship_graph_enable = OFF;
 
 /**
- * Complete path to dot and neato tools. Your webserver must have execute
- * permission to these programs in order to generate relationship graphs.
- * NOTE: On windows, the IIS user may require permissions to cmd.exe to be able to use PHP's proc_open
- * @global string $g_dot_tool
+ * Full path to the directory containing the GraphViz library's binaries.
+ *
+ * On Unix systems, this will usually be '/usr/bin/', requires trailing '/'.
+ * Your webserver must have execute permission to the programs in this directory
+ * to generate the relationship graphs.
+ *
+ * If this is left empty (which is the default), the system will look for the
+ * desired GraphViz tool on the system path.
+ *
+ * NOTE: On windows, the IIS user may require permissions to cmd.exe to be able
+ * to use PHP's proc_open()
+ *
+ * @global $g_relationship_graph_path
  */
-$g_dot_tool = '/usr/bin/dot';
-/**
- * Complete path to dot and neato tools. Your webserver must have execute
- * permission to these programs in order to generate relationship graphs.
- * NOTE: On windows, the IIS user may require permissions to cmd.exe to be able to use PHP's proc_open
- * @global string $g_neato_tool
- */
-$g_neato_tool = '/usr/bin/neato';
+$g_relationship_graph_path = '';
 
 /**
  * Font name and size, as required by Graphviz. If Graphviz fails to run
@@ -4324,7 +4326,7 @@ $g_global_settings = array(
 	'ldap_simulation_file_path', 'plugin_path', 'bottom_include_page', 'top_include_page',
 	'default_home_page', 'logout_redirect_page', 'manual_url', 'logo_url', 'wiki_engine_url',
 	'cdn_enabled', 'public_config_names', 'email_login_enabled', 'email_ensure_unique',
-	'impersonate_user_threshold', 'email_retry_in_days', 'neato_tool', 'dot_tool',
+	'impersonate_user_threshold', 'email_retry_in_days', 'relationship_graph_path',
 	'ldap_server', 'ldap_root_dn', 'ldap_organization', 'ldap_protocol_version',
 	'ldap_network_timeout', 'ldap_follow_referrals', 'ldap_bind_dn', 'ldap_bind_passwd',
 	'ldap_uid_field', 'ldap_realname_field', 'use_ldap_realname', 'use_ldap_email'

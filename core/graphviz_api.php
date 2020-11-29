@@ -213,7 +213,8 @@ class Graph {
 	 * @param array  $p_attributes Attributes.
 	 * @param string $p_tool       Graph generation tool.
 	 *
-	 * @throws StateException if $p_tool is not executable.
+	 * @throws StateException   if $g_relationship_graph_path is not readable
+	 * @throws ServiceException if $p_tool not found or not executable
 	 */
 	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'neato' ) {
 		if( is_string( $p_name ) ) {
@@ -222,13 +223,27 @@ class Graph {
 
 		$this->set_attributes( $p_attributes );
 
-		if( !is_file( $p_tool ) || !is_executable( $p_tool ) ) {
-			$t_msg = "GraphViz tool '$p_tool' not found or not executable";
-			throw new StateException(
-				$t_msg,
-				ERROR_RELGRAPH_GENERATION,
-				array( $t_msg )
-			);
+		$t_dir = config_get( 'relationship_graph_path' );
+		if( $t_dir ){
+			# Make sure directory exists and is accessible
+			if( !is_dir( $t_dir ) || !is_readable( $t_dir ) ) {
+				throw new StateException(
+					"GraphViz binaries directory '$t_dir' not found or not readable",
+					ERROR_CONFIG_OPT_INVALID,
+					array( 'relationship_graph_path', $t_dir )
+				);
+			}
+
+			# Make sure the tool is executable
+			$p_tool = $t_dir . $p_tool;
+			if( !is_file( $p_tool ) || !is_executable( $p_tool ) ) {
+				$t_msg = "GraphViz tool '$p_tool' not found or not executable";
+				throw new ServiceException(
+					$t_msg,
+					ERROR_RELGRAPH_GENERATION,
+					array( $t_msg )
+				);
+			}
 		}
 		$this->graphviz_tool = $p_tool;
 	}
@@ -502,9 +517,10 @@ class Digraph extends Graph {
 	 *
 	 * @param string $p_name       Name of the graph.
 	 * @param array  $p_attributes Attributes.
-	 * @param string $p_tool       Graphviz tool.
+	 * @param string $p_tool       Graph generation tool, defaults to dot.
 	 *
-	 * @throws StateException if $p_tool is not executable.
+	 * @throws StateException   if $g_relationship_graph_path is not readable
+	 * @throws ServiceException if $p_tool not found or not executable
 	 */
 	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'dot' ) {
 		parent::__construct( $p_name, $p_attributes, $p_tool );

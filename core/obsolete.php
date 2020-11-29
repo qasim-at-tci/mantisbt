@@ -229,3 +229,7 @@ config_obsolete( 'my_view_boxes_fixed_position' );
 
 # changes in 2.24.0
 config_obsolete( 'bug_change_status_page_fields', 'bug_view_page_fields' );
+
+# changes in 2.25.0
+config_obsolete( 'dot_tool', 'relationship_graph_path' );
+config_obsolete( 'neato_tool', 'relationship_graph_path' );

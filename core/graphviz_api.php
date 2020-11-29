@@ -70,6 +70,16 @@ define( 'GRAPHVIZ_PDF', 28 );
  * class.
  */
 class Graph {
+
+	/**
+	 * GraphViz tools.
+	 * List is limited to the tools used in MantisBT; refer to documentation
+	 * for other possible values.
+	 */
+	const TOOL_DOT = 'dot';
+	const TOOL_NEATO = 'neato';
+	const TOOL_CIRCO = 'circo';
+
 	/**
 	 * Name
 	 */
@@ -211,12 +221,12 @@ class Graph {
 	 *
 	 * @param string $p_name       Graph name.
 	 * @param array  $p_attributes Attributes.
-	 * @param string $p_tool       Graph generation tool.
+	 * @param string $p_tool       Graph generation tool, defaults to neato.
 	 *
 	 * @throws StateException   if $g_relationship_graph_path is not readable
 	 * @throws ServiceException if $p_tool not found or not executable
 	 */
-	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'neato' ) {
+	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = self::TOOL_NEATO ) {
 		if( is_string( $p_name ) ) {
 			$this->name = $p_name;
 		}
@@ -508,7 +518,7 @@ class Digraph extends Graph {
 	 * @throws StateException   if $g_relationship_graph_path is not readable
 	 * @throws ServiceException if $p_tool not found or not executable
 	 */
-	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = 'dot' ) {
+	function __construct( $p_name = 'G', array $p_attributes = array(), $p_tool = self::TOOL_DOT ) {
 		parent::__construct( $p_name, $p_attributes, $p_tool );
 	}
 

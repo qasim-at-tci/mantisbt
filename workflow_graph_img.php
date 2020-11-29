@@ -58,7 +58,7 @@ if( !empty( $t_graph_fontpath ) ) {
 }
 
 try {
-	$t_graph = new Graph( 'workflow', $t_graph_attributes, 'circo' );
+	$t_graph = new Graph( 'workflow', $t_graph_attributes, Graph::TOOL_CIRCO );
 
 	$t_graph->set_default_node_attr( array ( 'fontname' => $t_graph_fontname,
 											 'fontsize' => $t_graph_fontsize,

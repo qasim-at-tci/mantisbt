@@ -166,7 +166,7 @@ function relgraph_generate_rel_graph( $p_bug_id, $p_show_summary = false ) {
 		$t_graph_attributes['fontpath'] = $t_graph_fontpath;
 	}
 
-	$t_graph = new Graph( $t_id_string, $t_graph_attributes );
+	$t_graph = new Graph( $t_id_string, $t_graph_attributes, Graph::TOOL_DOT );
 
 	$t_graph->set_default_node_attr( array (
 			'fontname'	=> $t_graph_fontname,

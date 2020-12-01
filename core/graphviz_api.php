@@ -421,7 +421,6 @@ class Graph {
 			$t_stdout .= fgets( $t_pipes[1], 1024 );
 		}
 		fclose( $t_pipes[1] );
-		fclose( $t_pipes[2] );
 		proc_close( $t_process );
 
 		# Check for errors

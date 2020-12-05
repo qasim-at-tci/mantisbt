@@ -10,6 +10,11 @@ MantisBT Development Team <https://mantisbt.org>; Damien Regad
 :toclevels: 3
 :logo:  ../../images/mantis_logo.png
 :title-logo-image: {logo}
+:source-highlighter: rouge
+// Disabling default language, see https://github.com/asciidoctor/asciidoctor/issues/3734
+//:source-language: php
+:source-linenums-option:
+:tabsize: 4
 
 ifdef::backend-html5[]
 image::{logo}[MantisBT logo,align="center"]

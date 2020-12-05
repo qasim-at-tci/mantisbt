@@ -1,18 +1,33 @@
 [[admin.config.relationship]]
 == Relationship Graphs
 
+MantisBT can display a graphical representation of the relationships
+between issues. Two types of interactive visualizations are available,
+_dependencies_ and a full _relationships_ graph.
+
+[IMPORTANT]
+====
+This feature relies on the external _dot_ and _neato_ tools from the
+https://www.graphviz.org/[GraphViz] library, which must be installed
+separately.
+
+Most Linux distributions have a GraphViz package available for easy
+download and install.
+
+Under Windows, the software needs to be installed manually. The
+following post-installation steps
+https://mantisbt.org/bugs/view.php?id=27584#c64693[may be required] for
+proper operations:
+
+* Update the system PATH to point to GraphViz's `bin` directory
+* Initialize the graph engine by running `dot -c` from an
+_Administrator_ command prompt.
+====
+
 $g_relationship_graph_enable::
   This enables the relationship graphs feature where issues are
   represented by nodes and relationships as links between such nodes.
   Possible values are ON or OFF. Default is OFF.
-  +
-  [NOTE]
-  ====
-  This feature requires installing the
-  https://www.graphviz.org/[GraphViz] library. Refer to the notes near
-  the top of `core/graphviz_api.php` and
-  `core/relationship_graph_api.php` for more information.
-  ====
 $g_relationship_graph_fontname::
   Font name and size, as required by Graphviz. If Graphviz fails to run
   for you, you are probably using a font name that gd PHP extension

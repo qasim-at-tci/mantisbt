@@ -22,9 +22,14 @@ cd $SOURCE || exit 1
 
 echo "Running Pandoc on DocBook files in $SOURCE"
 
-find -name "*.xml" |
+find -name "*.xml" | cut -c3- |
 while read filename
 do
+  if [[ "$filename" == 'Admin_Guide.xml' ]];
+  then
+    echo "Skipping $filename"
+    continue
+  fi
   pandoc "$filename" -f docbook -t asciidoc -s --atx-header -o "$TARGET/${filename%.xml}.adoc"
 done
 echo "Converted AsciiDoc files saved in $TARGET"

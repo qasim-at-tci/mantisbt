@@ -8,9 +8,13 @@ $g_allow_signup::
   mail settings must be correctly configured (see
   link:#admin.config.email[???]).
 $g_max_failed_login_count::
-  Maximum failing login attempts before the account is locked. Once
-  locked, it's required to reset the password (lost password). Value
-  resets to zero at each successfully login. Default is OFF.
+  Maximum number of failed login attempts before the user's account is
+  locked. Once locked, it is required to reset the password (lost
+  password). The counter is reset to zero after each successful login.
+  +
+  Default is set to 5, in order to prevent brute force attacks
+  attempting to gain access to end users accounts. Set to OFF to disable
+  this feature and allow unlimited failed login attempts.
 $g_notify_new_user_created_threshold_min::
   The minimum global access level required to be notified when a new
   user registers via the "signup form". To pick specific access levels

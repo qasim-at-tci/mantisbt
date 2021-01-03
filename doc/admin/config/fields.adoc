@@ -11,10 +11,10 @@ $g_bug_report_page_fields::
   An array of optional fields to show on the bug report page.
   +
   The following optional fields are allowed: additional_info,
-  attachments, category_id, due_date, handler, monitors, os, os_build,
-  platform, priority, product_build, product_version, reproducibility,
-  resolution, severity, status, steps_to_reproduce, tags,
-  target_version, view_state.
+  attachments, category_id, due_date, eta, handler, monitors, os,
+  os_build, platform, priority, product_build, product_version,
+  reproducibility, resolution, severity, status, steps_to_reproduce,
+  tags, target_version, view_state.
   +
   The summary and description fields are always shown and do not need to
   be listed in this option. Fields not listed above cannot be shown on

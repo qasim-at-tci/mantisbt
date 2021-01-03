@@ -28,10 +28,10 @@ $g_file_upload_max_num::
   Maximum number of files that can be uploaded simultaneously. Default
   value is 10.
 $g_max_file_size::
-  Maximum file size that can be uploaded. Default value is about 5MB.
+  Maximum file size that can be uploaded. Default value is about 5 MiB.
   The maximum size is also affected by the PHP options post_max_size
-  (default 8MB), upload_max_filesize (default 2MB) and memory_limit
-  (default 128MB) specified in php.ini.
+  (default 8 MiB), upload_max_filesize (default 2 MiB) and memory_limit
+  (default 128 MiB) specified in php.ini.
 $g_allowed_files::
   Files that are allowed. Separate items by commas. eg.
   "zip,bmp,gif,jpg,txt" If $g_allowed_files is filled in NO other file

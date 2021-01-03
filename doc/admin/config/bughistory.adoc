@@ -17,3 +17,21 @@ $g_history_default_visible::
 $g_history_order::
   Show bug history entries in ascending or descending order. Default
   value is 'ASC'.
+
+In this context, MantisBT records individual changes to text fields
+(_Description_, _Steps to Reproduce_, _Additional Information_ as well
+as _Bug Notes_). These revisions are controlled by the following
+settings.
+
+$g_bug_revision_view_threshold::
+  Access level required to view bug history revisions. Defaults to
+  DEVELOPER.
+  +
+  [NOTE]
+  ====
+  Users can always see revisions for the issues and bugnotes they
+  reported.
+  ====
+$g_bug_revision_drop_threshold::
+  Access level required to drop bug history revisions. Defaults to
+  MANAGER.

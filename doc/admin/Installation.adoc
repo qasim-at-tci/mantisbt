@@ -53,7 +53,7 @@ As for any web application, you should size your server based on the
 traffic on the site.
 * Disk
 +
-The application code is less than 30 MB.
+The application code is less than 50 MiB.
 +
 The amount of disk space required for the database will vary depending
 on the RDBMS and the volume of data, the main driving factor being the

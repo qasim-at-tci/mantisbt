@@ -1,6 +1,8 @@
 # MantisBT StyleLint rules
 # https://stylelint.io/user-guide/rules/list
 
+extends: stylelint-config-standard
+
 rules:
   indentation: 4
   comment-empty-line-before: null

@@ -65,12 +65,13 @@
     padding: 10px;
 }
 
-.pagination > li > a, .pagination > li > span {
+.pagination > li > a,
+.pagination > li > span {
     padding: 6px 8px;
 }
 
 .width-13 {
-    width: 13%
+    width: 13%;
 }
 
 .padding-2 {
@@ -133,16 +134,18 @@
     padding-left: 8px;
 }
 
-
 .margin-left-8 {
     margin-left: 8px;
 }
+
 .margin-right-8 {
     margin-right: 8px;
 }
+
 .rtl .margin-left-8 {
     margin-right: 8px;
 }
+
 .rtl .margin-right-8 {
     margin-left: 8px;
 }
@@ -170,6 +173,7 @@
 .widget-toolbar > .widget-menu form {
     display: inline-block;
 }
+
 .widget-toolbar > .widget-menu .input-xs {
     line-height: 20px;
 }
@@ -183,11 +187,12 @@
 }
 
 table {
-    background-color: #ffffff !important;
+    background-color: #fff !important;
 }
 
 /* Disable printing of link urls */
-a:link:after, a:visited:after {
+a:link:after,
+a:visited:after {
     content: normal !important;
 }
 
@@ -198,15 +203,17 @@ pre {
 
 /* Disable theme backgrounds */
 .skin-3 .main-container:before {
-    background: none repeat scroll 0 0 #ffffff !important;
+    background: none repeat scroll 0 0 #fff !important;
 }
 
 .light-login {
-    background: none repeat scroll 0 0 #ffffff !important;
+    background: none repeat scroll 0 0 #fff !important;
 }
 
 /* Show pointer for active nav tabs */
-.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
     cursor: pointer !important;
 }
 
@@ -243,7 +250,7 @@ pre {
 }
 
 .ace-nav .nav-avatar-container-40 {
-    width: 48px; 
+    width: 48px;
     height: 40px;
     float: left;
 }
@@ -251,18 +258,19 @@ pre {
 .ace-nav .nav-avatar-40 {
     margin: -4px 8px 0 0;
     border-radius: 100%;
-    border: 2px solid #FFF;
+    border: 2px solid #fff;
     max-width: 40px;
     max-height: 40px;
-    border-radius: 4px !important;    
+    border-radius: 4px !important;
 }
+
 .profile-activity-avatar-40 {
     border-radius: 15% !important;
     margin-bottom: 6px !important;
 }
 
 .profile-activity-avatar-container-40 {
-    width: 48px; 
+    width: 48px;
     line-height: 40px;
     float: left;
     text-align: center;
@@ -289,14 +297,14 @@ pre {
 
 .input-sm {
     width: 90px !important;
-    /*display: inline-block !important;*/ /* removed because it messes with js hide/show capabilities */
+    /* display: inline-block !important; */ /* removed because it messes with js hide/show capabilities */
     vertical-align: middle !important;
     padding: 4px 6px !important;
 }
 
 .input-xs {
     width: auto !important;
-    /*display: inline-block !important;*/ /* removed because it messes with js hide/show capabilities */
+    /* display: inline-block !important; */ /* removed because it messes with js hide/show capabilities */
     vertical-align: middle !important;
     padding: 1px 2px !important;
 }
@@ -308,7 +316,8 @@ select.input-xs {
     line-height: 8px;
 }
 
-select.input-xs option, select.form-control.input-xs option {
+select.input-xs option,
+select.form-control.input-xs option {
     padding: 0 2px !important;
 }
 
@@ -317,7 +326,8 @@ select[disabled] {
     color: #848484 !important;
 }
 
-textarea.input-xs, select.input-xs[multiple] {
+textarea.input-xs,
+select.input-xs[multiple] {
     height: auto;
 }
 
@@ -403,7 +413,8 @@ i.datetimepicker {
     text-decoration: none;
 }
 
-.list > li > a:focus, list > li > a:hover {
+.list > li > a:focus,
+list > li > a:hover {
     color: #262626;
     text-decoration: none;
     background-color: #f5f5f5;
@@ -415,7 +426,9 @@ i.datetimepicker {
 }
 
 /* typeahaed styling */
-input.typeahead, input.tt-query, input.tt-hint {
+input.typeahead,
+input.tt-query,
+input.tt-hint {
     border: 1px solid #ccc;
     border-radius: 0;
     font-size: 16px;
@@ -423,7 +436,8 @@ input.typeahead, input.tt-query, input.tt-hint {
     min-width: 175px;
     outline: medium none;
 }
-input.tt-hint, .form-group input.tt-hint {
+input.tt-hint,
+.form-group input.tt-hint {
     background-color: #fff !important;
     color: #b0b0b0 !important;
 }
@@ -445,7 +459,8 @@ input.tt-hint, .form-group input.tt-hint {
     line-height: 24px;
     padding: 3px 12px 4px;
 }
-.tt-suggestion.tt-selectable:hover, .tt-suggestion.tt-cursor {
+.tt-suggestion.tt-selectable:hover,
+.tt-suggestion.tt-cursor {
     background-color: #4f99c6;
     color: #fff;
     cursor: pointer;
@@ -465,12 +480,14 @@ input.typeahead.scrollable ~ .tt-menu {
     min-height: 60px;
 }
 
-.dropzone .dz-preview, .dropzone-previews .dz-preview {
+.dropzone .dz-preview,
+.dropzone-previews .dz-preview {
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.16);
     font-size: 14px;
 }
 
-.dropzone .dz-preview, .dropzone-previews .dz-preview {
+.dropzone .dz-preview,
+.dropzone-previews .dz-preview {
     background: rgba(255, 255, 255, 0.8) none repeat scroll 0 0;
     border: 1px solid #acacac;
     display: inline-block;
@@ -480,7 +497,8 @@ input.typeahead.scrollable ~ .tt-menu {
     vertical-align: top;
 }
 
-.dropzone .dz-preview .dz-details, .dropzone-previews .dz-preview .dz-details {
+.dropzone .dz-preview .dz-details,
+.dropzone-previews .dz-preview .dz-details {
     background: #ebebeb none repeat scroll 0 0;
     height: 100px;
     margin-bottom: 22px;
@@ -494,7 +512,8 @@ input.typeahead.scrollable ~ .tt-menu {
     text-overflow: ellipsis;
 }
 
-.dropzone .dz-preview .dz-details .dz-size, .dropzone-previews .dz-preview .dz-details .dz-size {
+.dropzone .dz-preview .dz-details .dz-size,
+.dropzone-previews .dz-preview .dz-details .dz-size {
     font-size: 14px;
     bottom: -38px;
     height: 28px;
@@ -503,7 +522,8 @@ input.typeahead.scrollable ~ .tt-menu {
     position: absolute;
 }
 
-.dropzone .dz-preview .dz-details img, .dropzone-previews .dz-preview .dz-details img {
+.dropzone .dz-preview .dz-details img,
+.dropzone-previews .dz-preview .dz-details img {
     height: 100px;
     left: 0;
     position: absolute;
@@ -511,7 +531,8 @@ input.typeahead.scrollable ~ .tt-menu {
     width: 100px;
 }
 
-.dropzone a.dz-remove, .dropzone-previews a.dz-remove {
+.dropzone a.dz-remove,
+.dropzone-previews a.dz-remove {
     background: #d15b47 none repeat scroll 0 0;
     border: medium none;
     border-radius: 0;
@@ -520,13 +541,17 @@ input.typeahead.scrollable ~ .tt-menu {
     font-size: 12px !important;
 }
 
-.dropzone a.dz-remove:hover, .dropzone-previews a.dz-remove:hover {
+.dropzone a.dz-remove:hover,
+.dropzone-previews a.dz-remove:hover {
     background: #b74635 none repeat scroll 0 0;
     color: #fff;
     text-decoration: none !important;
 }
 
-.dropzone .dz-preview .dz-success-mark, .dropzone-previews .dz-preview .dz-success-mark, .dropzone .dz-preview .dz-error-mark, .dropzone-previews .dz-preview .dz-error-mark {
+.dropzone .dz-preview .dz-success-mark,
+.dropzone-previews .dz-preview .dz-success-mark,
+.dropzone .dz-preview .dz-error-mark,
+.dropzone-previews .dz-preview .dz-error-mark {
     display: none;
     font-size: 30px;
     height: 40px;
@@ -537,12 +562,14 @@ input.typeahead.scrollable ~ .tt-menu {
     width: 40px;
 }
 
-.dropzone .dz-preview .dz-error-mark, .dropzone-previews .dz-preview .dz-error-mark {
+.dropzone .dz-preview .dz-error-mark,
+.dropzone-previews .dz-preview .dz-error-mark {
     background-position: -268px -123px;
     color: #ee162d;
 }
 
-.dropzone .dz-preview .dz-error-message, .dropzone-previews .dz-preview .dz-error-message {
+.dropzone .dz-preview .dz-error-message,
+.dropzone-previews .dz-preview .dz-error-message {
     background: rgba(245, 245, 245, 0.8) none repeat scroll 0 0;
     color: #800;
     display: none;
@@ -620,7 +647,8 @@ input.typeahead.scrollable ~ .tt-menu {
         margin-left: 43px !important;
     }
 
-    .sidebar.compact, .sidebar.compact.navbar-collapse {
+    .sidebar.compact,
+    .sidebar.compact.navbar-collapse {
         width: 125px;
     }
 
@@ -681,7 +709,8 @@ input.typeahead.scrollable ~ .tt-menu {
         margin-left: 43px !important;
     }
 
-    .sidebar.compact, .sidebar.compact.navbar-collapse {
+    .sidebar.compact,
+    .sidebar.compact.navbar-collapse {
         width: 125px;
     }
 

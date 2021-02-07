@@ -158,30 +158,6 @@
     background: none repeat scroll 0 0 #393939;
 }
 
-.widget-toolbar > .widget-menu > a {
-    display: inline-block;
-    font-size: 11px;
-    padding: 0 5px;
-    line-height: 20px;
-}
-
-.widget-toolbar > .widget-menu a.btn-xs {
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-.widget-toolbar > .widget-menu form {
-    display: inline-block;
-}
-
-.widget-toolbar > .widget-menu .input-xs {
-    line-height: 20px;
-}
-
-.widget-toolbar > .widget-menu .btn-xs {
-    padding: 2px 5px;
-}
-
 .bold {
     font-weight: bold;
 }
@@ -234,10 +210,6 @@ pre {
     vertical-align: -25%;
 }
 
-.skin-3 .navbar .navbar-toggle {
-    background-color: #777 !important;
-}
-
 .user-info {
     line-height: 33px !important;
 }
@@ -257,7 +229,6 @@ pre {
 
 .ace-nav .nav-avatar-40 {
     margin: -4px 8px 0 0;
-    border-radius: 100%;
     border: 2px solid #fff;
     max-width: 40px;
     max-height: 40px;
@@ -297,14 +268,16 @@ pre {
 
 .input-sm {
     width: 90px !important;
-    /* display: inline-block !important; */ /* removed because it messes with js hide/show capabilities */
+    /* removed because it messes with js hide/show capabilities */
+    /* display: inline-block !important; */
     vertical-align: middle !important;
     padding: 4px 6px !important;
 }
 
 .input-xs {
     width: auto !important;
-    /* display: inline-block !important; */ /* removed because it messes with js hide/show capabilities */
+    /* removed because it messes with js hide/show capabilities */
+    /* display: inline-block !important; */
     vertical-align: middle !important;
     padding: 1px 2px !important;
 }
@@ -343,6 +316,7 @@ select.input-xs[multiple] {
     -o-transition: all 0.1s;
     transition: all 0.1s;
 }
+
 .zoom-130:hover {
     text-decoration: none;
     opacity: 1;
@@ -352,11 +326,37 @@ select.input-xs[multiple] {
     -ms-transform: scale(1.3);
     transform: scale(1.3);
 }
+
+.widget-toolbar > .widget-menu > a {
+    display: inline-block;
+    font-size: 11px;
+    padding: 0 5px;
+    line-height: 20px;
+}
+
+.widget-toolbar > .widget-menu a.btn-xs {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.widget-toolbar > .widget-menu form {
+    display: inline-block;
+}
+
+.widget-toolbar > .widget-menu .input-xs {
+    line-height: 20px;
+}
+
+.widget-toolbar > .widget-menu .btn-xs {
+    padding: 2px 5px;
+}
+
 .well-xs {
     padding: 4px 9px;
     border-radius: 3px;
     margin-bottom: 10px;
 }
+
 .table-condensed2 > thead > tr > th,
 .table-condensed2 > tbody > tr > th,
 .table-condensed2 > tfoot > tr > th,
@@ -382,6 +382,10 @@ td > label {
     display: block;
 }
 
+.skin-3 .navbar .navbar-toggle {
+    background-color: #777 !important;
+}
+
 /* date/time picker */
 input.datetimepicker {
     margin: 0 5px 0 0;
@@ -392,7 +396,7 @@ i.datetimepicker {
 }
 
 .bootstrap-datetimepicker-widget.dropdown-menu {
-    color: #333333;
+    color: #333;
 }
 
 .dropdown-menu .divider {
@@ -403,6 +407,7 @@ i.datetimepicker {
     height: 30px;
     line-height: 22px;
 }
+
 .list > li > a {
     display: block;
     padding: 3px 12px;
@@ -436,11 +441,13 @@ input.tt-hint {
     min-width: 175px;
     outline: medium none;
 }
+
 input.tt-hint,
 .form-group input.tt-hint {
     background-color: #fff !important;
     color: #b0b0b0 !important;
 }
+
 .tt-menu {
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -454,20 +461,24 @@ input.tt-hint,
     right: 0 !important;
     text-align: left;
 }
+
 .tt-suggestion {
     font-size: 16px;
     line-height: 24px;
     padding: 3px 12px 4px;
 }
+
 .tt-suggestion.tt-selectable:hover,
 .tt-suggestion.tt-cursor {
     background-color: #4f99c6;
     color: #fff;
     cursor: pointer;
 }
+
 .tt-suggestion p {
     margin: 0;
 }
+
 input.typeahead.scrollable ~ .tt-menu {
     max-height: 200px;
     overflow-y: auto;
@@ -598,9 +609,11 @@ input.typeahead.scrollable ~ .tt-menu {
 .progress {
     background: #bbb;
 }
+
 .progress.progress-large {
     height: 32px;
 }
+
 .progress.progress-large[data-percent]:after {
     line-height: 32px;
     font-size: 18px;

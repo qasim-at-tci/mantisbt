@@ -22,6 +22,7 @@ jobs:
         uses: github/super-linter@v3
         env:
           VALIDATE_ALL_CODEBASE: false
+          CSS_FILE_NAME: .stylelintrc.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # Disable linters causing many errors we dont want to worry about for now

@@ -1,0 +1,5 @@
+# MantisBT StyleLint rules
+# https://stylelint.io/user-guide/rules/list
+
+rules:
+  indentation: 4

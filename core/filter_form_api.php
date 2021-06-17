@@ -1293,7 +1293,7 @@ function print_filter_values_do_filter_by_date( array $p_filter ) {
 			}
 		}
 	} else {
-		echo lang_get( 'no' );
+		echo lang_get( 'any' );
 	}
 }
 
@@ -1445,7 +1445,7 @@ function print_filter_values_do_filter_by_last_updated_date( array $p_filter ) {
 			}
 		}
 	} else {
-		echo lang_get( 'no' );
+		echo lang_get( 'any' );
 	}
 }
 
@@ -1597,7 +1597,7 @@ function print_filter_values_do_filter_by_due_date( array $p_filter ) {
 			}
 		}
 	} else {
-		echo lang_get( 'no' );
+		echo lang_get( 'any' );
 	}
 }
 

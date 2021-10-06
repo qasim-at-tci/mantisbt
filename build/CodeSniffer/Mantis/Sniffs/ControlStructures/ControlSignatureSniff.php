@@ -8,60 +8,49 @@
 #
 # MantisBT is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with MantisBT.	If not, see <http://www.gnu.org/licenses/>.
+# along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Sniff: Mantis.ControlStructures.ControlSignature
+ * Sniff: Mantis.Arrays.ArrayDeclaration
  *
  * CodeSniffer rule for MantisBT coding guidelines.
+ * Extends Squiz standard's ArrayDeclarationSniff
  *
  * @package    MantisBT_build
  * @subpackage CodeSniffer
- * @copyright  Copyright 2016  MantisBT Team - mantisbt-dev@lists.sourceforge.net
- * @link       http://www.mantisbt.org
+ * @copyright  Copyright 2021  MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link       https://www.mantisbt.org
  */
 
 namespace Mantis\Sniffs\ControlStructures;
 
 use PHP_CodeSniffer\Files\File;
-use PHP_CodeSniffer\Sniffs\AbstractPatternSniff;
+use PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\ControlStructureSpacingSniff as PSR2ArrayDeclarationSniff;
 
 
 /**
- * Verifies that control statements conform to their coding standards.
+ * A test to ensure that arrays conform to the array coding standard.
  *
- * Unfortunately this sniff detects but does not allow automatic fixing of
- * offending statements.
+ * Extends the original sniff to check for presence of a single space after
+ * the opening, and before the closing parenthesis.
  */
-class ControlSignatureSniff extends AbstractPatternSniff {
-	/**
-	 * If true, comments will be ignored if they are found in the code.
-	 *
-	 * @var boolean
-	 */
-	public $ignoreComments = true;
+class ControlStructureSpacingSniff extends PSR2ArrayDeclarationSniff
+{
+	public $requiredSpacesAfterOpen = 1;
+	public $requiredSpacesBeforeClose = 1;
 
 	/**
-	 * Returns the patterns that this test wishes to verify.
+	 * @param File $phpcsFile The file being scanned.
+	 * @param int  $stackPtr  The position of the current token
+	 *                        in the stack passed in $tokens.
 	 *
-	 * @return array(string)
+	 * @return void
 	 */
-	protected function getPatterns() {
-		return array(
-			'do {EOL...} while(...);EOL',
-			'while(...) {EOL',
-			'switch(...) {EOL',
-			'for(...) {EOL',
-			'if(...) {EOL',
-			'foreach(...) {EOL',
-			'} else if(...) {EOL',
-			'} elseif(...) {EOL',
-			'} else {EOL',
-			'do {EOL',
-		);
+	public function process( File $phpcsFile, $stackPtr ) {
+		parent::process( $phpcsFile, $stackPtr );
 	}
 }

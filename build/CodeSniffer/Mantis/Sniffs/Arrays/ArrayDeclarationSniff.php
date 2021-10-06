@@ -18,6 +18,7 @@
  * Sniff: Mantis.Arrays.ArrayDeclaration
  *
  * CodeSniffer rule for MantisBT coding guidelines.
+ * Extends Squiz standard's ArrayDeclarationSniff
  *
  * @package    MantisBT_build
  * @subpackage CodeSniffer
@@ -25,9 +26,11 @@
  * @link       http://www.mantisbt.org
  */
 
-if (class_exists('Squiz_Sniffs_Arrays_ArrayDeclarationSniff', true) === false) {
-	throw new PHP_CodeSniffer_Exception('Class Squiz_Sniffs_Arrays_ArrayDeclarationSniff not found');
-}
+namespace Mantis\Sniffs\Arrays;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Standards\Squiz\Sniffs\Arrays\ArrayDeclarationSniff as SquizArrayDeclarationSniff;
+
 
 /**
  * A test to ensure that arrays conform to the array coding standard.
@@ -35,9 +38,9 @@ if (class_exists('Squiz_Sniffs_Arrays_ArrayDeclarationSniff', true) === false) {
  * Extends the original sniff to check for presence of a single space after
  * the opening, and before the closing parenthesis.
  */
-class Mantis_Sniffs_Arrays_ArrayDeclarationSniff extends Squiz_Sniffs_Arrays_ArrayDeclarationSniff
+class ArrayDeclarationSniff extends SquizArrayDeclarationSniff
 {
-	public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+	public function process(File $phpcsFile, $stackPtr)
 	{
 		parent::process( $phpcsFile, $stackPtr );
 

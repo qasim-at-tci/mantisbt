@@ -25,10 +25,11 @@
  * @link       http://www.mantisbt.org
  */
 
+namespace Mantis\Sniffs\ControlStructures;
 
-if (class_exists('PHP_CodeSniffer_Standards_AbstractPatternSniff', true) === false) {
-	throw new PHP_CodeSniffer_Exception('Class PHP_CodeSniffer_Standards_AbstractPatternSniff not found');
-}
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractPatternSniff;
+
 
 /**
  * Verifies that control statements conform to their coding standards.
@@ -36,7 +37,7 @@ if (class_exists('PHP_CodeSniffer_Standards_AbstractPatternSniff', true) === fal
  * Unfortunately this sniff detects but does not allow automatic fixing of
  * offending statements.
  */
-class Mantis_Sniffs_ControlStructures_ControlSignatureSniff extends PHP_CodeSniffer_Standards_AbstractPatternSniff {
+class ControlSignatureSniff extends AbstractPatternSniff {
 	/**
 	 * If true, comments will be ignored if they are found in the code.
 	 *

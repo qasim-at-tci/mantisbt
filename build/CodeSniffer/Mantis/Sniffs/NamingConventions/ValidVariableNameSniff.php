@@ -25,9 +25,10 @@
  * @link       http://www.mantisbt.org
  */
 
-if( class_exists( 'PHP_CodeSniffer_Standards_AbstractVariableSniff', true ) === false ) {
-	 throw new PHP_CodeSniffer_Exception( 'Class PHP_CodeSniffer_Standards_AbstractVariableSniff not found' );
-}
+namespace Mantis\Sniffs\NamingConventions;
+
+use PHP_CodeSniffer\Files\File;
+use PHP_CodeSniffer\Sniffs\AbstractVariableSniff;
 
 /**
  * Checks the naming of variables and member variables.
@@ -35,7 +36,7 @@ if( class_exists( 'PHP_CodeSniffer_Standards_AbstractVariableSniff', true ) === 
  * Loosely based on PHP_CodeSniffer 2.5.0 rule:
  * Squiz_Sniffs_NamingConventions_ValidVariableNameSniff
  */
-class Mantis_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniffer_Standards_AbstractVariableSniff {
+class ValidVariableNameSniff extends AbstractVariableSniff {
 
 	/**
 	 * @var array $phpReservedVars List of PHP reserved variable names
@@ -64,13 +65,13 @@ class Mantis_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSni
 	/**
 	 * Make sure that variables are properly prefixed.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-	 * @param integer              $stackPtr  The position of the current token in the
-	 *                                        stack passed in $tokens.
+	 * @param File    $phpcsFile The file being scanned.
+	 * @param integer   The position of the current token in the
+	 *                  stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	protected function processVariable( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	protected function processVariable( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 		$varName = ltrim( $tokens[$stackPtr]['content'], '$' );
 
@@ -103,13 +104,13 @@ class Mantis_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSni
 	 * There are currently no naming conventions for class member variables in
 	 * MantisBT, so this does not do anything.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-	 * @param integer              $stackPtr  The position of the current token in the
-	 *                                        stack passed in $tokens.
+	 * @param File    $phpcsFile The file being scanned.
+	 * @param integer $stackPtr  The position of the current token in the
+	 *                           stack passed in $tokens.
 	 *
 	 * @return void
 	 */
-	protected function processMemberVar( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	protected function processMemberVar( File $phpcsFile, $stackPtr ) {
 		return;
 	}
 
@@ -117,13 +118,12 @@ class Mantis_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSni
 	/**
 	 * Processes the variable found within a double quoted string.
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-	 * @param integer              $stackPtr  The position of the double quoted
-	 *                                        string.
+	 * @param File    $phpcsFile The file being scanned.
+	 * @param integer $stackPtr  The position of the double quoted string.
 	 *
 	 * @return void
 	 */
-	protected function processVariableInString( PHP_CodeSniffer_File $phpcsFile, $stackPtr ) {
+	protected function processVariableInString( File $phpcsFile, $stackPtr ) {
 		$tokens = $phpcsFile->getTokens();
 
 		$result = preg_match_all(
@@ -154,19 +154,16 @@ class Mantis_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSni
 	 * Except for reserved variables, ADODB globals and single-char variables,
 	 * all variables must have a 1-char prefix [cfgptuv].
 	 *
-	 * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-	 * @param integer              $stackPtr  Current token's position in
-	 *                                        the stack.
-	 * @param string               $varName   Variable name to check.
-	 * @param integer              $qualifier Qualifying token's type (code):
-	 *                                        either T_GLOBAL or T_STATIC;
-	 *                                        defaults to null, causing
-	 *                                        additional checks for global and
-	 *                                        static variables to be skipped.
+	 * @param File    $phpcsFile The file being scanned.
+	 * @param integer $stackPtr  Current token's position in the stack.
+	 * @param string  $varName   Variable name to check.
+	 * @param integer $qualifier Qualifying token's type (code): either T_GLOBAL
+	 *                           or T_STATIC; defaults to null, causing additional
+	 *                           checks for global and static variables to be skipped.
 	 *
 	 * @return null
 	 */
-	protected function checkVariable( PHP_CodeSniffer_File $phpcsFile, $stackPtr, $varName, $qualifier = null ) {
+	protected function checkVariable( File $phpcsFile, $stackPtr, $varName, $qualifier = null ) {
 		# If it's a PHP reserved variable, then it's ok
 		if( $this->isReservedVar( $varName ) ) {
 			return null;

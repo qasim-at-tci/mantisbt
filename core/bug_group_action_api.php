@@ -40,8 +40,6 @@ require_api( 'html_api.php' );
 require_api( 'lang_api.php' );
 require_api( 'string_api.php' );
 
-require_css( 'status_config.php' );
-
 /**
  * Initialise bug action group api
  * @param string $p_action Custom action to run.
@@ -112,28 +110,53 @@ function bug_group_action_print_bug_list( array $p_bug_ids_array ) {
  * @return void
  */
 function bug_group_action_print_results( array $p_failed_ids ) {
-	$t_format = "<tr>"
-		. "\n\t" . '<td width="50%%">%s' . lang_get( 'word_separator' ) . '%s</td>'
-		. "\n\t" . '<td>%s</td>'
-		. "\n</tr>\n";
-	$t_label = lang_get( 'label' );
-
-	echo '<div><br />', PHP_EOL;
-	echo '<div class="table-responsive">', PHP_EOL;
-	echo '<table class="table table-bordered table-condensed table-striped">', PHP_EOL;
-
+?>
+<div class="col-md-12 col-xs-12">
+	<div class="widget-box widget-color-blue2">
+		<div class="widget-header widget-header-small">
+			<h4 class="widget-title lighter">
+				<?php print_icon('warning'); ?>
+				<?php echo lang_get( 'bug_actiongroup_result' ); ?>
+			</h4>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main no-padding table-responsive">
+				<table class="table table-bordered table-condensed table-striped">
+					<thead>
+						<tr>
+							<th class="category width-50">
+								<?php echo lang_get( 'issues' ); ?>
+							</th>
+							<th class="category">
+								<?php echo lang_get( 'message' ); ?>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+<?php
 	foreach( $p_failed_ids as $t_id => $t_reason ) {
-		printf( $t_format,
-			sprintf( $t_label, string_get_bug_view_link( $t_id ) ),
+		$t_bug = bug_get( $t_id );
+		$t_status_css = html_get_status_css_fg( $t_bug->status, null, $t_bug->project_id );
+		$t_status_title = string_attribute( get_enum_element( 'status', $t_bug->status, $t_bug->project_id ) );
+		printf( "<tr>\n\t<td>%s %s: %s</td>\n\t<td>%s</td>\n</tr>\n",
+
+			icon_get( 'fa-square', 'fa-status-box ' . $t_status_css, $t_status_title ),
+			string_get_bug_view_link( $t_id ),
 			string_display_line( bug_get_field( $t_id, 'summary' ) ),
 			$t_reason
 		);
 	}
-	echo '</table>', PHP_EOL;
-	echo '</div>', PHP_EOL;
-
-	print_link_button( 'view_all_bug_page.php', lang_get( 'proceed' ) );
-	echo '</div>', PHP_EOL;
+?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="widget-toolbox padding-8 clearfix">
+			<?php print_link_button( 'view_all_bug_page.php', lang_get( 'proceed' ) ); ?>
+		</div>
+	</div>
+</div>
+<?php
 }
 
 /**

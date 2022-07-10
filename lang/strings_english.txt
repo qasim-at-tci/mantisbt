@@ -178,6 +178,7 @@ $s_opensearch_text_description = '%s: full-text search';
 $s_select_option = '(select)';
 
 # bug_actiongroup_page.php : mass treatment
+$s_bug_actiongroup_result = 'The following issues could not be processed';
 $s_bug_actiongroup_access = 'You did not have appropriate permissions to perform that action.';
 $s_bug_actiongroup_status = 'This issue cannot be changed to the requested status';
 $s_bug_actiongroup_category = 'This issue cannot be changed to the requested category';

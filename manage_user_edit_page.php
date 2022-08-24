@@ -297,47 +297,45 @@ if( $t_reset || $t_unlock || $t_delete || $t_impersonate ) {
 <div class="space-8"></div>
 <div class="btn-group">
 
-<!-- Reset/Unlock Button -->
-<?php if( $t_reset || $t_unlock ) { ?>
-	<form id="manage-user-reset-form" method="post" action="manage_user_reset.php" class="pull-left">
-		<?php echo form_security_field( 'manage_user_reset' ) ?>
-		<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
-		<button class="btn btn-primary btn-white btn-round">
-			<?php echo lang_get( $t_reset ? 'reset_password_button' : 'account_unlock_button' ) ?>
-		</button>
-	</form>
-<?php } ?>
+<?php
+# User Information button
+print_form_button( 'view_user_page.php',
+	lang_get( 'view_account_title' ),
+	['id' => $t_user['id']],
+	OFF,
+	'btn btn-primary btn-white btn-round pull-left'
+);
 
-<!-- Delete Button -->
-<?php if( $t_delete ) { ?>
-	<form id="manage-user-delete-form" method="post" action="manage_user_delete.php" class="pull-left">
-		<?php echo form_security_field( 'manage_user_delete' ) ?>
-		<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
-		<button class="btn btn-primary btn-white btn-round">
-			<?php echo lang_get( 'delete_user_button' ) ?>
-		</button>
-	</form>
-<?php } ?>
+# Reset/Unlock Button
+if( $t_reset || $t_unlock ) {
+	print_form_button( 'manage_user_reset.php',
+		lang_get( $t_reset ? 'reset_password_button' : 'account_unlock_button' ),
+		['user_id' => $t_user['id']],
+		null,
+		'btn btn-primary btn-white btn-round pull-left'
+	);
+}
 
-<!-- Information Button -->
-	<form id="view-user-form" method="get" action="view_user_page.php" class="pull-left">
-		<fieldset>
-			<input type="hidden" name="id" value="<?php echo $t_user['id'] ?>" />
-			<input type="submit" class="btn btn-primary btn-white btn-round"
-				value="<?php echo lang_get( 'view_account_title' ) ?>" />
-		</fieldset>
-	</form>
+# Delete button
+if( $t_delete ) {
+	print_form_button( 'manage_user_delete.php',
+		lang_get( 'delete_user_button' ),
+		['user_id' => $t_user['id']],
+		null,
+		'btn btn-primary btn-white btn-round pull-left'
+	);
+}
 
-<!-- Impersonate Button -->
-<?php if( $t_impersonate ) { ?>
-	<form id="manage-user-impersonate-form" method="post" action="manage_user_impersonate.php" class="pull-left">
-		<?php echo form_security_field( 'manage_user_impersonate' ) ?>
-		<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
-		<button class="btn btn-primary btn-white btn-round">
-			<?php echo lang_get( 'impersonate_user_button' ) ?>
-		</button>
-	</form>
-<?php } ?>
+# Impersonate button
+if( $t_impersonate ) {
+	print_form_button( 'manage_user_impersonate.php',
+		lang_get( 'impersonate_user_button' ),
+		[ 'user_id' => $t_user['id'] ],
+		null,
+		'btn btn-primary btn-white btn-round pull-left'
+	);
+}
+?>
 
 </div>
 </div>

@@ -39,7 +39,7 @@ require_api( 'gpc_api.php' );
 require_api( 'helper_api.php' );
 require_api( 'html_api.php' );
 
-form_security_validate( 'manage_user_impersonate' );
+//form_security_validate( 'manage_user_impersonate' );
 
 auth_reauthenticate();
 
@@ -47,7 +47,7 @@ $f_user_id	= gpc_get_int( 'user_id' );
 
 auth_impersonate( $f_user_id );
 
-form_security_purge( 'manage_user_impersonate' );
+//form_security_purge( 'manage_user_impersonate' );
 
 $t_redirect_to = config_get_global( 'default_home_page' );
 

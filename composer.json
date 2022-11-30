@@ -4,8 +4,13 @@
     "type": "project",
     "require": {
         "php": "^7.0 || ^8.0",
-        "ext-mbstring": "*",
+        "ext-date": "*",
         "ext-json": "*",
+        "ext-hash": "*",
+        "ext-mbstring": "*",
+        "ext-pcre": "*",
+        "ext-reflection": "*",
+        "ext-session": "*",
         "slim/slim": "^3.0",
         "guzzlehttp/guzzle": "^6.2",
         "vboctor/disposable_email_checker": "^3.0",
@@ -14,6 +19,13 @@
         "erusev/parsedown": "^1.7.0, <=1.7.3",
         "ezyang/htmlpurifier": "^4.14",
         "dapphp/securimage": "dev-mantis"
+    },
+    "suggest": {
+        "ext-curl": "*",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
+        "ext-ldap": "*",
+        "ext-zlib": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "dev-mantis-6.5",

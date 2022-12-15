@@ -23,6 +23,8 @@
  * @link http://www.mantisbt.org
  */
 
+use Slim\Factory\AppFactory;
+
 # Bypass default Mantis headers
 $g_bypass_headers = true;
 $g_bypass_error_handler = true;
@@ -42,6 +44,11 @@ require_once( $t_restcore_dir . 'VersionMiddleware.php' );
 # Hint to re-used mantisconnect code that it is being executed from REST rather than SOAP.
 # For example, this will disable logic like encoding dates with XSD meta-data.
 ApiObjectFactory::$soap = false;
+
+# Initialize Slim Application
+$g_app = AppFactory::create();
+$g_app->addRoutingMiddleware();
+
 
 # Show SLIM detailed errors according to Mantis settings
 $t_config = array();
@@ -84,15 +91,15 @@ $t_container['errorHandler'] = function( $p_container ) {
 	};
 };
 
-$g_app = new \Slim\App( $t_container );
-
-# Add middleware - executed in reverse order of appearing here.
+# Add Middleware
+# Executed in reverse order of appearing here (Last in, first out).
 $g_app->add( new ApiEnabledMiddleware() );
 $g_app->add( new AuthMiddleware() );
 $g_app->add( new VersionMiddleware() );
 $g_app->add( new OfflineMiddleware() );
 $g_app->add( new CacheMiddleware() );
 
+# Define Routes
 require_once( $t_restcore_dir . 'config_rest.php' );
 require_once( $t_restcore_dir . 'filters_rest.php' );
 require_once( $t_restcore_dir . 'internal_rest.php' );

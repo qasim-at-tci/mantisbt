@@ -1203,10 +1203,10 @@ function print_filter_sticky_issues( array $p_filter = null ) {
 	}
 	?><!-- Show or hide sticky bugs -->
 			<input type="hidden" name="<?php echo FILTER_PROPERTY_STICKY ?>" value="<?php echo OFF ?>">
-            <label>
-			    <input class="input-xs ace" type="checkbox" name="<?php echo FILTER_PROPERTY_STICKY;?>"<?php check_checked( gpc_string_to_bool( $p_filter[FILTER_PROPERTY_STICKY] ), true );?> />
-			    <span class="lbl"></span>
-            </label>
+			<label>
+				<input class="input-xs ace" type="checkbox" name="<?php echo FILTER_PROPERTY_STICKY;?>"<?php check_checked( gpc_string_to_bool( $p_filter[FILTER_PROPERTY_STICKY] ), true );?> />
+				<span class="lbl"></span>
+			</label>
 		<?php
 }
 

@@ -1312,7 +1312,7 @@ function print_filter_date_range( $p_hide_checkbox, array $p_filter = null, $p_e
 		$p_filter = $g_filter;
 	}
 ?>
-		<table cellspacing="0" cellpadding="0">
+	<table>
 <?php
 		$t_menu_disabled = '';
 		if( !$p_hide_checkbox ) {
@@ -2107,7 +2107,7 @@ function print_filter_custom_field_date( $p_field_id, array $p_filter = null ) {
 			break;
 	}
 
-	echo '<table cellspacing="0" cellpadding="0"><tr><td>' . "\n";
+	echo '<table><tr><td>' . "\n";
 	echo '<select class="input-xs" size="1" name="custom_field_' . $p_field_id . '_control">' . "\n";
 	echo '<option value="' . CUSTOM_FIELD_DATE_ANY . '"';
 	check_selected( (int)$p_filter['custom_fields'][$p_field_id][0], CUSTOM_FIELD_DATE_ANY );

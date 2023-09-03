@@ -24,6 +24,7 @@
  */
 
 use Slim\Factory\AppFactory;
+use Slim\Middleware\ContentLengthMiddleware;
 
 # Bypass default Mantis headers
 $g_bypass_headers = true;
@@ -98,6 +99,9 @@ $g_app->addMiddleware( new AuthMiddleware( $g_app->getResponseFactory() ) );
 $g_app->addMiddleware( new VersionMiddleware( $g_app->getResponseFactory() ) );
 $g_app->addMiddleware( new OfflineMiddleware( $g_app->getResponseFactory() ) );
 $g_app->addMiddleware( new CacheMiddleware( $g_app->getResponseFactory() ) );
+
+# Middleware modifying the response body must be added before this
+$g_app->addMiddleware( new ContentLengthMiddleware() );
 
 # Define Routes
 require_once( $t_restcore_dir . 'config_rest.php' );

@@ -50,17 +50,16 @@ ApiObjectFactory::$soap = false;
 $g_app = AppFactory::create();
 $g_app->addRoutingMiddleware();
 
-
-# Show SLIM detailed errors according to Mantis settings
-$t_config = array();
-
-if( ON == config_get_global( 'show_detailed_errors' ) ) {
-	$t_config['settings'] = array( 'displayErrorDetails' => true );
-}
-
-$t_container = new \Slim\Container( $t_config );
-$t_container['errorHandler'] = function( $p_container ) {
-	return function( $p_request, $p_response, $p_exception ) use ( $p_container ) {
+# Custom error handler
+# TODO: move this to a Class implementing \Slim\Interfaces\ErrorHandlerInterface
+$t_error_handler = function( ServerRequestInterface $request,
+                             Throwable $exception,
+                             bool $displayErrorDetails,
+                             bool $logErrors,
+                             bool $logErrorDetails,
+                             ?LoggerInterface $logger = null
+) {
+	return function( $p_request, $p_response, $p_exception ) use ( $g_app ) {
 		$t_data = array(
 			'message' => $p_exception->getMessage(),
 		);
@@ -102,6 +101,12 @@ $g_app->addMiddleware( new CacheMiddleware( $g_app->getResponseFactory() ) );
 
 # Middleware modifying the response body must be added before this
 $g_app->addMiddleware( new ContentLengthMiddleware() );
+
+# Error handling Middleware
+# Show SLIM detailed errors according to Mantis settings
+$t_detailed_errors = ON == config_get_global( 'show_detailed_errors' );
+$t_error_middleware = $g_app->addErrorMiddleware( $t_detailed_errors, true, $t_detailed_errors );
+$t_error_middleware->setDefaultErrorHandler( $t_error_handler );
 
 # Define Routes
 require_once( $t_restcore_dir . 'config_rest.php' );

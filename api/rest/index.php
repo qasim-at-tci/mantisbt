@@ -93,11 +93,11 @@ $t_container['errorHandler'] = function( $p_container ) {
 
 # Add Middleware
 # Executed in reverse order of appearing here (Last in, first out).
-$g_app->add( new ApiEnabledMiddleware() );
-$g_app->add( new AuthMiddleware() );
-$g_app->add( new VersionMiddleware() );
-$g_app->add( new OfflineMiddleware() );
-$g_app->add( new CacheMiddleware() );
+$g_app->addMiddleware( new ApiEnabledMiddleware( $g_app->getResponseFactory() ) );
+$g_app->addMiddleware( new AuthMiddleware( $g_app->getResponseFactory() ) );
+$g_app->addMiddleware( new VersionMiddleware( $g_app->getResponseFactory() ) );
+$g_app->addMiddleware( new OfflineMiddleware( $g_app->getResponseFactory() ) );
+$g_app->addMiddleware( new CacheMiddleware( $g_app->getResponseFactory() ) );
 
 # Define Routes
 require_once( $t_restcore_dir . 'config_rest.php' );

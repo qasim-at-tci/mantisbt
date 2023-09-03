@@ -18,25 +18,33 @@
  * A webservice interface to Mantis Bug Tracker
  *
  * @package MantisBT
- * @copyright Copyright MantisBT Team - mantisbt-dev@lists.sourceforge.net
- * @link http://www.mantisbt.org
+ * @copyright Copyright 2017-2023 MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link https://mantisbt.org
  */
+
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+
 
 /**
  * A middleware class that handles checks for REST API being enabled.
  */
-class ApiEnabledMiddleware {
-	public function __invoke( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next ) {
-		$t_force_enable = $request->getAttribute( ATTRIBUTE_FORCE_API_ENABLED );
+class ApiEnabledMiddleware implements MiddlewareInterface
+{
 
-		# If request is coming from UI, then force enable will be true, hence, request shouldn't be blocked
-		# even if API is disabled.
-		if( !$t_force_enable ) {
-			if( config_get( 'webservice_rest_enabled' ) == OFF ) {
-				return $response->withStatus( HTTP_STATUS_UNAVAILABLE, 'API disabled' );
-			}
+	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
+		# If the request is coming from UI, then force enable will be true,
+		# and the request shouldn't be blocked even if API is disabled.
+		$t_force_enable = $request->getAttribute( ATTRIBUTE_FORCE_API_ENABLED );
+		if( !$t_force_enable && config_get( 'webservice_rest_enabled' ) == OFF ) {
+			$response = new Response();
+			return $response->withStatus( HTTP_STATUS_UNAVAILABLE, 'API disabled' );
 		}
 
-		return $next( $request, $response );
+		return $handler->handle($request);
 	}
+
 }

@@ -17,18 +17,26 @@
 /**
  * A webservice interface to Mantis Bug Tracker
  *
- * @package MantisBT
- * @copyright Copyright MantisBT Team - mantisbt-dev@lists.sourceforge.net
- * @link http://www.mantisbt.org
+ * @package   MantisBT
+ * @copyright Copyright 2017-2023 MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link      https://mantisbt.org
  */
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 /**
  * A middleware class that disables caching.
  */
-class CacheMiddleware {
-	public function __invoke( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next ) {
-		return $next( $request, $response )->
+class CacheMiddleware implements MiddlewareInterface
+{
+
+	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
+		return $handler->handle( $request )->
 			withoutHeader( 'Cache-Control' )->
 			withHeader( 'Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0' );
 	}
+
 }

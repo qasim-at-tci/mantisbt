@@ -17,10 +17,16 @@
 /**
  * A webservice interface to Mantis Bug Tracker
  *
- * @package MantisBT
- * @copyright Copyright MantisBT Team - mantisbt-dev@lists.sourceforge.net
- * @link http://www.mantisbt.org
+ * @package   MantisBT
+ * @copyright Copyright 2017-2023 MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link      https://mantisbt.org
  */
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use GuzzleHttp\Psr7\Response;
 
 require_api( 'authentication_api.php' );
 require_api( 'user_api.php' );
@@ -28,8 +34,12 @@ require_api( 'user_api.php' );
 /**
  * A middleware class that handles authentication and authorization to access APIs.
  */
-class AuthMiddleware {
-	public function __invoke( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next ) {
+class AuthMiddleware implements MiddlewareInterface {
+
+	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
+		$response = new Response();
+
+		//public function process( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next ) {
 		$t_authorization_header = $request->getHeaderLine( HEADER_AUTHORIZATION );
 
 		if( empty( $t_authorization_header ) ) {
@@ -43,6 +53,7 @@ class AuthMiddleware {
 				$t_username = auth_anonymous_account();
 
 				if( !auth_anonymous_enabled() || empty( $t_username ) ) {
+					$response = new Response();
 					return $response->withStatus( HTTP_STATUS_UNAUTHORIZED, 'API token required' );
 				}
 
@@ -117,8 +128,13 @@ class AuthMiddleware {
 		}
 
 		$t_force_enable = $t_login_method == LOGIN_METHOD_COOKIE;
-		return $next( $request->withAttribute( ATTRIBUTE_FORCE_API_ENABLED, $t_force_enable ), $response )->
-			withHeader( HEADER_USERNAME, $t_username )->
-			withHeader( HEADER_LOGIN_METHOD, $t_login_method );
+		return $handler->handle( $request->withAttribute( ATTRIBUTE_FORCE_API_ENABLED, $t_force_enable ) )
+					   ->withHeader( HEADER_USERNAME, $t_username )
+					   ->withHeader( HEADER_LOGIN_METHOD, $t_login_method );
+
+		//return $next( $request->withAttribute( ATTRIBUTE_FORCE_API_ENABLED, $t_force_enable ), $response )->
+		//	withHeader( HEADER_USERNAME, $t_username )->
+		//	withHeader( HEADER_LOGIN_METHOD, $t_login_method );
 	}
+
 }

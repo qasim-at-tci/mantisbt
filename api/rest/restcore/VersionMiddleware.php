@@ -17,17 +17,25 @@
 /**
  * A webservice interface to Mantis Bug Tracker
  *
- * @package MantisBT
- * @copyright Copyright MantisBT Team - mantisbt-dev@lists.sourceforge.net
- * @link http://www.mantisbt.org
+ * @package   MantisBT
+ * @copyright Copyright 2017-2023 MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link      https://mantisbt.org
  */
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+
 
 /**
  * A middleware class to handle adding a Mantis version response header.
  */
-class VersionMiddleware {
-	public function __invoke( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next )
-	{
-		return $next( $request, $response )->withHeader( HEADER_VERSION, mc_version() );
+class VersionMiddleware implements MiddlewareInterface
+{
+
+	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
+		return $handler->handle( $request )->withHeader( HEADER_VERSION, mc_version() );
 	}
+
 }

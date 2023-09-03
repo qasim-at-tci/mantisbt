@@ -24,14 +24,13 @@
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 
 /**
  * A middleware class to handle adding a Mantis version response header.
  */
-class VersionMiddleware implements MiddlewareInterface
+class VersionMiddleware extends MantisMiddleware
 {
 
 	public function process( Request $request, RequestHandler $handler ): ResponseInterface {

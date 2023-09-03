@@ -24,13 +24,12 @@
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 /**
  * A middleware class that disables caching.
  */
-class CacheMiddleware implements MiddlewareInterface
+class CacheMiddleware extends MantisMiddleware
 {
 
 	public function process( Request $request, RequestHandler $handler ): ResponseInterface {

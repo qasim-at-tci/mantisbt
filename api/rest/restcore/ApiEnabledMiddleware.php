@@ -22,17 +22,15 @@
  * @link https://mantisbt.org
  */
 
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 
 /**
  * A middleware class that handles checks for REST API being enabled.
  */
-class ApiEnabledMiddleware implements MiddlewareInterface
+class ApiEnabledMiddleware extends MantisMiddleware
 {
 
 	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
@@ -40,8 +38,7 @@ class ApiEnabledMiddleware implements MiddlewareInterface
 		# and the request shouldn't be blocked even if API is disabled.
 		$t_force_enable = $request->getAttribute( ATTRIBUTE_FORCE_API_ENABLED );
 		if( !$t_force_enable && config_get( 'webservice_rest_enabled' ) == OFF ) {
-			$response = new Response();
-			return $response->withStatus( HTTP_STATUS_UNAVAILABLE, 'API disabled' );
+			return $this->createResponse( HTTP_STATUS_UNAVAILABLE, 'API disabled' );
 		}
 
 		return $handler->handle($request);

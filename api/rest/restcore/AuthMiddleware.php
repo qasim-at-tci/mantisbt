@@ -22,10 +22,8 @@
  * @link      https://mantisbt.org
  */
 
-use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 require_api( 'authentication_api.php' );
@@ -34,11 +32,10 @@ require_api( 'user_api.php' );
 /**
  * A middleware class that handles authentication and authorization to access APIs.
  */
-class AuthMiddleware implements MiddlewareInterface
+class AuthMiddleware extends MantisMiddleware
 {
 
 	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
-		$response = new Response();
 
 		//public function process( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next ) {
 		$t_authorization_header = $request->getHeaderLine( HEADER_AUTHORIZATION );
@@ -54,8 +51,7 @@ class AuthMiddleware implements MiddlewareInterface
 				$t_username = auth_anonymous_account();
 
 				if( !auth_anonymous_enabled() || empty( $t_username ) ) {
-					$response = new Response();
-					return $response->withStatus( HTTP_STATUS_UNAUTHORIZED, 'API token required' );
+					return $this->createResponse( HTTP_STATUS_UNAUTHORIZED, 'API token required' );
 				}
 
 				$t_login_method = LOGIN_METHOD_ANONYMOUS;
@@ -80,7 +76,7 @@ class AuthMiddleware implements MiddlewareInterface
 			}
 
 			if( $t_user_id === false ) {
-				return $response->withStatus( HTTP_STATUS_FORBIDDEN, 'API token not found' );
+				return $this->createResponse( HTTP_STATUS_FORBIDDEN, 'API token not found' );
 			}
 
 			# use api token
@@ -90,7 +86,7 @@ class AuthMiddleware implements MiddlewareInterface
 		}
 
 		if( mci_check_login( $t_username, $t_password ) === false ) {
-			return $response->withStatus( HTTP_STATUS_FORBIDDEN, 'Access denied' );
+			return $this->createResponse( HTTP_STATUS_FORBIDDEN, 'Access denied' );
 		}
 
 		$t_impersonation_header = $request->getHeaderLine( HEADER_USERNAME );
@@ -98,24 +94,24 @@ class AuthMiddleware implements MiddlewareInterface
 			$t_username = $t_impersonation_header;
 			$t_impersonation_user_id = user_get_id_by_name( $t_username );
 			if( $t_impersonation_user_id === false ) {
-				return $response->withStatus( HTTP_STATUS_NOT_FOUND, 'Invalid impersonation username' );
+				return $this->createResponse( HTTP_STATUS_NOT_FOUND, 'Invalid impersonation username' );
 			}
 
 			if( $t_impersonation_user_id === auth_get_current_user_id() ) {
-				return $response->withStatus( HTTP_STATUS_FORBIDDEN, "Can't impersonate self" );
+				return $this->createResponse( HTTP_STATUS_FORBIDDEN, "Can't impersonate self" );
 			}
 
 			if( !access_has_global_level( config_get( 'impersonate_user_threshold' ) ) ) {
-				return $response->withStatus( HTTP_STATUS_FORBIDDEN, "User can't impersonate other users" );
+				return $this->createResponse( HTTP_STATUS_FORBIDDEN, "User can't impersonate other users" );
 			}
 
 			if( (int)user_get_field( $t_impersonation_user_id, 'access_level' ) > current_user_get_field( 'access_level' ) ) {
-				return $response->withStatus( HTTP_STATUS_FORBIDDEN, "User can't impersonate users with higher access level" );
+				return $this->createResponse( HTTP_STATUS_FORBIDDEN, "User can't impersonate users with higher access level" );
 			}
 
 			# Token is valid, then login the user without worrying about a password.
 			if( auth_attempt_script_login( $t_username, null ) === false ) {
-				return $response->withStatus( HTTP_STATUS_FORBIDDEN, 'Login failed for impersonated user' );
+				return $this->createResponse( HTTP_STATUS_FORBIDDEN, 'Login failed for impersonated user' );
 			}
 
 			# Set language to user's language
@@ -125,7 +121,7 @@ class AuthMiddleware implements MiddlewareInterface
 		# Now that user is logged in, check if they have the right access level to access the REST API.
 		# Don't treat web UI calls with cookies as API calls that need to be disabled for certain access levels.
 		if( $t_login_method != LOGIN_METHOD_COOKIE && !mci_has_readonly_access() ) {
-			return $response->withStatus( HTTP_STATUS_FORBIDDEN, 'Higher access level required for API access' );
+			return $this->createResponse( HTTP_STATUS_FORBIDDEN, 'Higher access level required for API access' );
 		}
 
 		$t_force_enable = $t_login_method == LOGIN_METHOD_COOKIE;

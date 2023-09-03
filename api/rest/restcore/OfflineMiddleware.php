@@ -17,21 +17,30 @@
 /**
  * A webservice interface to Mantis Bug Tracker
  *
- * @package MantisBT
- * @copyright Copyright MantisBT Team - mantisbt-dev@lists.sourceforge.net
- * @link http://www.mantisbt.org
+ * @package   MantisBT
+ * @copyright Copyright 2017-2023 MantisBT Team - mantisbt-dev@lists.sourceforge.net
+ * @link      https://mantisbt.org
  */
+
+use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 /**
  * A middleware class that checks if MantisBT is offline or not.
  * If offline, then fail API calls.
  */
-class OfflineMiddleware {
-	public function __invoke( \Slim\Http\Request $request, \Slim\Http\Response $response, callable $next ) {
+class OfflineMiddleware implements MiddlewareInterface
+{
+
+	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
 		if( mci_is_mantis_offline() ) {
+			$response = new Response();
 			return $response->withStatus( HTTP_STATUS_UNAVAILABLE, 'Mantis Offline' );
 		}
-
-		return $next( $request, $response );
+		return $handler->handle( $request );
 	}
+
 }

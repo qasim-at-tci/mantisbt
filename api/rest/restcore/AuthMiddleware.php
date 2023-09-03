@@ -22,11 +22,11 @@
  * @link      https://mantisbt.org
  */
 
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use GuzzleHttp\Psr7\Response;
 
 require_api( 'authentication_api.php' );
 require_api( 'user_api.php' );
@@ -34,7 +34,8 @@ require_api( 'user_api.php' );
 /**
  * A middleware class that handles authentication and authorization to access APIs.
  */
-class AuthMiddleware implements MiddlewareInterface {
+class AuthMiddleware implements MiddlewareInterface
+{
 
 	public function process( Request $request, RequestHandler $handler ): ResponseInterface {
 		$response = new Response();

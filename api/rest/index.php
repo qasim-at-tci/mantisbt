@@ -161,9 +161,9 @@ try {
 	$g_app = new App( $t_container );
 
 	# Add middleware - executed in reverse order of appearing here.
+	$g_app->add( new VersionMiddleware() );
 	$g_app->add( new ApiEnabledMiddleware() );
 	$g_app->add( new AuthMiddleware() );
-	$g_app->add( new VersionMiddleware() );
 	$g_app->add( new OfflineMiddleware() );
 	$g_app->add( new CacheMiddleware() );
 

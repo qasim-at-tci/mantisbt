@@ -33,7 +33,10 @@ class ApiEnabledMiddleware {
 		# even if API is disabled.
 		if( !$t_force_enable ) {
 			if( config_get( 'webservice_rest_enabled' ) == OFF ) {
-				return $response->withStatus( HTTP_STATUS_UNAVAILABLE, 'API disabled' );
+				return $response
+					->withStatus( HTTP_STATUS_UNAVAILABLE, 'API disabled' )
+					->withoutHeader( HEADER_USERNAME )
+					->withoutHeader( HEADER_LOGIN_METHOD );
 			}
 		}
 

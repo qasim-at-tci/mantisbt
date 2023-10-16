@@ -117,8 +117,11 @@ class AuthMiddleware {
 		}
 
 		$t_force_enable = $t_login_method == LOGIN_METHOD_COOKIE;
-		return $next( $request->withAttribute( ATTRIBUTE_FORCE_API_ENABLED, $t_force_enable ), $response )->
-			withHeader( HEADER_USERNAME, $t_username )->
-			withHeader( HEADER_LOGIN_METHOD, $t_login_method );
+		return $next(
+			$request->withAttribute( ATTRIBUTE_FORCE_API_ENABLED, $t_force_enable ),
+			$response
+				->withHeader( HEADER_USERNAME, $t_username )
+				->withHeader( HEADER_LOGIN_METHOD, $t_login_method )
+		);
 	}
 }

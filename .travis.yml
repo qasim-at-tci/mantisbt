@@ -46,7 +46,7 @@ php:
 
 env:
 #  - DB=mysql
-  - DB=pgsql PGPORT=travis
+  - DB=pgsql PGPORT=5433
 
 jobs:
 #  include:

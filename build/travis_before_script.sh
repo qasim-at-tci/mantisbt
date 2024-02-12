@@ -82,7 +82,7 @@ case $DB in
 
 	pgsql)
 		DB_TYPE='pgsql'
-		DB_USER='postgres'
+		DB_USER='travis'
 		DB_PASSWORD=''
 		DB_CMD="psql -U $DB_USER -c"
 		DB_CMD_SCHEMA="-d $MANTIS_DB_NAME"

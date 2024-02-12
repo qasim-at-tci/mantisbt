@@ -90,7 +90,7 @@ case $DB in
                 
 		echo "DEBUG $PGUSER"
 		pwd
-                php ./build/test_db_connect.php
+  		php ./build/test_db_connect.php
 
 		# Wait a bit to make sure Postgres has started
 		sleep 5

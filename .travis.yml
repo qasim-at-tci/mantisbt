@@ -24,6 +24,8 @@ install:
 
 before_script:
   - sudo sed -i -e '/local.*peer/s/travis/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
+  - sudo service postgresql restart
+  - sleep 10
   # sendmail replacement
   - chmod +x "$TRAVIS_BUILD_DIR/tests/fakesendmail.sh"
   - echo 'sendmail_path = $TRAVIS_BUILD_DIR/tests/fakesendmail.sh' > ./tests/sendmail.ini

@@ -89,10 +89,6 @@ case $DB in
 		DB_CMD="psql -U $DB_USER -c"
 		DB_CMD_SCHEMA="-d $MANTIS_DB_NAME"
 
-		echo "DEBUG $PGUSER"
-		pwd
-    php ./build/test_db_connect.php
-
 		# Wait a bit to make sure Postgres has started
 		sleep 5
 		$DB_CMD "$SQL_CREATE_DB"
